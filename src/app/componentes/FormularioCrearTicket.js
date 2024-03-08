@@ -1,89 +1,224 @@
-'use client'
+"use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
+import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
+import Alerta from "./Alerta";
+import { useAuth } from "../contexts/authContext";
+import { SeleccionarSector } from "./SeleccionarSector";
+import { crearTicket } from "../firebase/CrearTicket";
 
-const FormularioCrearTicket = () => {
-  const [ticketData, setTicketData] = useState({
-    tituloTicket: '',
-    descripcionTicket: '',
-    prioridad: '',
-    idTicket:'',
-    idSector:'',
-    idEstado:'',
+const FormularioCrearTicket = ({ usuarios, dataSector }) => {
+  const { usuario } = useAuth();
+  const botonMenuUsuario = document.getElementById("legajoAsignado");
+  const botonMenuPrioridad = document.getElementById("prioridadTicket");
+  const botonMenuSector = document.getElementById("sectorUsuario");
+  const [seleccion, cambiarSeleccion] = useState(false);
+  const [seleccionUsuario, cambiarUsuario] = useState(false);
+  const [seleccionPrioridad, cambiarSeleccionPrioridad] = useState(false);
+  const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
+  const [alerta, cambiarAlerta] = useState({});
+  document.addEventListener("click", (e) => {
+    var click = e.target;
+    if (seleccionUsuario === true && click != botonMenuUsuario) {
+      cambiarUsuario(false);
+    }
+    if (seleccionPrioridad === true && click != botonMenuPrioridad) {
+      cambiarSeleccionPrioridad(false);
+    }
+    if (seleccion === true && click != botonMenuSector) {
+      cambiarSeleccion(false);
+    }
   });
 
-  const [prioridadDropdownVisible, setPrioridadDropdownVisible] = useState(false);
+  const usuarioEmisor = usuarios.find(
+    (user) => user.correo === usuario.email && user
+  );
 
-  const handleInputChange = (e) => {
+  const [campos, cambiarCampos] = useState({
+    tituloTicket: "",
+    descripcionTicket: "",
+    prioridad: "",
+    idEstado: "nuevo",
+    idSector: "",
+    nombreUsuarioAsignado: "",
+    legajoAsignado: "",
+    nombreEmisor:
+      usuarioEmisor.nombreUsuario + " " + usuarioEmisor.apellidoUsuario,
+    legajoEmisor: usuarioEmisor.idUsuario,
+    correoUsuarioEmisor: usuarioEmisor.correo,
+  });
+
+  const usuarioAsignado = usuarios.find(
+    (usuario) => usuario.idUsuario === campos.legajoAsignado
+  );
+
+  const validarCampos = () => {
+    const camposVacios = Object.values(campos).some(
+      (valor) => valor === "" || valor === null
+    );
+    if (camposVacios) {
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: "Por favor rellena todos los campos",
+      });
+      return true;
+    }
+    return false;
+  };
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setTicketData({
-      ...ticketData,
-      [name]: value
-    });
+    cambiarCampos((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handlePrioridadClick = () => {
-    setPrioridadDropdownVisible(!prioridadDropdownVisible);
-  };
+  //Si tengo un usuario seleccionado recupero el legajo y obtengo el sector donde esta ubicado
 
-  const handlePrioridadSelect = (prioridad) => {
-    setTicketData({
-      ...ticketData,
-      prioridad
-    });
-    setPrioridadDropdownVisible(false);
-  };
+  useEffect(() => {
+    if (campos.legajoAsignado != "Todos" && usuarioAsignado) {
+      cambiarCampos((prevcampos) => ({
+        ...prevcampos,
+        idSector: usuarioAsignado.idSector,
+        nombreUsuarioAsignado:
+          usuarioAsignado.nombreUsuario + " " + usuarioAsignado.apellidoUsuario,
+      }));
+    } else {
+      cambiarCampos((prevcampos) => ({
+        ...prevcampos,
+        nombreUsuarioAsignado: "Todos",
+      }));
+    }
+  }, [usuarioAsignado, campos.idSector, campos.legajoAsignado]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(ticketData);
-    setTicketData({
-      titulo: '',
-      descripcion: '',
-      prioridad: 'baja'
-    });
+    cambiarEstadoAlerta(false);
+    if (validarCampos()) {
+      return;
+    } else {
+      try {
+        await crearTicket(campos);
+        cambiarEstadoAlerta(true);
+        cambiarAlerta({
+          tipo: "aceptado",
+          mensaje: `¡El ticket se creó correctamente!`,
+        })
+        cambiarCampos({
+          tituloTicket: "",
+          descripcionTicket: "",
+          prioridad: "",
+          idEstado: "nuevo",
+          idSector: "",
+          nombreUsuarioAsignado: "",
+          legajoAsignado: "",
+          nombreEmisor:
+            usuarioEmisor.nombreUsuario + " " + usuarioEmisor.apellidoUsuario,
+          legajoEmisor: usuarioEmisor.idUsuario,
+          correoUsuarioEmisor: usuarioEmisor.correo,
+        });
+      } catch (error) {
+        console.log(error);
+        cambiarEstadoAlerta(true);
+        cambiarAlerta({
+          tipo: "error",
+          mensaje: error,
+        });
+      }
+    }
   };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="titulo">Título de ticket:</label>
-        <input
-          type="text"
-          id="titulo"
-          name="titulo"
-          value={ticketData.titulo}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="descripcion">Descripción de ticket:</label>
-        <textarea
-          id="descripcion"
-          name="descripcion"
-          value={ticketData.descripcion}
-          onChange={handleInputChange}
-          required
-        ></textarea>
-      </div>
-      <div>
-        <label>Prioridad:</label>
-        <div className="prioridad-dropdown">
-          <div className="prioridad-trigger" onClick={handlePrioridadClick}>
-            {ticketData.prioridad}
+    <>
+      <form className="w-[60%] p-3 py-0 px-8 mt-6" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col">
+            <label className="pb-2 text-lg font-medium text-gray-700">
+              Asunto
+            </label>
+            <input
+              type="text"
+              id="asunto"
+              name="tituloTicket"
+              placeholder="Asunto..."
+              value={campos.tituloTicket}
+              onChange={handleChange}
+              className="p-2 w-full border border-black  outline-none"
+            />
           </div>
-          {prioridadDropdownVisible && (
-            <div className="prioridad-options">
-              <div onClick={() => handlePrioridadSelect('baja')}>Baja</div>
-              <div onClick={() => handlePrioridadSelect('media')}>Media</div>
-              <div onClick={() => handlePrioridadSelect('alta')}>Alta</div>
+          <div className="flex flex-row justify-between gap-4">
+            <div className="w-[40%]">
+              <span className="block text-lg font-medium text-gray-700 py-2">
+                Asignar a
+              </span>
+              <SeleccionarUsuarioReceptor
+                seleccionUsuario={seleccionUsuario}
+                cambiarUsuario={cambiarUsuario}
+                campos={campos}
+                cambiarCampos={cambiarCampos}
+                usuarios={usuarios}
+                cambiarSeleccionPrioridad={cambiarSeleccionPrioridad}
+              />
             </div>
-          )}
+            <div className="w-[30%]">
+              <span className="block text-lg font-medium text-gray-700 py-2">
+                Sector
+              </span>
+              <SeleccionarSector
+                dataSector={dataSector}
+                campos={campos}
+                cambiarCampos={cambiarCampos}
+                seleccion={seleccion}
+                cambiarSeleccion={cambiarSeleccion}
+              />
+            </div>
+            <div className="w-[30%]">
+              <span className="block text-lg font-medium text-gray-700 py-2">
+                Prioridad
+              </span>
+              <SeleccionarPrioridad
+                campos={campos}
+                cambiarCampos={cambiarCampos}
+                seleccionPrioridad={seleccionPrioridad}
+                cambiarSeleccionPrioridad={cambiarSeleccionPrioridad}
+                cambiarUsuario={cambiarUsuario}
+              />
+            </div>
+          </div>
+
+          <div className="relative flex flex-col">
+            <label className="block relative z-10 text-lg font-medium text-gray-700 py-2">
+              Descripción
+            </label>
+            <textarea
+              type="text"
+              id="descripcionTicket"
+              name="descripcionTicket"
+              value={campos.descripcionTicket}
+              onChange={handleChange}
+              className="p-2 px-4 w-full border border-black  h-72 outline-none resize-none"
+            />
+            <div className="mt-6 absolute bottom-0 right-0">
+              <button
+                as={"button"}
+                type="submit"
+                className="w-md px-4 py-3 m-2 bg-blue-700  text-white font-semibold hover:shadow-4xl transition"
+              >
+                Enviar ticket
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      <button type="submit">Crear Ticket</button>
-    </form>
+      </form>
+      <Alerta
+        tipo={alerta.tipo}
+        mensaje={alerta.mensaje}
+        estadoAlerta={estadoAlerta}
+        cambiarEstadoAlerta={cambiarEstadoAlerta}
+      />
+    </>
   );
 };
 

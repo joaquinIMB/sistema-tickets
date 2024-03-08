@@ -1,12 +1,26 @@
-import BarraDeBusqueda from "./BarraDeBusqueda";
-import BotonCrearTicket from "./BotonCrearTicket";
+import { useDesplegable } from "../contexts/desplegableContext";
+import BotonCerrarSesion from "./BotonCerrarSesion";
+import BotonMenu from "./BotonMenu";
+import { BuscaRuta } from "./BuscaRuta";
+import styles from "@/app/componentes/admin.module.css";
 
 export const Header = () => {
+  const { desplegar, setDesplegar } = useDesplegable();
+
   return (
-    <header className="sticky flex top-0 z-20 bg-[#fcfcfc] border-b-2 border-opacity-5 border-black items-center px-6 py-4 text-white h-[4.2rem] w-auto">
-      <div className="flex items-center justify-between w-full pt-1 px-4">
-        <BarraDeBusqueda />
-        <BotonCrearTicket />
+    <header
+      className={`sticky flex top-0 z-[60] bg-[#f9f9f9] border-b border-opacity-5 border-black items-center px-12 py-4 text-white h-[8%] min-h-[70px] w-auto ${styles.header}`}
+    >
+      <div className="flex items-center justify-between w-full ">
+        <div
+          className={`flex items-center transition-all ${
+            desplegar === true && "gap-4"
+          }`}
+        >
+          {desplegar === true && <BotonMenu setDesplegar={setDesplegar} />}
+          <BuscaRuta />
+        </div>
+        <BotonCerrarSesion />
       </div>
     </header>
   );

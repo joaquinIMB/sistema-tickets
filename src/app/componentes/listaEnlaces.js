@@ -1,51 +1,57 @@
 const listaSideBar = [
   {
     label: "Tickets",
-    href: "/panel",
+    href: "/admin",
     logo: "/boleto.png",
   },
 ];
 
 const listaCategorias = [
   {
-    label:"Todos los tickets",
-    href: "/panel"
+    label: "Asignados a mi sector",
+    href: "/admin/ticket/tickets-sin-abrir",
   },
   {
-    label:"Mis tickets",
-    href: "/panel/ticket/categoria-ticket/mis-tickets"
+    label: "Mis tickets a resolver",
+    href: "/admin/ticket/mis-tickets",
   },
   {
-    label:"Mi sector",
-    href: "/panel/ticket/categoria-ticket/mi-sector"
+    label: "Emitidos por mí",
+    href: "/admin/ticket/tickets-creados",
   },
-]
+];
 
-const listaEstados=[
+const listaEstados = [
   {
-    label:"Activo",
-    href: "/panel/ticket/activo"
+    label: "Abiertos",
+    estado: "abierto",
+    href: "/admin/ticket/abierto",
   },
   {
-    label:"Pendiente",
-    href: "/panel/ticket/pendiente"
+    label: "Pendientes",
+    estado: "pendiente",
+    href: "/admin/ticket/pendiente",
   },
   {
-    label:"En proceso",
-    href: "/panel/ticket/proceso"
+    label: "En Proceso",
+    estado: "proceso",
+    href: "/admin/ticket/proceso",
   },
   {
-    label:"Resuelto",
-    href: "/panel/ticket/resuelto"
+    label: "Resueltos",
+    estado: "resuelto",
+    href: "/admin/ticket/resuelto",
   },
   {
-    label:"Anulado",
-    href: "/panel/ticket/anulado"
+    label: "Anulados",
+    estado: "anulado",
+    href: "/admin/ticket/anulado",
   },
   {
-    label:"En revision",
-    href: "/panel/ticket/revision"
+    label: "En Revisión",
+    estado: "revision",
+    href: "/admin/ticket/revision",
   },
-]
+];
 
 export { listaSideBar, listaCategorias, listaEstados };

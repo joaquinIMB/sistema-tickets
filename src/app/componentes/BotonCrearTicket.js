@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const BotonCrearTicket = () => {
   return (
-    < Link href={"/panel"} className="bg-blue-600 text-white text-sm hover:bg-blue-500 cursor-pointer transition-all rounded-md flex items-center justify-center gap-1 w-32 py-1">
+    < Link href={"/admin/ticket/crear-ticket"} className="bg-blue-600 text-white text-sm hover:bg-blue-500 cursor-pointer transition-all flex items-center justify-center gap-1 w-32 py-1 max-h-10">
       <Image
         src={"/mas.png"}
         alt="Logo en representación a la acción sumar"

@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Alerta from "./Alerta";
-import { useAuth } from "./contexts/authContext";
-import { useRouter } from "next/navigation";
-import { Loader } from "./Loader";
+import { useAuth } from "../contexts/authContext";
+import Image from "next/image";
+import Link from "next/link";
 
 const FormularioIniciarSesion = () => {
   const [campos, establecerCampos] = useState({
@@ -14,12 +13,7 @@ const FormularioIniciarSesion = () => {
   });
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
-  const { iniciarSesion, usuario } = useAuth();
-  const router = useRouter();
-
-  if (usuario.logged === true) {
-    router.replace("/panel");
-  }
+  const { iniciarSesion, iniciarSesionGoogle } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,21 +77,34 @@ const FormularioIniciarSesion = () => {
     }
   };
 
-  return usuario ? (
-    <Loader />
-  ) : (
+  return (
     <>
-      <h1 className="text-base font-bold mb- w-full py-2 px-2">
+      <button
+        onClick={iniciarSesionGoogle}
+        className="flex items-center justify-start gap-4 w-full border border-black hover:bg-zinc-200 text-zinc-800 p-4 py-2 m-2 font-bold"
+      >
+        <span>
+          <Image
+            src={"/buscarConGoogle.png"}
+            alt="Logo de Google, continuar iniciar sesión con Google"
+            className="w-8"
+            width={100}
+            height={100}
+          />
+        </span>
+        Continuar con Google
+      </button>
+      <h1 className="text-base font-bold w-full py-2">
         Inicia sesión en tu cuenta de Helpdesk Unity
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="max-w-xl mx-auto p-2 w-full bg-white rounded-md"
+        className="max-w-xl mx-auto w-full bg-white rounded-md pt-2"
       >
         <div className="w-full">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-base font-medium text-gray-700"
           >
             Email
           </label>
@@ -107,7 +114,7 @@ const FormularioIniciarSesion = () => {
             name="correo"
             value={campos.correo}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border border-black outline-none"
             required
           />
         </div>
@@ -115,7 +122,7 @@ const FormularioIniciarSesion = () => {
         <div className="mt-4">
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-base font-medium text-gray-700"
           >
             Contraseña
           </label>
@@ -125,7 +132,7 @@ const FormularioIniciarSesion = () => {
             name="contraseña"
             value={campos.contraseña}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border border-black outline-none"
             required
           />
         </div>
@@ -133,16 +140,16 @@ const FormularioIniciarSesion = () => {
           <button
             as={"button"}
             type="submit"
-            className="w-full py-2 px-4 bg-blue-700 text-white rounded-md shadow-sm transition"
+            className="w-full py-2 px-4 bg-blue-700 hover:bg-blue-800 text-white font-bold shadow-sm transition"
           >
             Iniciar Sesión
           </button>
         </div>
         <div className="flex w-full justify-around py-6">
           <h2 className="font-semibold">¿Todavía no te registraste?</h2>
-          <Link href={"/registrar-usuario"} className="text-blue-600 font-bold">
+          <Link href={"/admin/auth/registrar-usuario"} className="text-blue-600 font-bold cursor-pointer">
             Crea tu cuenta
-          </Link>
+          </Link >
         </div>
       </form>
       <Alerta

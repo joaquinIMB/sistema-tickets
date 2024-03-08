@@ -1,6 +1,12 @@
 import "@/app/globals.css";
 import React from "react";
-import { AuthProvider } from "./componentes/contexts/authContext";
+import { AuthProvider } from "./contexts/authContext";
+
+export const metadata = {
+  title: "Sistema de tickets - Helpdesk Unity",
+  description:
+    "Página para crear un ticket, en sistema de tickets Helpdesk Unity",
+};
 
 export default function RootLayout({ children }) {
   return (

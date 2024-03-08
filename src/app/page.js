@@ -2,22 +2,17 @@
 
 import Link from "next/link";
 import { lobster, poppins } from "./componentes/fuentes";
-import { useAuth } from "./componentes/contexts/authContext";
-import { Loader } from "./componentes/Loader";
-import { useRouter } from "next/navigation";
+import { useAuth } from "./contexts/authContext";
 import { useEffect } from "react";
 
 export default function Inicio() {
-  const { usuario } = useAuth();
-  const router = useRouter();
+  const { usuario, cerrarSesion } = useAuth();
   useEffect(() => {
     if (usuario.logged === true) {
-      router.replace("/panel");
+      cerrarSesion();
     }
-  },[router, usuario]);
-  return usuario ? (
-    <Loader />
-  ) : (
+  }, [cerrarSesion, usuario.logged]);
+  return (
     <>
       <div className="flex flex-col min-h-screen">
         <header className="flex items-center justify-between px-12 py-3 pt-4 border-b-2 border-black border-opacity-5 text-white">
@@ -30,14 +25,14 @@ export default function Inicio() {
           </Link>
           <div className="flex items-center gap-6">
             <Link
-              className="inline-flex h-8 items-center justify-center rounded-md bg-blue-700 px-4 py-2 text-base font-medium shadow transition-colors hover:bg-blue-600 "
-              href="/iniciar-sesion"
+              className="inline-flex h-8 items-center justify-center bg-blue-700 p-5 text-base font-medium shadow transition-colors border border-blue-600 hover:bg-blue-600 "
+              href="/admin/auth/iniciar-sesion"
             >
-              Acceder
+              Iniciar Sesion
             </Link>
             <Link
-              className="inline-flex h-8 items-center justify-center rounded-md border-gray-200 bg-blue-700 px-4 py-2 text-base font-medium shadow-sm transition-colors hover:bg-blue-600 "
-              href="/registrar-usuario"
+              className="inline-flex h-8 items-center justify-center hover:border-gray-700 hover:text-gray-700 border border-black text-black p-5 text-base font-medium shadow transition-color"
+              href="/admin/auth/registrar-usuario"
             >
               Registrarse
             </Link>

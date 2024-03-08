@@ -1,32 +1,38 @@
 .contenedorAlerta{
     z-index: 1000;
-    width: 100%;
-    left: 0;
-    top: 1.25rem; 
+    padding: 1.70rem;
+    width: 360px;
+    right: 0;
+    bottom: 0; 
     position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.20rem;
+    color: white;
     animation: slideDown 2s ease forwards;
 }
 @keyframes slideDown{
     0% {
-        transform: translateY(-1.25rem);
+        transform: translateY(1.25rem);
         opacity: 0;
     }
  
     10% {
-        transform: translateY(1.25rem);
+        transform: translateY(0rem);
         opacity: 1;
+        width: 360px;
     }
     
     90% {
-        transform: translateY(1.25rem);
+        transform: translateY(0rem);
         opacity: 1;
+        width: 360px;
     }
  
     100% {
-        transform: translateY(1.25rem);
+        transform: translateY(0rem);
         opacity: 0;
+        width: 360px;
     }
 }

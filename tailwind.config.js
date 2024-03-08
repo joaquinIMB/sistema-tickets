@@ -11,12 +11,9 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        "3xl": "3px 0px 10px rgba(0, 0, 0, 0.3)",
-        "4xl": "0px 3px 10px rgba(0, 0, 0, 0.1)",
-        "5xl": "0px 3px 10px #00000015",
-        "6xl": "0px 1px 8px #0000005",
-      },
-    },
+        '3xl': '0 5px 3px 0px #00000008',
+      }
+    }
   },
   plugins: [],
 };
