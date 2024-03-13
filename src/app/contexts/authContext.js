@@ -57,7 +57,6 @@ function AuthProvider({ children }) {
           uid: null,
         });
         cambiarCargando(false);
-        router.push("/")
       }
     });
   }, [router]);
