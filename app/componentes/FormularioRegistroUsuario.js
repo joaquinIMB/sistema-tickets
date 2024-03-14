@@ -22,7 +22,6 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
   });
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
-  const [seleccion, cambiarSeleccion] = useState(false);
   const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
 
   const validarCampos = () => {
@@ -190,8 +189,6 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
             dataSector={dataSector}
             campos={campos}
             cambiarCampos={cambiarCampos}
-            seleccion={seleccion}
-            cambiarSeleccion={cambiarSeleccion}
           />
         </div>
         <div className="grid grid-cols-2 gap-4">

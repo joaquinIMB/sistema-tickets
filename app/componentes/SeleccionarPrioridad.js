@@ -1,28 +1,28 @@
 import { prioridad } from "../data/prioridad";
+import { useDesplegable } from "../contexts/desplegableContext";
 
-export const SeleccionarPrioridad = ({
-  seleccionPrioridad,
-  cambiarSeleccionPrioridad,
-  campos,
-  cambiarCampos,
-  cambiarUsuario,
-}) => {
+export const SeleccionarPrioridad = ({ campos, cambiarCampos }) => {
+  const { seleccionPrioridad, cambiarSeleccionPrioridad, cambiarUsuario, cambiarSeleccion } = useDesplegable();
+  const handleClick = () => {
+    cambiarSeleccionPrioridad(!seleccionPrioridad);
+    cambiarUsuario(false)
+    cambiarSeleccion(false)
+  };
   const handleClickPrioridad = (e) => {
     cambiarCampos({
       ...campos,
       prioridad: e.currentTarget.dataset.valor,
     });
-  };
-  const handleClick = () => {
     cambiarSeleccionPrioridad(!seleccionPrioridad);
-    cambiarUsuario(false);
   };
 
   return (
     <>
-      <div className="relative w-full">
+      <div className="relative ">
         <div
-          className={`flex flex-col ${campos.prioridad ? "text-black" : "text-gray-400"} relative border border-black cursor-pointer outline-none p-2 bg-white max-h-11 min-w-full`}
+          className={`flex flex-col ${
+            campos.prioridad ? "text-black" : "text-gray-400"
+          } relative border border-neutral-200 rounded-md cursor-pointer outline-none p-2 bg-white max-h-11 min-w-full`}
           id="prioridadTicket"
           onClick={handleClick}
         >
@@ -31,7 +31,7 @@ export const SeleccionarPrioridad = ({
         {seleccionPrioridad && (
           <div
             id="menuPrioridad"
-            className="absolute top-12 cursor-pointer border border-black z-50 left-0 max-h-72 backdrop-blur-sm bg-white w-full "
+            className="absolute top-12 min-w-20 cursor-pointer border border-neutral-200 rounded-md overflow-hidden shadow-2xl z-[999] left-0 max-h-72 backdrop-blur-sm bg-white w-full "
           >
             {prioridad.map((e, index) => (
               <div

@@ -2,12 +2,13 @@
 
 import { Header } from "../../componentes/Header";
 import Aside from "../../componentes/Aside";
-import { useAuth } from "../../contexts/authContext";
-import { DesplegableProvider } from "../../contexts/desplegableContext";
-import { AperturaTicketProvider } from "../../contexts/aperturaTicketContext";
+import { useAuth } from "@/contexts/authContext";
+import { DesplegableProvider } from "@/contexts/desplegableContext";
+import { AperturaTicketProvider } from "@/contexts/aperturaTicketContext";
 
 export default function RootLayout({ children }) {
   const { usuario } = useAuth();
+
   return (
     usuario.logged === true && (
       <DesplegableProvider>

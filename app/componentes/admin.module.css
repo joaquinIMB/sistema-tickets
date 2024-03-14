@@ -127,3 +127,15 @@
     display: none;
   }
 }
+.subNavDespliege{
+  width: 0;
+  animation: abrir .4s ease ;
+}
+@keyframes abrir{
+  from{
+    width: 0;
+  }
+  to{
+    width: 300px;
+  }
+}

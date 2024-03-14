@@ -8,30 +8,12 @@ import { useAuth } from "../contexts/authContext";
 import { SeleccionarSector } from "./SeleccionarSector";
 import { crearTicket } from "../firebase/CrearTicket";
 
-const FormularioCrearTicket = ({ usuarios, dataSector }) => {
+const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   const { usuario } = useAuth();
-  const botonMenuUsuario = document.getElementById("legajoAsignado");
-  const botonMenuPrioridad = document.getElementById("prioridadTicket");
-  const botonMenuSector = document.getElementById("sectorUsuario");
-  const [seleccion, cambiarSeleccion] = useState(false);
-  const [seleccionUsuario, cambiarUsuario] = useState(false);
-  const [seleccionPrioridad, cambiarSeleccionPrioridad] = useState(false);
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
-  document.addEventListener("click", (e) => {
-    var click = e.target;
-    if (seleccionUsuario === true && click != botonMenuUsuario) {
-      cambiarUsuario(false);
-    }
-    if (seleccionPrioridad === true && click != botonMenuPrioridad) {
-      cambiarSeleccionPrioridad(false);
-    }
-    if (seleccion === true && click != botonMenuSector) {
-      cambiarSeleccion(false);
-    }
-  });
 
-  const usuarioEmisor = usuarios.find(
+  const usuarioEmisor = dataUsuario.find(
     (user) => user.correo === usuario.email && user
   );
 
@@ -49,7 +31,7 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
     correoUsuarioEmisor: usuarioEmisor.correo,
   });
 
-  const usuarioAsignado = usuarios.find(
+  const usuarioAsignado = dataUsuario.find(
     (usuario) => usuario.idUsuario === campos.legajoAsignado
   );
 
@@ -90,6 +72,7 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
       cambiarCampos((prevcampos) => ({
         ...prevcampos,
         nombreUsuarioAsignado: "Todos",
+        idSector: campos.idSector,
       }));
     }
   }, [usuarioAsignado, campos.idSector, campos.legajoAsignado]);
@@ -106,7 +89,7 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
         cambiarAlerta({
           tipo: "aceptado",
           mensaje: `¡El ticket se creó correctamente!`,
-        })
+        });
         cambiarCampos({
           tituloTicket: "",
           descripcionTicket: "",
@@ -145,7 +128,7 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
               placeholder="Asunto..."
               value={campos.tituloTicket}
               onChange={handleChange}
-              className="p-2 w-full border border-black  outline-none"
+              className="p-2 w-full border border-neutral-200 rounded-md outline-none"
             />
           </div>
           <div className="flex flex-row justify-between gap-4">
@@ -154,12 +137,9 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
                 Asignar a
               </span>
               <SeleccionarUsuarioReceptor
-                seleccionUsuario={seleccionUsuario}
-                cambiarUsuario={cambiarUsuario}
                 campos={campos}
                 cambiarCampos={cambiarCampos}
-                usuarios={usuarios}
-                cambiarSeleccionPrioridad={cambiarSeleccionPrioridad}
+                dataUsuario={dataUsuario}
               />
             </div>
             <div className="w-[30%]">
@@ -170,8 +150,6 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
                 dataSector={dataSector}
                 campos={campos}
                 cambiarCampos={cambiarCampos}
-                seleccion={seleccion}
-                cambiarSeleccion={cambiarSeleccion}
               />
             </div>
             <div className="w-[30%]">
@@ -181,9 +159,6 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
               <SeleccionarPrioridad
                 campos={campos}
                 cambiarCampos={cambiarCampos}
-                seleccionPrioridad={seleccionPrioridad}
-                cambiarSeleccionPrioridad={cambiarSeleccionPrioridad}
-                cambiarUsuario={cambiarUsuario}
               />
             </div>
           </div>
@@ -198,15 +173,15 @@ const FormularioCrearTicket = ({ usuarios, dataSector }) => {
               name="descripcionTicket"
               value={campos.descripcionTicket}
               onChange={handleChange}
-              className="p-2 px-4 w-full border border-black  h-72 outline-none resize-none"
+              className="p-2 px-4 w-full border border-neutral-200 h-72 rounded-lg outline-none resize-none"
             />
             <div className="mt-6 absolute bottom-0 right-0">
               <button
                 as={"button"}
                 type="submit"
-                className="w-md px-4 py-3 m-2 bg-blue-700  text-white font-semibold hover:shadow-4xl transition"
+                className="w-md px-4 py-2 m-2 bg-blue-700 rounded-md text-white font-semibold hover:shadow-4xl transition"
               >
-                Enviar ticket
+                Enviar
               </button>
             </div>
           </div>

@@ -16,6 +16,7 @@ const FormularioMovimientoTicket = ({ ticket }) => {
     legajoAsignado: null,
     descripcionMovimiento: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     cambiarCampos((prevData) => ({

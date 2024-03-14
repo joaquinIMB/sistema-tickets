@@ -10,7 +10,7 @@ const BotonCerrarSesion = () => {
       onClick={cerrarSesion}
       href={"/"}
       className={
-        "inline-flex h-10 items-center justify-center bg-red-600 p-4 text-base font-medium shadow transition-colors hover:bg-red-500 "
+        "inline-flex h-10 items-center rounded-md justify-center bg-red-600 p-4 text-base font-medium shadow transition-colors hover:bg-red-500 "
       }
     >
       Cerrar Sesión

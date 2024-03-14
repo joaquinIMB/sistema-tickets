@@ -1,5 +1,5 @@
-import { AsideDetalles } from "../../../../componentes/AsideDetalles";
-import SeccionMovimientoTicket from "../../../../componentes/SeccionMovimientosTicket";
+import { AsideDetalles } from "@/componentes/AsideDetalles";
+import SeccionMovimientoTicket from "@/componentes/SeccionMovimientosTicket";
 
 export function generateMetadata({ params, searchParams }, parent) {
   const { idTicket } = params;
@@ -13,24 +13,31 @@ export function generateMetadata({ params, searchParams }, parent) {
 export default async function MovimientosTicket({ params }) {
   const { idTicket } = params;
   const ticket = await fetch(
-    `https://helpdeskunity.netlify.app/api/ticket/movimientos-ticket/${idTicket}`,
-    { cache: "no-store", next: { revalidate: 0 } }
+    `https://helpdeskunity.netlify.app/ticket/movimientos-ticket/${idTicket}`,
+    { cache: "no-cache", next:{tags:"numeroTicket" }}
   )
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
   const dataMovimientos = await fetch(
-    `https://helpdeskunity.netlify.app/api/ticket/movimientos-ticket/movimientos/${idTicket}`,
+    `https://helpdeskunity.netlify.app/ticket/movimientos-ticket/movimientos/${idTicket}`,
     {
-      cache: "no-cache",
+      cache: "no-cache",next:{tags:"movimientos"}
     }
   )
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
+
+  const dataSector = await fetch(`https://helpdeskunity.netlify.app/ticket/sectores`, {
+    cache: "no-cache",
+  })
+    .then((respuesta) => respuesta.json())
+    .catch((error) => console.log(error));
+
   return (
     <>
       {ticket &&
-        dataMovimientos &&
+        dataMovimientos && 
         ticket.map((ticket) => (
           <div
             key={ticket.idTicket}
@@ -40,7 +47,11 @@ export default async function MovimientosTicket({ params }) {
               ticket={ticket}
               dataMovimientos={dataMovimientos}
             />
-            <AsideDetalles ticket={ticket} dataMovimientos={dataMovimientos} />
+            <AsideDetalles
+              ticket={ticket}
+              dataMovimientos={dataMovimientos}
+              dataSector={dataSector}
+            />
           </div>
         ))}
     </>

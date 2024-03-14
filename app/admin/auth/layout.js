@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from "../../contexts/authContext";
+import { useAuth } from "@/contexts/authContext";
 import { useRouter } from "next/navigation";
 
 export default function LayoutAuth({ children }) {

@@ -1,5 +1,5 @@
-import { Loader } from "../../../componentes/Loader";
-import { TraerTicketPorEmisor } from "../../../componentes/TraerTicketPorEmisor";
+import { Loader } from "@/componentes/Loader";
+import { TraerTicketPorEmisor } from "@/componentes/TraerTicketPorEmisor";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -9,11 +9,6 @@ export const metadata = {
 };
 
 export default async function TicketsCreados() {
-  const data = await fetch(`https://helpdeskunity.netlify.app/api/ticket`, {
-    cache:"no-cache" 
-  })
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
 
   const dataUsuario = await fetch(`https://helpdeskunity.netlify.app/api/ticket/usuarios`, {
      cache:"no-cache"
@@ -22,9 +17,9 @@ export default async function TicketsCreados() {
     .catch((error) => console.log(error));
   return (
     <>
-      {data && dataUsuario && (
+      {dataUsuario && (
         <Suspense fallback={<Loader />}>
-          <TraerTicketPorEmisor data={data} dataUsuario={dataUsuario} />
+          <TraerTicketPorEmisor dataUsuario={dataUsuario} />
         </Suspense>
       )}
     </>

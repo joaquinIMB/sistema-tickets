@@ -1,4 +1,4 @@
-import FormularioIniciarSesion from "../../../componentes/FormularioInicioSesion";
+import FormularioIniciarSesion from "@/componentes/FormularioInicioSesion";
 
 export const metadata = {
   title: "Iniciar Sesión - Helpdesk Unity - Sistema de tickets",

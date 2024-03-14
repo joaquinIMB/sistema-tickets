@@ -25,16 +25,16 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
     <>
       {desplegar === false && (
         <section
-          className={` w-[300px] transition-all flex flex-col overflow-hidden relative z-50`}
+          className={`w-[300px] transition-all flex flex-col overflow-hidden relative z-50 `}
         >
           <main
-            className={`fixed left-[76px] h-screen bg-gradient-to-r w-[inherit] from-[#f1f1f1] to-[#f0f0f0] border-r ${styles.subNavAdaptable} border-black border-opacity-5 overflow-auto`}
+            className={`fixed left-[76px] h-screen bg-gradient-to-r w-[inherit] from-[#f1f1f1] to-[#f0f0f0] border-r ${styles.subNavAdaptable} border-black border-opacity-5 overflow-Y-auto`}
           >
-            <header className="flex flex-row justify-between py-3 px-6 items-center">
+            <header className="flex flex-row justify-between py-3 px-6 items-center w-[300px]">
               <h1 className="capitalize text-[28px] text-gray-800 font-semibold">{`${ruta}`}</h1>
               <BotonCrearTicket />
             </header>
-            <nav className={`${poppins.className}`}>
+            <nav className={`${poppins.className} w-[300px]`}>
               <ul className={`py-2 px-6 flex flex-col text-zinc-900 gap-2 `}>
                 {listaCategorias.map((enlace) => (
                   <li

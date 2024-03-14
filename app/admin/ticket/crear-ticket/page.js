@@ -1,4 +1,4 @@
-import FormularioCrearTicket from "../../../componentes/FormularioCrearTicket";
+import FormularioCrearTicket from "@/componentes/FormularioCrearTicket";
 
 export const metadata = {
   title: "Crear Ticket - Helpdesk Unity - Sistema de tickets",
@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 export default async function CrearTicket() {
-  const usuarios = await fetch(`https://helpdeskunity.netlify.app/api/ticket/usuarios`,{
+  const dataUsuario = await fetch(`https://helpdeskunity.netlify.app/api/ticket/usuarios`,{
     cache: "no-store",
   })
     .then((respuesta) => respuesta.json())
@@ -22,9 +22,9 @@ export default async function CrearTicket() {
 
   return (
     <>
-      {usuarios && dataSector && (
+      {dataUsuario && dataSector && (
         <FormularioCrearTicket
-          usuarios={usuarios}
+          dataUsuario={dataUsuario}
           dataSector={dataSector}
         />
       )}

@@ -1,13 +1,19 @@
+import { useDesplegable } from "../contexts/desplegableContext";
+
 export const SeleccionarUsuarioReceptor = ({
-  seleccionUsuario,
-  cambiarUsuario,
   campos,
   cambiarCampos,
-  usuarios,
-  cambiarSeleccionPrioridad,
+  dataUsuario,
 }) => {
+  const {
+    seleccionUsuario,
+    cambiarUsuario,
+    cambiarSeleccion,
+    cambiarSeleccionPrioridad,
+  } = useDesplegable();
   const handleClick = () => {
     cambiarUsuario(!seleccionUsuario);
+    cambiarSeleccion(false);
     cambiarSeleccionPrioridad(false);
   };
   const handleClickUsuarioReceptor = (e) => {
@@ -15,6 +21,7 @@ export const SeleccionarUsuarioReceptor = ({
       ...campos,
       legajoAsignado: e.currentTarget.dataset.valor,
     });
+    cambiarUsuario(!seleccionUsuario);
   };
 
   return (
@@ -22,7 +29,7 @@ export const SeleccionarUsuarioReceptor = ({
       <div className="relative">
         <div className="relative">
           <div
-            className={`flex flex-col relative border border-black cursor-pointer ${
+            className={`flex flex-col relative border border-neutral-200 rounded-md cursor-pointer ${
               campos.legajoAsignado != "" ? "text-black" : "text-gray-400"
             } bg-white outline-none min-w-full p-2 ${
               seleccionUsuario && "focus:border-blue-700"
@@ -30,14 +37,16 @@ export const SeleccionarUsuarioReceptor = ({
             id="legajoAsignado"
             onClick={handleClick}
           >
-            {campos.legajoAsignado != "" && campos.legajoAsignado  != "Todos"
+            {campos.legajoAsignado != "" && campos.legajoAsignado != "Todos"
               ? campos.legajoAsignado + " " + campos.nombreUsuarioAsignado
-              : campos.legajoAsignado === "Todos" ? campos.legajoAsignado : "Selecciona un usuario"}
+              : campos.legajoAsignado === "Todos"
+              ? campos.legajoAsignado
+              : "Selecciona un usuario"}
           </div>
         </div>
 
         {seleccionUsuario && (
-          <div className="absolute top-12 border border-black z-50 cursor-pointer left-0 max-h-72 backdrop-blur-sm bg-white w-full ">
+          <div className="absolute top-12 border border-neutral-200 rounded-md shadow-2xl z-50 cursor-pointer left-0 max-h-72 backdrop-blur-sm bg-white w-full ">
             <div
               data-valor={"Todos"}
               className={`p-2 bg-white flex flex-row justify-start hover:bg-gray-100 w-full shadow-xl`}
@@ -45,8 +54,8 @@ export const SeleccionarUsuarioReceptor = ({
             >
               <p className="px-2 pointer-events-none">Todo el sector</p>
             </div>
-            {usuarios &&
-              usuarios.map((usuario) => (
+            {dataUsuario &&
+              dataUsuario.map((usuario) => (
                 <>
                   <div
                     key={usuario.idUsuario}

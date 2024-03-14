@@ -1,14 +1,13 @@
 import { db } from "./FirebaseConfig";
-import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc, setDoc } from "firebase/firestore";
 import { traerFechaHora } from "../funciones/traerFechaHora";
-import { revalidatePath } from "next/cache";
 
 export const crearMovimientoTicket = async (campos) => {
   const fechaHora = traerFechaHora();
   const movTickets = await fetch(
     `https://helpdeskunity.netlify.app/api/ticket/movimientos-ticket/movimientos/${campos.idTicket}`,
     {
-      cache: "no-store"
+      cache: "no-cache"
     }
   )
     .then((res) => res.json())
@@ -16,9 +15,9 @@ export const crearMovimientoTicket = async (campos) => {
 
   const idMovTicket = movTickets.length + 1;
 
-  const docRef = collection(db, "movimientoTicket");
+  const docRef = doc(db, "movimientoTicket", campos.idTicket + idMovTicket);
   try {
-    await addDoc(docRef, {
+    await setDoc(docRef, {
       idMovimientoTicket: idMovTicket.toString(),
       idTicket: campos.idTicket,
       idSector: campos.idSector,
@@ -30,7 +29,6 @@ export const crearMovimientoTicket = async (campos) => {
       descripcionMovimiento: campos.descripcionMovimiento || "",
     });
     console.log(`Movimiento de ticket ${idMovTicket.toString()} agregado`);
-    revalidatePath("/admin/ticket/movimientos-ticket/[idTicket]", "page");
   } catch (error) {
     console.log(error);
   }

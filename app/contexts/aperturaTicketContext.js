@@ -5,6 +5,7 @@ import {
   crearMovimientoTicket,
   actualizarAperturaTicket,
 } from "../firebase/CrearMovimientoTicket";
+import { useRouter } from "next/navigation";
 
 const AperturaTicketContext = createContext();
 
@@ -16,6 +17,7 @@ function AperturaTicketProvider({ children }) {
   const [data, setData] = useState("");
   const [usuario, obtenerUsuario] = useState("");
   const [campos, setCampos] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,8 +37,9 @@ function AperturaTicketProvider({ children }) {
             await crearMovimientoTicket(updatedCampos);
             await actualizarAperturaTicket(updatedCampos);
             setCampos(null);
-            obtenerUsuario("")
-            setData("")
+            obtenerUsuario("");
+            setData("");
+            router.push(`/admin/ticket/movimientos-ticket/${data.idTicket}`);
           }
         }
       } catch (error) {
@@ -45,7 +48,7 @@ function AperturaTicketProvider({ children }) {
     };
 
     fetchData();
-  }, [data, usuario, campos]);
+  }, [data, usuario, campos, router]);
 
   return (
     <AperturaTicketContext.Provider value={{ setData, obtenerUsuario }}>

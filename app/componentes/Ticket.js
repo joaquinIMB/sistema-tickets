@@ -1,48 +1,29 @@
-import Link from "next/link";
+"use client";
+
 import { colorEstado } from "./colores";
 import styles from "@/componentes/admin.module.css";
 import { useAperturaTicket } from "../contexts/aperturaTicketContext";
-import { useAuth } from "../contexts/authContext";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export const Ticket = ({ ticket }) => {
-  const { usuario } = useAuth();
+export const Ticket = ({ ticket, usuarioActual }) => {
   const { setData, obtenerUsuario } = useAperturaTicket();
   const pathname = usePathname();
+  const [popUp, setPopUp] = useState(false);
+  const router = useRouter()
   const colorActual = colorEstado.find(
     (color) => color.estado === ticket.idEstado
   );
 
-  const handleClick = async () => {
+  const handleClick = () => {
     try {
       if (
         pathname !== "/admin/ticket/tickets-creados" &&
         ticket.idEstado === "nuevo"
       ) {
-        const dataUsuario = await fetch(
-          `https://helpdeskunity.netlify.app/api/ticket/usuarios`,
-          {
-            cache: "no-store",
-          }
-        );
-
-        if (!dataUsuario.ok) {
-          throw new Error("Error al obtener los datos del usuario");
-        }
-
-        const usuarioActual = await dataUsuario.json();
-
-        const user = usuarioActual.find(
-          (user) => user.correo === usuario.email
-        );
-
-        if (!user) {
-          throw new Error("No se encontró un usuario válido");
-        }
-
-        await obtenerUsuario(user);
-        await setData({ ...ticket });
-
+        obtenerUsuario(usuarioActual);
+        setData({ ...ticket });
       } else {
         return;
       }
@@ -50,14 +31,19 @@ export const Ticket = ({ ticket }) => {
       console.error("Error en handleClick:", error.message);
     }
   };
-
+  const handlePopUp = () =>{
+    if(pathname !=="/admin/ticket/tickets-creados" && ticket.idEstado === "nuevo"){
+      return setPopUp(true)
+    }else{
+      router.push(`movimientos-ticket/${ticket.idTicket}`)
+    }
+  }
   return (
     <>
       {ticket && (
-        <Link
-          onClick={handleClick}
-          className="w-full relative"
-          href={`/admin/ticket/movimientos-ticket/${ticket.idTicket}`}
+        <div
+          onClick={handlePopUp}
+          className="w-full relative cursor-pointer"
         >
           <ul
             className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black ${styles.listaTicket}`}
@@ -68,10 +54,14 @@ export const Ticket = ({ ticket }) => {
                 {ticket.correoUsuarioEmisor}
               </span>
             </li>
-            <li className={`w-[35%] text-center font-semibold overflow-hidden ${styles.motivo}`}>
+            <li
+              className={`w-[35%] text-center font-semibold overflow-hidden ${styles.motivo}`}
+            >
               {ticket.tituloTicket}
             </li>
-            <li className={`w-[10%] text-center font-semibold ${styles.prioridad}`}>
+            <li
+              className={`w-[10%] text-center font-semibold ${styles.prioridad}`}
+            >
               {ticket.prioridad}
             </li>
             <li className={`w-[12%] capitalize text-center ${styles.estado}`}>
@@ -84,13 +74,35 @@ export const Ticket = ({ ticket }) => {
                 {ticket.idEstado === "proceso" ? "En proceso" : ticket.idEstado}
               </span>
             </li>
-            <li className={`w-[18%] text-end font-semibold text-gray-600 ${styles.fecha}`}>
+            <li
+              className={`w-[18%] text-end font-semibold text-gray-600 ${styles.fecha}`}
+            >
               {ticket.fechaHoraRegistro}
             </li>
           </ul>
-        </Link>
+        </div>
+      )}
+      {popUp && (
+        <div className="flex p-4 flex-col justify-center gap-3 w-80 bg-[#efefef] absolute z-[999] overflow-hidden shadow-xl rounded-md">
+          <h1 className="text-black font-semibold">
+            ¿Quiere realizar la apertura del ticket {ticket.idTicket}?
+          </h1>
+          <div className="flex flex-row w-full justify-center gap-4 ">
+            <button
+              className="w-md px-4 py-1 bg-blue-700  text-white font-semibold hover:shadow-4xl transition"
+              onClick={handleClick}
+            >
+              Aceptar
+            </button>
+            <button
+              className="w-md px-4 py-1 bg-red-700  text-white font-semibold hover:shadow-4xl transition"
+              onClick={() => setPopUp(false)}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
       )}
     </>
   );
 };
- 

@@ -25,7 +25,7 @@ export const colorEstado = [
   },
   {
     estado: "revision",
-    bg: "bg-black",
+    bg: "bg-neutral-700",
   },
 ];
 

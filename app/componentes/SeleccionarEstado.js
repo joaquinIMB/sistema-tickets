@@ -21,7 +21,7 @@ export const SeleccionarEstado = ({
           onClick={() => setDesplegar(!desplegar)}
           className={`flex px-4 py-1 cursor-pointer capitalize items-center gap-2 ${
             desplegar && "bg-[#ececec]"
-          } text-[#00000090] rounded-md border border-[#00000080] bg-[#f5f5f5] font-semibold hover:shadow-4xl transition`}
+          } text-[#00000090] rounded-md border border-[#00000080] bg-white font-semibold hover:shadow-4xl transition`}
         >
           {campos.idEstado ? campos.idEstado : "Nuevo estado"}
 
@@ -37,7 +37,7 @@ export const SeleccionarEstado = ({
         </div>
         {desplegar && (
           <ul
-            className={`absolute shadow-md p-2 rounded-md bottom-12 z-50 right-0 bg-[#f5f5f5] w-full`}
+            className={`absolute shadow-md p-2 rounded-md bottom-12 z-50 right-0 bg-white w-full`}
           >
             {estados &&
               estados.map((estado) => (

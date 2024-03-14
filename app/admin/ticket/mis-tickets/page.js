@@ -1,4 +1,4 @@
-import { TraerTicketPorAsignado } from "../../../componentes/TraerTicketPorAsignado";
+import { TraerTicketPorAsignado } from "@/componentes/TraerTicketPorAsignado";
 
 export const metadata = {
   title: "Mis tickets a resolver - Helpdesk Unity - Sistema de tickets",
@@ -7,22 +7,17 @@ export const metadata = {
 };
 
 export default async function MisTickets() {
-  const data = await fetch(`https://helpdeskunity.netlify.app/api/ticket`, {
-    cache: "no-store"
-  })
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
 
   const dataUsuario = await fetch(`https://helpdeskunity.netlify.app/api/ticket/usuarios`, {
-    cache: "no-store",
+    cache: "no-cache",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
   return (
     <>
-      {data && dataUsuario && (
-        <TraerTicketPorAsignado data={data} dataUsuario={dataUsuario} />
+      {dataUsuario && (
+        <TraerTicketPorAsignado dataUsuario={dataUsuario} />
       )}
     </>
   );

@@ -1,4 +1,4 @@
-import FormularioRegistroUsuario from "../../../componentes/FormularioRegistroUsuario";
+import FormularioRegistroUsuario from "@/componentes/FormularioRegistroUsuario";
 
 export const metadata = {
   title: "Registrarse - Helpdesk Unity - Sistema de tickets",
