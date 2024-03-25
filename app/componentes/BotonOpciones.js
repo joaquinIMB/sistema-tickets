@@ -6,6 +6,7 @@ export const BotonOpciones = () => {
   return (
     <button
       onClick={() => setOpciones(!opciones)}
+      type="button"
       className="w-md m-2 hover:shadow-4xl transition"
     >
       <Image

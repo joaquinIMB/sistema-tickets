@@ -2,11 +2,16 @@ import { prioridad } from "../data/prioridad";
 import { useDesplegable } from "../contexts/desplegableContext";
 
 export const SeleccionarPrioridad = ({ campos, cambiarCampos }) => {
-  const { seleccionPrioridad, cambiarSeleccionPrioridad, cambiarUsuario, cambiarSeleccion } = useDesplegable();
+  const {
+    seleccionPrioridad,
+    cambiarSeleccionPrioridad,
+    cambiarUsuario,
+    cambiarSeleccion,
+  } = useDesplegable();
   const handleClick = () => {
     cambiarSeleccionPrioridad(!seleccionPrioridad);
-    cambiarUsuario(false)
-    cambiarSeleccion(false)
+    cambiarUsuario(false);
+    cambiarSeleccion(false);
   };
   const handleClickPrioridad = (e) => {
     cambiarCampos({

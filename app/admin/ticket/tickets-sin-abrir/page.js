@@ -7,24 +7,27 @@ export const metadata = {
 };
 
 export default async function TicketsSinAbrir() {
-  const dataSector = await fetch(`https://helpdeskunity.netlify.app/api/ticket/sectores`, {
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? "https://helpdeskunity.netlify.app/api/ticket"
+      : "http://127.0.0.1:3000/api/ticket";
+
+  const dataSector = await fetch(`${API_URL}/sectores`)
+    .then((respuesta) => respuesta.json())
+    .catch((error) => console.log(error));
+
+  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
     cache: "no-cache",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
-  const dataUsuario = await fetch(`https://helpdeskunity.netlify.app/api/ticket/usuarios`, {
-    cache: "no-cache",
-  })
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
+    
   return (
     <>
-      {dataSector && dataUsuario && (
-        <TicketSinAbrirPorSector
-          dataSector={dataSector}
-          dataUsuario={dataUsuario}
-        />
-      )}
+      <TicketSinAbrirPorSector
+        dataSector={dataSector}
+        dataUsuario={dataUsuario}
+      />
     </>
   );
 }

@@ -4,15 +4,20 @@ import { setDoc, doc } from "firebase/firestore";
 import { traerFechaHora } from "../funciones/traerFechaHora";
 
 export const crearTicket = async (campos) => {
-  const tickets = await fetch(`https://helpdeskunity.netlify.app/api/ticket`, {
-    cache: "no-store"
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? "https://helpdeskunity.netlify.app/api/ticket"
+      : "http://127.0.0.1:3000/api/ticket";
+
+  const tickets = await fetch(`${API_URL}`, {
+    cache: "no-store",
   })
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
   const idTicket = tickets.length + 1;
   const fechaHora = traerFechaHora();
- 
+
   const altaTicket = async () => {
     const docRef = doc(db, "tickets", `${idTicket.toString()}`);
     return await setDoc(docRef, {
@@ -23,7 +28,7 @@ export const crearTicket = async (campos) => {
       .then(() => {
         console.log(`Ticket ${idTicket.toString()} agregado`);
       })
-      .catch((error) => alert(error));
+      .catch((error) => console.log(error));
   };
   await crearMovimientoTicket({
     ...campos,

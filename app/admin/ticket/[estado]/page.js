@@ -19,13 +19,18 @@ export function generateMetadata({ params, searchParams }, parent) {
 }
 
 export default async function TicketsPorEstados({ params }) {
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? "https://helpdeskunity.netlify.app/api/ticket"
+      : "http://127.0.0.1:3000/api/ticket";
+
   const { estado } = params;
-  const data = await fetch(`https://helpdeskunity.netlify.app/api/ticket/${estado}`, {
+  const data = await fetch(`${API_URL}/${estado}`, {
     cache: "no-cache",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
-  const dataUsuario = await fetch(`https://helpdeskunity.netlify.app/api/ticket/usuarios`, {
+  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
     cache: "no-store",
   })
     .then((respuesta) => respuesta.json())

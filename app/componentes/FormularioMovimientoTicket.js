@@ -1,21 +1,28 @@
 "use client";
 
 import { BotonOpciones } from "./BotonOpciones";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SeleccionarEstado } from "./SeleccionarEstado";
 import { crearMovimientoTicket } from "../firebase/CrearMovimientoTicket";
+import { useMovimientoTicket } from "@/contexts/movimientosContext";
+import { actualizarTicket } from "@/firebase/ActualizarTicket";
 
 const FormularioMovimientoTicket = ({ ticket }) => {
+  const { campos, cambiarCampos } = useMovimientoTicket();
+
+  useEffect(() => {
+    if (ticket) {
+      cambiarCampos((prevData) => ({
+        ...prevData,
+        idTicket: ticket.idTicket,
+        idEstado: ticket.idEstado,
+        legajoEmisor: ticket.legajoAsignado,
+        descripcionMovimiento: "",
+      }));
+    }
+  }, [ticket, cambiarCampos]);
+
   const [desplegar, setDesplegar] = useState(false);
-  const [campos, cambiarCampos] = useState({
-    idTicket: ticket.idTicket,
-    idSector: ticket.idSector,
-    idEstado: ticket.idEstado,
-    prioridad: ticket.prioridad,
-    legajoEmisor: ticket.legajoAsignado,
-    legajoAsignado: null,
-    descripcionMovimiento: "",
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,15 +36,14 @@ const FormularioMovimientoTicket = ({ ticket }) => {
     if (campos) {
       try {
         await crearMovimientoTicket(campos);
-        cambiarCampos({
+        await actualizarTicket(campos);
+        cambiarCampos((prevData) => ({
+          ...prevData,
           idTicket: ticket.idTicket,
-          idSector: ticket.idSector,
           idEstado: ticket.idEstado,
-          prioridad: ticket.prioridad,
           legajoEmisor: ticket.legajoAsignado,
-          legajoAsignado: null,
           descripcionMovimiento: "",
-        });
+        }));
       } catch (error) {
         console.log(error);
       }
@@ -46,7 +52,7 @@ const FormularioMovimientoTicket = ({ ticket }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-[20%] w-[80%] flex items-center justify-center"
+      className="h-[240px%] w-[80%] flex items-center justify-center"
     >
       <div className="relative w-full h-full bg-white">
         <textarea
@@ -73,7 +79,6 @@ const FormularioMovimientoTicket = ({ ticket }) => {
               cambiarCampos={cambiarCampos}
             />
             <button
-              as={"button"}
               type="submit"
               className="px-4 py-1 rounded-md bg-blue-700 hover:bg-blue-600 text-white border border-blue-700 font-semibold hover:shadow-4xl transition"
             >

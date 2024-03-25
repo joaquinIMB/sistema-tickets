@@ -1,7 +1,9 @@
 import { sucursales } from "../data/sucursales";
 import { useDesplegable } from "../contexts/desplegableContext";
+import { usePathname } from "next/navigation";
 
 export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
+  const pathname = usePathname()
   const {
     seleccion,
     cambiarSeleccion,
@@ -20,7 +22,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
       <div className={`flex flex-col relative z-50`}>
         <div
           id="sectorUsuario"
-          className={`p-2 cursor-pointer border border-neutral-200 bg-white rounded-md ${
+          className={`p-2 cursor-pointer border ${pathname === "/auth/registrar-usuario" ? "border-black rounded-none" : "border-neutral-200"} bg-white rounded-md ${
             campos.idSector != "" ? "text-black" : "text-gray-400"
           }`}
           onClick={() => {
@@ -29,7 +31,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
             cambiarUsuario(false);
           }}
         >
-          {campos.idSector != "" ? campos.idSector : "Sector"}
+          {campos.idSector === "" ? "Sector" : campos.idSector}
         </div>
         {seleccion && (
           <div className="absolute overflow-x-hidden top-12 border border-neutral-200 rounded-md shadow-2xl left-0 max-h-72 backdrop-blur-sm bg-white w-full z-50">
@@ -40,7 +42,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
                     <div
                       key={sector.idSector}
                       data-valor={sector.nombreSector}
-                      className={`p-2 cursor-pointer hover:bg-[#ececec] w-[90%] mt-3 mb-0 mx-4 rounded-sm`}
+                      className={`p-2 cursor-pointer hover:bg-[#ececec] rounded-sm`}
                       onClick={handleClick}
                     >
                       {sector.nombreSector}
@@ -51,7 +53,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
               <div
                 key={sucursal.idSucursal}
                 data-valor={`Sucursal ${sucursal.idSucursal}`}
-                className={`p-2 cursor-pointer hover:bg-[#ececec] w-[90%] mt-3 mb-0 mx-4 rounded-sm`}
+                className={`p-2 cursor-pointer hover:bg-[#ececec] rounded-sm`}
                 onClick={handleClick}
               >
                 {`Sucursal ${sucursal.idSucursal}`}

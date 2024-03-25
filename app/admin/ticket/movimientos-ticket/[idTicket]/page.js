@@ -1,5 +1,6 @@
 import { AsideDetalles } from "@/componentes/AsideDetalles";
 import SeccionMovimientoTicket from "@/componentes/SeccionMovimientosTicket";
+import { MovimientoTicketProvider } from "@/contexts/movimientosContext";
 
 export function generateMetadata({ params, searchParams }, parent) {
   const { idTicket } = params;
@@ -12,48 +13,35 @@ export function generateMetadata({ params, searchParams }, parent) {
 
 export default async function MovimientosTicket({ params }) {
   const { idTicket } = params;
-  const ticket = await fetch(
-    `https://helpdeskunity.netlify.app/ticket/movimientos-ticket/${idTicket}`,
-    { cache: "no-cache", next:{tags:"numeroTicket" }}
-  )
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
 
-  const dataMovimientos = await fetch(
-    `https://helpdeskunity.netlify.app/ticket/movimientos-ticket/movimientos/${idTicket}`,
-    {
-      cache: "no-cache",next:{tags:"movimientos"}
-    }
-  )
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? "https://helpdeskunity.netlify.app/api/ticket"
+      : "http://127.0.0.1:3000/api/ticket";
 
-  const dataSector = await fetch(`https://helpdeskunity.netlify.app/ticket/sectores`, {
-    cache: "no-cache",
+  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
+    cache: "no-store",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
+  const dataSector = await fetch(`${API_URL}/sectores`)
+    .then((respuesta) => respuesta.json())
+    .catch((error) => console.log(error));
+
   return (
-    <>
-      {ticket &&
-        dataMovimientos && 
-        ticket.map((ticket) => (
-          <div
-            key={ticket.idTicket}
-            className="flex justify-between flex-row w-full relative"
-          >
-            <SeccionMovimientoTicket
-              ticket={ticket}
-              dataMovimientos={dataMovimientos}
-            />
-            <AsideDetalles
-              ticket={ticket}
-              dataMovimientos={dataMovimientos}
-              dataSector={dataSector}
-            />
-          </div>
-        ))}
-    </>
+    <MovimientoTicketProvider>
+      <div className="flex justify-between flex-row w-full relative overflow-hidden">
+        <SeccionMovimientoTicket
+          idTicket={idTicket}
+          dataUsuario={dataUsuario}
+        />
+        <AsideDetalles
+          idTicket={idTicket}
+          dataUsuario={dataUsuario}
+          dataSector={dataSector}
+        />
+      </div>
+    </MovimientoTicketProvider>
   );
 }

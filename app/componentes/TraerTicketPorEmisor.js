@@ -24,6 +24,7 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
       return setTicket(ticketsDeUsuario);
     }
   }, [dataUsuario, usuario.email, data]);
+
   return (
     <>
       <Suspense fallback={<Loader />}>

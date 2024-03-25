@@ -10,7 +10,7 @@ export const useTraerDataTicket = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    if (usuario) {
+    if (usuario.logged === true) {
       const referenciaTicket = collection(db, "tickets");
 
       const tickets = query(referenciaTicket);
@@ -18,9 +18,10 @@ export const useTraerDataTicket = () => {
       const ticketSnapshot = onSnapshot(tickets, (snapshot) => {
         setData(snapshot.docs.map((ticket) => ticket.data()));
       });
+
       return ticketSnapshot;
     }
-  }, [usuario]);
+  }, [usuario.logged]);
 
   return data;
 };

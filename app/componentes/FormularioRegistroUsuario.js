@@ -289,7 +289,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
         <div className="flex w-full justify-around p-6 py-4">
           <h2 className="font-semibold">¿Ya tenés una cuenta?</h2>
           <Link
-            href={"/admin/auth/iniciar-sesion"}
+            href={"/auth/iniciar-sesion"}
             className="text-blue-600 font-bold cursor-pointer"
           >
             Inicia sesión

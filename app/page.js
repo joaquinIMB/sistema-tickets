@@ -26,13 +26,13 @@ export default function Inicio() {
           <div className="flex items-center gap-6">
             <Link
               className="inline-flex h-8 items-center justify-center bg-blue-700 p-5 text-base font-medium shadow transition-colors border border-blue-600 hover:bg-blue-600 "
-              href="/admin/auth/iniciar-sesion"
+              href="/auth/iniciar-sesion"
             >
               Iniciar Sesion
             </Link>
             <Link
               className="inline-flex h-8 items-center justify-center hover:border-gray-700 hover:text-gray-700 border border-black text-black p-5 text-base font-medium shadow transition-color"
-              href="/admin/auth/registrar-usuario"
+              href="/auth/registrar-usuario"
             >
               Registrarse
             </Link>

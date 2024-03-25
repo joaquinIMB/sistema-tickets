@@ -7,18 +7,16 @@ export const metadata = {
 };
 
 export default async function MisTickets() {
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? "https://helpdeskunity.netlify.app/api/ticket"
+      : "http://127.0.0.1:3000/api/ticket";
 
-  const dataUsuario = await fetch(`https://helpdeskunity.netlify.app/api/ticket/usuarios`, {
+  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
     cache: "no-cache",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
-  return (
-    <>
-      {dataUsuario && (
-        <TraerTicketPorAsignado dataUsuario={dataUsuario} />
-      )}
-    </>
-  );
+  return <TraerTicketPorAsignado dataUsuario={dataUsuario} />;
 }

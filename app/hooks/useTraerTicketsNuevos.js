@@ -10,7 +10,7 @@ export const useTraerTicketsNuevos = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    if (usuario) {
+    if (usuario.logged === true) {
       const referenciaTicket = collection(db, "tickets");
 
       const tickets = query(referenciaTicket, where("idEstado", "==", "nuevo"));
@@ -20,7 +20,7 @@ export const useTraerTicketsNuevos = () => {
       });
       return ticketSnapshot;
     }
-  }, [usuario]);
+  }, [usuario.logged]);
 
   return data;
 };

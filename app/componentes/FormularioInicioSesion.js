@@ -5,8 +5,10 @@ import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const FormularioIniciarSesion = () => {
+  const router = useRouter()
   const [campos, establecerCampos] = useState({
     correo: "",
     contraseña: "",
@@ -50,6 +52,7 @@ const FormularioIniciarSesion = () => {
         correo: "",
         contraseña: "",
       });
+      router.replace("/admin/ticket/tickets-sin-abrir")
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
@@ -147,7 +150,7 @@ const FormularioIniciarSesion = () => {
         </div>
         <div className="flex w-full justify-around py-6">
           <h2 className="font-semibold">¿Todavía no te registraste?</h2>
-          <Link href={"/admin/auth/registrar-usuario"} className="text-blue-600 font-bold cursor-pointer">
+          <Link href={"/auth/registrar-usuario"} className="text-blue-600 font-bold cursor-pointer">
             Crea tu cuenta
           </Link >
         </div>

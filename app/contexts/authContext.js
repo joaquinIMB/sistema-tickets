@@ -38,10 +38,9 @@ function AuthProvider({ children }) {
     uid: null,
   });
   const [cargando, cambiarCargando] = useState(true);
-  const router = useRouter()
+  const router = useRouter();
   //Hook para realizar una comprobación una unica vez y asi saber si el usuario ingreso.
   useEffect(() => {
-    setTimeout(cambiarCargando(false), 1000);
     onAuthStateChanged(auth, (user) => {
       if (user) {
         cambiarUsuario({
@@ -56,6 +55,7 @@ function AuthProvider({ children }) {
           email: null,
           uid: null,
         });
+        router.replace("/")
         cambiarCargando(false);
       }
     });

@@ -2,12 +2,18 @@
 
 import Link from "next/link";
 import { useAuth } from "../contexts/authContext";
+import { useRouter } from "next/navigation";
 
 const BotonCerrarSesion = () => {
   const { cerrarSesion } = useAuth();
+  const router = useRouter();
+  const handleClick = async () => {
+    await cerrarSesion();
+    router.push("/");
+  };
   return (
     <Link
-      onClick={cerrarSesion}
+      onClick={handleClick}
       href={"/"}
       className={
         "inline-flex h-10 items-center rounded-md justify-center bg-red-600 p-4 text-base font-medium shadow transition-colors hover:bg-red-500 "
