@@ -7,3 +7,11 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body::-webkit-scrollbar-track{
+  border-radius: 99px;
+}
+
+body::-webkit-scrollbar-thumb{
+  border-radius: 99px;
+}

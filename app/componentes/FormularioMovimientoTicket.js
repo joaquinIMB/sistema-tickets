@@ -52,7 +52,7 @@ const FormularioMovimientoTicket = ({ ticket }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-[240px%] w-[80%] flex items-center justify-center"
+      className="h-[240px] w-[80%] flex items-center justify-center"
     >
       <div className="relative w-full h-full bg-white">
         <textarea
