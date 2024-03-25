@@ -10,7 +10,6 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { Loader } from "../componentes/Loader";
-import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
 
@@ -38,7 +37,6 @@ function AuthProvider({ children }) {
     uid: null,
   });
   const [cargando, cambiarCargando] = useState(true);
-  const router = useRouter();
   //Hook para realizar una comprobación una unica vez y asi saber si el usuario ingreso.
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -55,11 +53,10 @@ function AuthProvider({ children }) {
           email: null,
           uid: null,
         });
-        router.replace("/")
         cambiarCargando(false);
       }
     });
-  }, [router]);
+  }, []);
 
   return (
     <AuthContext.Provider

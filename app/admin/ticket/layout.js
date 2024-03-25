@@ -4,9 +4,18 @@ import { Header } from "../../componentes/Header";
 import Aside from "../../componentes/Aside";
 import { useAuth } from "@/contexts/authContext";
 import { AperturaTicketProvider } from "@/contexts/aperturaTicketContext";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({ children }) {
   const { usuario } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (usuario.logged === false) {
+      router.replace("/");
+    }
+  }, [router, usuario.logged]);
 
   return (
     usuario.logged === true && (
