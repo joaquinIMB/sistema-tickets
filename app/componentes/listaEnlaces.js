@@ -8,7 +8,7 @@ const listaSideBar = [
 
 const listaCategorias = [
   {
-    label: "Asignados a mi sector",
+    label: "Nuevos de mi sector",
     href: "/admin/ticket/tickets-sin-abrir",
   },
   {

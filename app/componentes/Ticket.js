@@ -11,7 +11,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
   const { setData, obtenerUsuario } = useAperturaTicket();
   const pathname = usePathname();
   const [popUp, setPopUp] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const colorActual = colorEstado.find(
     (color) => color.estado === ticket.idEstado
   );
@@ -31,20 +31,20 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       console.error("Error en handleClick:", error.message);
     }
   };
-  const handlePopUp = () =>{
-    if(pathname !=="/admin/ticket/tickets-creados" && ticket.idEstado === "nuevo"){
-      return setPopUp(true)
-    }else{
-      router.push(`movimientos-ticket/${ticket.idTicket}`)
+  const handlePopUp = () => {
+    if (
+      pathname !== "/admin/ticket/tickets-creados" &&
+      ticket.idEstado === "nuevo"
+    ) {
+      return setPopUp(true);
+    } else {
+      router.push(`movimientos-ticket/${ticket.idTicket}`);
     }
-  }
+  };
   return (
     <>
       {ticket && (
-        <div
-          onClick={handlePopUp}
-          className="w-full relative cursor-pointer"
-        >
+        <div onClick={handlePopUp} className="w-full relative cursor-pointer">
           <ul
             className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black ${styles.listaTicket}`}
           >

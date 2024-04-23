@@ -61,11 +61,11 @@ const FormularioMovimientoTicket = ({ ticket }) => {
           value={campos.descripcionMovimiento}
           onChange={handleChange}
           placeholder="Escriba un mensaje..."
-          className="w-full bg-white h-[70%] py-2 px-4 m-auto outline-none resize-none border rounded-md rounded-b-none border-opacity-5 "
+          className="w-full bg-white h-[80%] py-2 px-4 m-auto outline-none resize-none border rounded-md rounded-b-none border-opacity-5 "
         />
         <label
           htmlFor="mensajeMovimientoTicket"
-          className="absolute flex justify-between items-center rounded-b-md bg-neutral-800 bottom-0 right-0 p-2 w-[100%] min-h-11 h-[30%]"
+          className="absolute flex justify-between items-center rounded-b-md bg-neutral-800 bottom-0 right-0 p-2 w-[100%] min-h-11 h-[20%]"
         >
           <BotonOpciones />
           <div className="flex flex-row items-center gap-4">

@@ -1,16 +1,16 @@
 import Image from "next/image";
 import styles from "@/componentes/admin.module.css";
 
-export default function BotonMenu({ setDesplegar }) {
+export default function BotonMenu({ setDesplegar, desplegar }) {
   return (
-    <button>
+    <button className="m-auto outline-none">
       <Image
-        onClick={() => setDesplegar(false)}
-        className={`${styles.botonDesplegarSideBar}`}
+        onClick={() => setDesplegar(!desplegar)}
+        className={`${styles.botonDesplegarSideBar} m-auto`}
         src="/menu.png"
         alt="Logo de busqueda"
-        width={100}
-        height={100}
+        width={80}
+        height={80}
       />
     </button>
   );

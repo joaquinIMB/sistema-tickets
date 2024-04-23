@@ -1,9 +1,9 @@
 import { TicketSinAbrirPorSector } from "@/componentes/TicketSinAbrirPorSector";
 
 export const metadata = {
-  title: "Tickets asignados a mi sector - Helpdesk Unity - Sistema de tickets",
+  title: "Tickets nuevos de mi sector - Helpdesk Unity - Sistema de tickets",
   description:
-    "Página para abrir tickets, en sistema de tickets Helpdesk Unity",
+    "Tickets nuevos en sector asignado a usuario, en sistema de tickets Helpdesk Unity",
 };
 
 export default async function TicketsSinAbrir() {
