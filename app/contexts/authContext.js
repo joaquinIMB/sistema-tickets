@@ -20,15 +20,15 @@ const useAuth = () => {
 const iniciarSesion = async (campos) => {
   await signInWithEmailAndPassword(auth, campos.correo, campos.contraseña);
 };
-const registrarUsuario = async (campos) => {
-  await createUserWithEmailAndPassword(auth, campos.correo, campos.contraseña);
-};
+// const registrarUsuario = async (campos) => {
+//   await createUserWithEmailAndPassword(auth, campos.correo, campos.contraseña);
+// };
 const cerrarSesion = async () => {
   await signOut(auth);
 };
-const iniciarSesionGoogle = async () => {
-  await signInWithPopup(auth, providerGoogle);
-};
+// const iniciarSesionGoogle = async () => {
+//   await signInWithPopup(auth, providerGoogle);
+// };
 
 function AuthProvider({ children }) {
   const [usuario, cambiarUsuario] = useState({
@@ -63,9 +63,9 @@ function AuthProvider({ children }) {
       value={{
         usuario,
         iniciarSesion,
-        registrarUsuario,
+        // registrarUsuario,
         cerrarSesion,
-        iniciarSesionGoogle,
+        // iniciarSesionGoogle,
       }}
     >
       {cargando ? <Loader /> : children}

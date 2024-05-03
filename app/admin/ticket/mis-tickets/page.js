@@ -1,4 +1,6 @@
 import { TraerTicketPorAsignado } from "@/componentes/TraerTicketPorAsignado";
+import { Suspense } from "react";
+import { Loader } from "@/componentes/Loader";
 
 export const metadata = {
   title: "Mis tickets a resolver - Helpdesk Unity - Sistema de tickets",
@@ -18,5 +20,9 @@ export default async function MisTickets() {
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
-  return <TraerTicketPorAsignado dataUsuario={dataUsuario} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      <TraerTicketPorAsignado dataUsuario={dataUsuario} />
+    </Suspense>
+  );
 }

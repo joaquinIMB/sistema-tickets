@@ -17,7 +17,7 @@ export const SideBar = ({ desplegar, setDesplegar }) => {
               </li>
               <div className={`${styles.subMenuSideBar}`}>
                 <div>
-                  <li className="pt-[.34rem]">
+                  <li className="pt-[0.25rem]">
                     <Link
                       className={`overflow-hidden flex w-full flex-col items-center relative py-2 text-sm transition-all hover:text-gray-300  ${styles.enlaceActivo}`}
                       href={"/admin/ticket/tickets-sin-abrir"}

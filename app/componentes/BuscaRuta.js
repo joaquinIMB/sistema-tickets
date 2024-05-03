@@ -23,7 +23,7 @@ export const BuscaRuta = () => {
       establecerEnlace("Crear ticket");
     }
     if (pathname.slice(0, 32) === "/admin/ticket/movimientos-ticket") {
-      establecerEnlace("Movimiento de Ticket");
+      establecerEnlace("Movimientos");
     }
   }, [pathname]);
 

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Alerta from "./Alerta";
-import { useAuth } from "../contexts/authContext";
-import Image from "next/image";
-import Link from "next/link";
+import { useAuth } from "@/contexts/authContext";
+// import Image from "next/image";
+// import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const FormularioIniciarSesion = () => {
@@ -48,11 +48,8 @@ const FormularioIniciarSesion = () => {
     }
     try {
       await iniciarSesion(campos);
-      establecerCampos({
-        correo: "",
-        contraseña: "",
-      });
       router.replace("/admin/ticket/tickets-sin-abrir")
+      console.log(dataTable);
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
@@ -82,7 +79,7 @@ const FormularioIniciarSesion = () => {
 
   return (
     <>
-      <button
+      {/* <button
         onClick={iniciarSesionGoogle}
         className="flex items-center justify-start gap-4 w-full border border-black hover:bg-zinc-200 text-zinc-800 p-4 py-2 m-2 font-bold"
       >
@@ -96,7 +93,7 @@ const FormularioIniciarSesion = () => {
           />
         </span>
         Continuar con Google
-      </button>
+      </button> */}
       <h1 className="text-base font-bold w-full py-2">
         Inicia sesión en tu cuenta de Helpdesk Unity
       </h1>
@@ -148,12 +145,12 @@ const FormularioIniciarSesion = () => {
             Iniciar Sesión
           </button>
         </div>
-        <div className="flex w-full justify-around py-6">
+        {/* <div className="flex w-full justify-around py-6">
           <h2 className="font-semibold">¿Todavía no te registraste?</h2>
           <Link href={"/auth/registrar-usuario"} className="text-blue-600 font-bold cursor-pointer">
             Crea tu cuenta
           </Link >
-        </div>
+        </div> */}
       </form>
       <Alerta
         tipo={alerta.tipo}

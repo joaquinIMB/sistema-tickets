@@ -1,5 +1,5 @@
-import { sucursales } from "../data/sucursales";
-import { useDesplegable } from "../contexts/desplegableContext";
+import { sucursales } from "@/data/sucursales";
+import { useDesplegable } from "@/contexts/desplegableContext";
 import { usePathname } from "next/navigation";
 
 export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {

@@ -25,8 +25,10 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
     <>
       <section
         className={`${
-          !desplegar ? `w-[300px] ${styles.asideAdaptable}` : "w-0 left-[76px] absolute z-[99]"
-        } transition-all flex flex-col overflow-hidden`}
+          !desplegar
+            ? `${styles.asideAdaptable}`
+            : "w-0 left-[76px] absolute z-[99]"
+        } transition flex flex-col overflow-hidden`}
       >
         <main
           className={`${
@@ -35,9 +37,11 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
             styles.subNavAdaptable
           } border-black border-opacity-5 overflow-Y-auto`}
         >
-          <header className="flex flex-row justify-between py-4 px-6 items-center w-[300px]">
+          <header
+            className={`flex flex-row justify-between py-4 px-6 items-center ${styles.headerSubNavMobile}`}
+          >
             <h1 className="capitalize text-[28px] text-gray-800 font-semibold">{`${ruta}`}</h1>
-            <BotonCrearTicket />
+            {window.innerWidth > 764 && <BotonCrearTicket />}
           </header>
           <nav className={`${poppins.className} w-[300px]`}>
             <ul className={`py-2 px-6 flex flex-col text-zinc-900 gap-2 `}>
@@ -53,6 +57,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-0"
                     href={enlace.href}
+                    
                   >
                     {enlace.label}
                   </Link>
@@ -73,6 +78,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-0"
                     href={enlace.href}
+                    
                   >
                     {enlace.label}
                   </Link>
@@ -86,7 +92,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
             width={100}
             height={100}
             className="w-5 bottom-5 right-5 absolute cursor-pointer rotate-180 z-50"
-            onClick={() => setDesplegar(true)}
+            
           />
         </main>
       </section>

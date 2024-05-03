@@ -8,15 +8,15 @@ const listaSideBar = [
 
 const listaCategorias = [
   {
-    label: "Nuevos de mi sector",
+    label: "Nuevos",
     href: "/admin/ticket/tickets-sin-abrir",
   },
   {
-    label: "Mis tickets a resolver",
+    label: "Mis tickets",
     href: "/admin/ticket/mis-tickets",
   },
   {
-    label: "Emitidos por mí",
+    label: "Enviados",
     href: "/admin/ticket/tickets-creados",
   },
 ];

@@ -24,16 +24,17 @@
 .header {
   transition: all 0.3s ease;
   @media screen and (max-width: 1656px) {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding:1rem 1.5rem;
   }
 }
 .headerListaTicket {
   transition: all 0.3s ease;
   @media screen and (max-width: 1656px) {
     font-size: 16px;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding:0.85rem 1.5rem;
+  }
+  @media screen and (max-width: 764px) {
+    padding: 0.85rem 1rem;
   }
 }
 .listaTicket {
@@ -46,25 +47,37 @@
     padding: 0 1rem;
   }
 }
-.asideAdaptable {
+.asideAdaptable { 
+  width: 300px;
   @media screen and (max-width: 1350px) {
     position: absolute;
     left: 76px;
     z-index: 99;
     box-shadow: -2px 1px 135px #00000056;
   }
+  @media screen and (max-width: 764px) {
+    width: 260px !important;
+  }
 }
 
 .sideBarAdaptable {
   @media screen and (max-width: 1350px) {
     position: absolute;
-    z-index: 999;
+    z-index: 998;
     height: 100%;
   }
 }
 .subNavAdaptable {
   @media screen and (max-width: 1350px) {
     box-shadow: 3px 0 18px #00000030;
+  }
+  @media screen and (max-width: 764px) {
+    width: 260px !important;
+  }
+}
+.headerSubNavMobile{
+  @media screen and (max-width: 764px) {
+    width: 260px !important;
   }
 }
 
@@ -99,7 +112,7 @@
     width: 15% !important;
   }
   @media screen and (max-width: 764px) {
-    display: none;
+    width: 35% !important;
   }
 }
 .estado {
@@ -112,7 +125,7 @@
     width: 25%;
   }
   @media screen and (max-width: 764px) {
-    width: 35%;
+    display: none;
   }
 }
 .correo {
