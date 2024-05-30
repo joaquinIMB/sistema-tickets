@@ -1,6 +1,7 @@
-import { Loader } from "@/componentes/Loader";
+import { Loader } from "@/elementos/Loader";
 import { TraerTicketPorEstado } from "@/componentes/TraerTicketPorEstado";
-import { listaEstados } from "@/componentes/listaEnlaces";
+import { listaEstados } from "@/elementos/listaEnlaces";
+import { API_URL, apiUsuarios } from "@/routes/apiRoutes";
 import { Suspense } from "react";
 
 export function generateMetadata({ params, searchParams }, parent) {
@@ -19,18 +20,13 @@ export function generateMetadata({ params, searchParams }, parent) {
 }
 
 export default async function TicketsPorEstados({ params }) {
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? "https://helpdeskunity.netlify.app/api/ticket"
-      : "http://127.0.0.1:3000/api/ticket";
-
   const { estado } = params;
   const data = await fetch(`${API_URL}/${estado}`, {
     cache: "no-cache",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
-  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
+  const dataUsuario = await fetch(`${apiUsuarios()}`, {
     cache: "no-store",
   })
     .then((respuesta) => respuesta.json())

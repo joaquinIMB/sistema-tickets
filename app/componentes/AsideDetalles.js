@@ -4,6 +4,7 @@ import { DetalleResponsable } from "./DetalleResponsable";
 import { InformacionTicket } from "./InformacionTicket";
 import useTraerTicket from "@/hooks/useTraerTicket";
 import useTraerMovimientos from "@/hooks/useTraerMovimientos";
+import styles from "@/componentes/admin.module.css"
 
 export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
   const [ticket] = useTraerTicket(idTicket);
@@ -11,7 +12,7 @@ export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
   return (
     <>
       {ticket && (
-        <aside className="w-[20%] min-w-[300px] border-l border-opacity-5 relative flex flex-row gap-1 p-2 pb-3 overflow-auto flex-wrap justify-center h-[92vh]">
+        <aside className={`w-[20%] min-w-[300px] border-l border-opacity-5 relative flex flex-row gap-1 p-2 pb-3 overflow-auto flex-wrap justify-center h-[92vh] ${styles.asideDetalles}`}>
           <header className="border-y self-center border-opacity-5 w-full py-4 px-4 bg-white shadow-sm rounded-sm">
             <h2 className="text-center font-semibold text-lg">Detalles</h2>
           </header>

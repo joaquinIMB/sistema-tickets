@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const FormularioIniciarSesion = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [campos, establecerCampos] = useState({
     correo: "",
     contraseña: "",
@@ -48,11 +48,16 @@ const FormularioIniciarSesion = () => {
     }
     try {
       await iniciarSesion(campos);
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "aceptado",
+        mensaje: `¡Bienvenidx de vuelta!`,
+      });
+      router.replace("/admin/ticket/tickets-sin-abrir");
       establecerCampos({
         correo: "",
         contraseña: "",
       });
-      router.replace("/admin/ticket/tickets-sin-abrir")
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
@@ -81,10 +86,10 @@ const FormularioIniciarSesion = () => {
   };
 
   return (
-    <>
+    <div className="bg-white container p-4 pb-2 border border-black border-opacity-5">
       <button
         onClick={iniciarSesionGoogle}
-        className="flex items-center justify-start gap-4 w-full border border-black hover:bg-zinc-200 text-zinc-800 p-4 py-2 m-2 font-bold"
+        className="flex items-center justify-start gap-4 w-full border border-black hover:bg-zinc-200 text-zinc-800 p-4 py-2 my-2 font-bold"
       >
         <span>
           <Image
@@ -148,11 +153,14 @@ const FormularioIniciarSesion = () => {
             Iniciar Sesión
           </button>
         </div>
-        <div className="flex w-full justify-around py-6">
+        <div className="flex w-full justify-around py-6 pb-4">
           <h2 className="font-semibold">¿Todavía no te registraste?</h2>
-          <Link href={"/auth/registrar-usuario"} className="text-blue-600 font-bold cursor-pointer">
+          <Link
+            href={"/auth/registrar-usuario"}
+            className="text-blue-600 font-bold cursor-pointer"
+          >
             Crea tu cuenta
-          </Link >
+          </Link>
         </div>
       </form>
       <Alerta
@@ -161,7 +169,7 @@ const FormularioIniciarSesion = () => {
         estadoAlerta={estadoAlerta}
         cambiarEstadoAlerta={cambiarEstadoAlerta}
       />
-    </>
+    </div>
   );
 };
 

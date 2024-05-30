@@ -1,16 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "@/componentes/admin.module.css";
-import BotonMenu from "./BotonMenu";
+import BotonMenu from "@/elementos/BotonMenu";
 
 export const SideBar = ({ desplegar, setDesplegar }) => {
   return (
     <>
       <div
-        className={`flex justify-center overflow-hidden relative bg-neutral-950 w-[76px] h-full text-white `}
+        className={`flex justify-center overflow-hidden relative bg-neutral-950 w-[76px] max-md:w-[58px] h-full text-white `}
       >
         <div className="fixed top-0 w-[4.8rem]">
-          <nav className="flex flex-col justify-between h-full">
+          <nav className="flex flex-col justify-between h-screen">
             <ul className="flex flex-col">
               <li className="py-2 pt-4 px-3 m-auto">
                 <BotonMenu setDesplegar={setDesplegar} desplegar={desplegar} />

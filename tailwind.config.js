@@ -11,9 +11,12 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        '3xl': '0 5px 3px 0px #00000008',
-      }
-    }
+        "3xl": "0 5px 3px 0px #00000008",
+      },
+      transition: {
+        "3s": "all 0.3s ease",
+      },
+    },
   },
   plugins: [],
 };

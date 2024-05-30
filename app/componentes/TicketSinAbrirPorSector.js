@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { Loader } from "./Loader";
-import { HeaderListaTickets } from ".//HeaderListaTickets";
+import { Loader } from "@/elementos/Loader";
+import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { useAuth } from "../contexts/authContext";
 import { Ticket } from "./Ticket";
 import { useTraerTicketsNuevos } from "@/hooks/useTraerTicketsNuevos";

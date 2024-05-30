@@ -1,7 +1,8 @@
 import { AsideDetalles } from "@/componentes/AsideDetalles";
 import SeccionMovimientoTicket from "@/componentes/SeccionMovimientosTicket";
 import { MovimientoTicketProvider } from "@/contexts/movimientosContext";
-import styles from "@/componentes/admin.module.css"
+import styles from "@/componentes/admin.module.css";
+import { apiSectores, apiUsuarios } from "@/routes/apiRoutes";
 
 export function generateMetadata({ params, searchParams }, parent) {
   const { idTicket } = params;
@@ -15,18 +16,13 @@ export function generateMetadata({ params, searchParams }, parent) {
 export default async function MovimientosTicket({ params }) {
   const { idTicket } = params;
 
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? "https://helpdeskunity.netlify.app/api/ticket"
-      : "http://127.0.0.1:3000/api/ticket";
-
-  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
+  const dataUsuario = await fetch(`${apiUsuarios()}`, {
     cache: "no-store",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
-  const dataSector = await fetch(`${API_URL}/sectores`)
+  const dataSector = await fetch(`${apiSectores()}`)
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 

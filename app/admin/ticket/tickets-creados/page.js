@@ -1,5 +1,6 @@
-import { Loader } from "@/componentes/Loader";
+import { Loader } from "@/elementos/Loader";
 import { TraerTicketPorEmisor } from "@/componentes/TraerTicketPorEmisor";
+import { apiUsuarios } from "@/routes/apiRoutes";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -9,12 +10,7 @@ export const metadata = {
 };
 
 export default async function TicketsCreados() {
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? "https://helpdeskunity.netlify.app/api/ticket"
-      : "http://127.0.0.1:3000/api/ticket";
-
-  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
+  const dataUsuario = await fetch(`${apiUsuarios()}`, {
     cache: "no-cache",
   })
     .then((respuesta) => respuesta.json())

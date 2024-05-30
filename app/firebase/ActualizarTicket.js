@@ -10,9 +10,5 @@ export const actualizarTicket = async (campos) => {
     legajoAsignado: campos.legajoAsignado,
     nombreUsuarioAsignado: campos.nombreUsuarioAsignado,
     prioridad: campos.prioridad,
-  })
-    .then(() => {
-      console.log(`Ticket ${idTicket.toString()} actualizado`);
-    })
-    .catch((error) => console.log(error));
+  }).catch((error) => console.log(error));
 };

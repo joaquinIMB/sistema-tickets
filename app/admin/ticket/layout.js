@@ -1,7 +1,7 @@
 "use client";
 
-import { Header } from "../../componentes/Header";
-import Aside from "../../componentes/Aside";
+import { Header } from "@/elementos/Header";
+import Aside from "@/elementos/Aside";
 import { useAuth } from "@/contexts/authContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";

@@ -7,130 +7,7 @@
   height: 100%;
   top: 0;
   z-index: 3;
-  animation: entrada 0.3s ease forwards;
-}
-
-@keyframes entrada {
-  from {
-    left: -200px;
-  }
-  to {
-    left: 0;
-  }
-}
-
-/* Diseño Adaptable */
-
-.header {
-  transition: all 0.3s ease;
-  @media screen and (max-width: 1656px) {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-.headerListaTicket {
-  transition: all 0.3s ease;
-  @media screen and (max-width: 1656px) {
-    font-size: 16px;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-.listaTicket {
-  transition: all 0.3s ease;
-  @media screen and (max-width: 1656px) {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  @media screen and (max-width: 764px) {
-    padding: 0 1rem;
-  }
-}
-.asideAdaptable {
-  @media screen and (max-width: 1350px) {
-    position: absolute;
-    left: 76px;
-    z-index: 99;
-    box-shadow: -2px 1px 135px #00000056;
-  }
-}
-
-.sideBarAdaptable {
-  @media screen and (max-width: 1350px) {
-    position: absolute;
-    z-index: 999;
-    height: 100%;
-  }
-}
-.subNavAdaptable {
-  @media screen and (max-width: 1350px) {
-    box-shadow: 3px 0 18px #00000030;
-  }
-}
-
-.subMenuSideBar{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 92vh;
-}
-
-.botonDesplegarSideBar {
-  width: 36px;
-}
-.contraerSideBar {
-  @media screen and (max-width: 1175px) {
-    width: 0;
-  }
-}
-.usuario {
-  @media screen and (max-width: 930px) {
-    width: 35%;
-  }
-}
-.motivo {
-  padding: 0 1rem;
-  @media screen and (max-width: 1012px) {
-    display: none;
-  }
-}
-.prioridad {
-  @media screen and (max-width: 930px) {
-    width: 15% !important;
-  }
-  @media screen and (max-width: 764px) {
-    display: none;
-  }
-}
-.estado {
-  @media screen and (max-width: 1012px) {
-    width: 25% !important;
-  }
-}
-.fecha {
-  @media screen and (max-width: 1012px) {
-    width: 25%;
-  }
-  @media screen and (max-width: 764px) {
-    width: 35%;
-  }
-}
-.correo {
-  @media screen and (max-width: 680px) {
-    display: none;
-  }
-}
-.subNavDespliege {
-  width: 0;
-  animation: abrir 0.4s ease;
-}
-@keyframes abrir {
-  from {
-    width: 0;
-  }
-  to {
-    width: 300px;
-  }
+  animation: entrada .3s ease forwards;
 }
 
 .contenedorMovTickets {
@@ -165,6 +42,104 @@
   justify-content: center;
   max-height: 600px;
 }
+
+.subMenuSideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 92vh;
+}
+
+/* Diseño Adaptable */
+@media screen and (max-width: 1656px) {
+  .header {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  .headerListaTicket {
+    font-size: 16px;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  .listaTicket {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+@media screen and (max-width: 1350px) {
+  .asideAdaptable {
+    position: absolute;
+    left: 76px;
+    z-index: 99;
+    box-shadow: -2px 1px 40px #00000050;
+  }
+  .sideBarAdaptable {
+    position: absolute;
+    z-index: 999;
+    height: 100%;
+  }
+  .subNavAdaptable {
+    box-shadow: 3px 0 18px #00000030;
+  }
+}
+
+@media screen and (max-width: 764px) {
+  .listaTicket {
+    padding: 0 1rem;
+  }
+  .prioridad {
+    display: none;
+  }
+  .asideAdaptable{
+    left:58px !important;
+  }
+  .usuario{
+    width: 60% !important;
+  }
+  .estado{
+    width: 40% !important;
+  }
+}
+
+@media screen and (max-width: 930px) {
+  .prioridad {
+    width: 15% !important;
+  }
+  .usuario {
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 1012px) {
+  .motivo {
+    display: none;
+  }
+  .estado {
+    width: 25% !important;
+  }
+  .fecha {
+    width: 25% !important;
+  }
+  .asideDetalles{
+    display: none !important;
+  }
+  .contenedorSeccionMovimientos{
+    width: 100% !important;
+  }
+}
+
+.contraerSideBar {
+  @media screen and (max-width: 1175px) {
+    width: 0;
+  }
+}
+
+.correo {
+  @media screen and (max-width: 680px) {
+    display: none;
+  }
+}
+
 @media screen and (max-height: 800px) {
   .seccionMovimientos {
     max-height: 400px;
@@ -176,7 +151,16 @@
   .contenedorMovTickets {
     height: 88vh;
   }
-  .subMenuSideBar{
+  .subMenuSideBar {
     padding-bottom: 1.7rem;
+  }
+}
+
+@keyframes entrada {
+  from {
+    left: -200px;
+  }
+  to {
+    left: 0;
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { colorEstado } from "./colores";
+import { colorEstado } from "@/elementos/colores";
 import styles from "@/componentes/admin.module.css";
 import { useAperturaTicket } from "../contexts/aperturaTicketContext";
 import { usePathname } from "next/navigation";
@@ -46,7 +46,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       {ticket && (
         <div onClick={handlePopUp} className="w-full relative cursor-pointer">
           <ul
-            className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black ${styles.listaTicket}`}
+            className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black transition-[3s] ${styles.listaTicket}`}
           >
             <li className={`w-[25%] ${styles.usuario}`}>
               <h1 className="font-semibold text-lg"> {ticket.nombreEmisor}</h1>
@@ -55,7 +55,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
               </span>
             </li>
             <li
-              className={`w-[35%] text-center font-semibold overflow-hidden ${styles.motivo}`}
+              className={`w-[35%] text-center font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}
             >
               {ticket.tituloTicket}
             </li>
@@ -75,7 +75,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
               </span>
             </li>
             <li
-              className={`w-[18%] text-end font-semibold text-gray-600 ${styles.fecha}`}
+              className={`w-[18%] text-end font-semibold text-gray-600 max-md:hidden ${styles.fecha}`}
             >
               {ticket.fechaHoraRegistro}
             </li>

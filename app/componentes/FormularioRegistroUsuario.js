@@ -90,6 +90,10 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
     try {
       await registrarUsuario(campos);
       await crearUsuario(campos);
+      cambiarAlerta({
+        tipo: "aceptado",
+        mensaje: `¡Se registró correctamente!`,
+      });
       cambiarCampos({
         idUsuario: "",
         idSector: "",
@@ -139,19 +143,19 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
   };
 
   return (
-    <>
-      <h1 className="text-base font-bold mb- w-full px-4">
+    <div className="bg-white container p-4 py-2 border border-black border-opacity-5">
+      <h1 className="text-base font-bold mb- w-full px-4 pt-4">
         Registrate para comenzar.
       </h1>
       <form
-        className="max-w-md mx-auto pt-0 p-4 bg-white "
+        className="max-w-md mx-auto py-0 p-4 bg-white "
         onSubmit={handleSubmit}
       >
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label
               htmlFor="nombre"
-              className="block text-base font-medium text-gray-700 py-4 pb-2"
+              className="block text-base font-medium text-gray-700 py-3 pb-2"
             >
               Nombre
             </label>
@@ -167,7 +171,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           <div>
             <label
               htmlFor="apellido"
-              className="block text-base font-medium text-gray-700 py-4 pb-2"
+              className="block text-base font-medium text-gray-700 py-3 pb-2"
             >
               Apellido
             </label>
@@ -182,7 +186,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           </div>
         </div>
         <div>
-          <span className="block text-base font-medium text-gray-700 py-4 pb-2">
+          <span className="block text-base font-medium text-gray-700 py-3 pb-2">
             Sector
           </span>
           <SeleccionarSector
@@ -195,7 +199,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           <div>
             <label
               htmlFor="legajo"
-              className="block text-base font-medium text-gray-700 py-4 pb-2"
+              className="block text-base font-medium text-gray-700 py-3 pb-2"
             >
               Legajo
             </label>
@@ -211,7 +215,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           <div>
             <label
               htmlFor="contacto"
-              className="block text-base font-medium text-gray-700 py-4 pb-2"
+              className="block text-base font-medium text-gray-700 py-3 pb-2"
             >
               Contacto
             </label>
@@ -229,7 +233,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
         <div>
           <label
             htmlFor="correo"
-            className="block text-base font-medium text-gray-700 py-4 pb-2"
+            className="block text-base font-medium text-gray-700 py-3 pb-2"
           >
             Email
           </label>
@@ -247,7 +251,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           <div>
             <label
               htmlFor="contraseña"
-              className="block text-base font-medium text-gray-700 py-4 pb-2"
+              className="block text-base font-medium text-gray-700 py-3 pb-2"
             >
               Contraseña
             </label>
@@ -263,7 +267,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           <div>
             <label
               htmlFor="confirmarContraseña"
-              className="block text-base font-medium text-gray-700 py-4 pb-2"
+              className="block text-base font-medium text-gray-700 py-3 pb-2"
             >
               Confirmar Contraseña
             </label>
@@ -286,7 +290,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
             Registrarse
           </button>
         </div>
-        <div className="flex w-full justify-around p-6 py-4">
+        <div className="flex w-full justify-around p-6 py-3">
           <h2 className="font-semibold">¿Ya tenés una cuenta?</h2>
           <Link
             href={"/auth/iniciar-sesion"}
@@ -302,7 +306,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
         estadoAlerta={estadoAlerta}
         cambiarEstadoAlerta={cambiarEstadoAlerta}
       />
-    </>
+    </div>
   );
 };
 

@@ -11,11 +11,13 @@ export const SeleccionarUsuarioReceptor = ({
     cambiarSeleccion,
     cambiarSeleccionPrioridad,
   } = useDesplegable();
+
   const handleClick = () => {
     cambiarUsuario(!seleccionUsuario);
     cambiarSeleccion(false);
     cambiarSeleccionPrioridad(false);
   };
+
   const handleClickUsuarioReceptor = (e) => {
     cambiarCampos({
       ...campos,

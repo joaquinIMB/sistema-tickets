@@ -1,8 +1,8 @@
 "use client";
 
-import { listaCategorias, listaEstados } from "./listaEnlaces";
+import { listaCategorias, listaEstados } from "@/elementos/listaEnlaces";
 import Link from "next/link";
-import { poppins } from "./fuentes";
+import { poppins } from "@/elementos/fuentes";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import BotonCrearTicket from "./BotonCrearTicket";
@@ -12,6 +12,7 @@ import styles from "@/componentes/admin.module.css";
 export const SubNav = ({ desplegar, setDesplegar }) => {
   const pathname = usePathname();
   const [ruta, cambiarRuta] = useState();
+
   useEffect(() => {
     const path = pathname.slice(0, 6);
     if (path === "/admin") {
@@ -25,13 +26,15 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
     <>
       <section
         className={`${
-          !desplegar ? `w-[300px] ${styles.asideAdaptable}` : "w-0 left-[76px] absolute z-[99]"
+          !desplegar
+            ? `w-[300px] ${styles.asideAdaptable}`
+            : "w-0 left-[76px] absolute z-[99] max-md:left-[58px]"
         } transition-all flex flex-col overflow-hidden`}
       >
         <main
           className={`${
             !desplegar ? "overflow-hidden" : "overflow-visible"
-          } left-[76px] h-screen bg-gradient-to-r w-[inherit] from-[#f1f1f1] to-[#f0f0f0] border-r ${
+          } left-[76px] h-screen bg-gradient-to-r w-[inherit] from-[#f7f7f7] to-[#ffffff] border-r ${
             styles.subNavAdaptable
           } border-black border-opacity-5 overflow-Y-auto`}
         >
@@ -53,6 +56,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-0"
                     href={enlace.href}
+                    onClick={() => setDesplegar(true)}
                   >
                     {enlace.label}
                   </Link>
@@ -73,6 +77,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-0"
                     href={enlace.href}
+                    onClick={() => setDesplegar(true)}
                   >
                     {enlace.label}
                   </Link>

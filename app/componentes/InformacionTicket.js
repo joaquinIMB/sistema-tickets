@@ -68,7 +68,7 @@ export const InformacionTicket = ({ ticket, dataMovimientos }) => {
           )}
           <span
             onClick={handleResetPrioridad}
-            className={`font-semibold absolute bottom-4 right-0 ${
+            className={`font-semibold absolute top-0 right-0 ${
               prioridad ? "text-red-600" : "text-blue-600"
             }  cursor-pointer`}
           >

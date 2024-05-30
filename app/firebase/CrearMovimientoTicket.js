@@ -1,17 +1,13 @@
 import { db } from "./FirebaseConfig";
 import { updateDoc, doc, setDoc } from "firebase/firestore";
 import { traerFechaHora } from "../funciones/traerFechaHora";
+import { API_URL } from "@/routes/apiRoutes";
 
 export const crearMovimientoTicket = async (campos) => {
   const fechaHora = traerFechaHora();
 
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? "https://helpdeskunity.netlify.app/api/ticket"
-      : "http://127.0.0.1:3000/api/ticket";
-
   const movTickets = await fetch(`${API_URL}/movimientos/${campos.idTicket}`, {
-    cache: "no-cache",
+    cache: "no-store",
   })
     .then((res) => res.json())
     .catch((error) => console.log(error));

@@ -13,6 +13,7 @@ const Alerta = ({ mensaje, tipo, estadoAlerta, cambiarEstadoAlerta }) => {
     }
     return () => clearTimeout(tiempo);
   }, [estadoAlerta, cambiarEstadoAlerta]);
+
   return (
     <>
       {/* EstadoAlerta es true mostramos el componente si es falso no */}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { listaEnlaces } from "./listaEnlaces";
+import { listaEnlaces } from "@/elementos/listaEnlaces";
 import { useState } from "react";
 import styles from "@/components/enlaceActivo.module.css";
 import TiposDeTickets from "./TiposDeTickets";

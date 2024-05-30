@@ -9,11 +9,6 @@ export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
   const [agente, cambiarAgente] = useState(false);
   const [sector, cambiarSector] = useState(false);
   const { campos, cambiarCampos } = useMovimientoTicket();
-  // const [campos, cambiarCampos] = useState({
-  //   idSector: ticket.idSector,
-  //   legajoAsignado: ticket.legajoAsignado,
-  //   nombreUsuarioAsignado: ticket.nombreUsuarioAsignado,
-  // });
 
   const usuarioAsignado = dataUsuario.find(
     (usuario) => usuario.idUsuario === campos.legajoAsignado
@@ -29,6 +24,7 @@ export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
           usuarioAsignado.nombreUsuario + " " + usuarioAsignado.apellidoUsuario,
       }));
     } else if (sector) {
+      console.log('aca')
       cambiarCampos((prevcampos) => ({
         ...prevcampos,
         nombreUsuarioAsignado: "Todos",
@@ -97,7 +93,7 @@ export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
         {sector &&
           campos.idSector != ticket.idSector &&
           campos.legajoAsignado === ticket.legajoAsignado && (
-            <button className="text-blue-600 pt-1 font-semibold ">
+            <button className="bg-blue-600 text-white py-1 font-semibold ">
               Guardar cambios
             </button>
           )}

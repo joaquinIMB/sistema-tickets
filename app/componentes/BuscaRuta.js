@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { listaCategorias, listaEstados, listaSideBar } from "./listaEnlaces";
+import { listaCategorias, listaEstados, listaSideBar } from "@/elementos/listaEnlaces";
 import { useEffect, useState } from "react";
 
 export const BuscaRuta = () => {

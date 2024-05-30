@@ -9,7 +9,8 @@ import {
   signOut,
   signInWithPopup,
 } from "firebase/auth";
-import { Loader } from "../componentes/Loader";
+import { Loader } from "@/elementos/Loader";
+import { usePathname } from "next/navigation";
 
 const AuthContext = createContext();
 
@@ -37,6 +38,7 @@ function AuthProvider({ children }) {
     uid: null,
   });
   const [cargando, cambiarCargando] = useState(true);
+  const pathname = usePathname()
   //Hook para realizar una comprobación una unica vez y asi saber si el usuario ingreso.
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -68,7 +70,7 @@ function AuthProvider({ children }) {
         iniciarSesionGoogle,
       }}
     >
-      {cargando ? <Loader /> : children}
+      {cargando && pathname != "/" ? <Loader /> : children}
     </AuthContext.Provider>
   );
 }

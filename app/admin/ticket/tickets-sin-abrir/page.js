@@ -1,4 +1,5 @@
 import { TicketSinAbrirPorSector } from "@/componentes/TicketSinAbrirPorSector";
+import { apiSectores, apiUsuarios } from "@/routes/apiRoutes";
 
 export const metadata = {
   title: "Tickets nuevos de mi sector - Helpdesk Unity - Sistema de tickets",
@@ -7,21 +8,16 @@ export const metadata = {
 };
 
 export default async function TicketsSinAbrir() {
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? "https://helpdeskunity.netlify.app/api/ticket"
-      : "http://127.0.0.1:3000/api/ticket";
-
-  const dataSector = await fetch(`${API_URL}/sectores`)
+  const dataSector = await fetch(`${apiSectores()}`)
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
-  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
+  const dataUsuario = await fetch(`${apiUsuarios()}`, {
     cache: "no-cache",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
-    
+
   return (
     <>
       <TicketSinAbrirPorSector

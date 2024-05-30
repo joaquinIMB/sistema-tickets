@@ -3,13 +3,14 @@ import { useDesplegable } from "../contexts/desplegableContext";
 import { usePathname } from "next/navigation";
 
 export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const {
     seleccion,
     cambiarSeleccion,
     cambiarSeleccionPrioridad,
     cambiarUsuario,
   } = useDesplegable();
+
   const handleClick = (e) => {
     cambiarCampos({
       ...campos,
@@ -17,12 +18,17 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
     });
     cambiarSeleccion(false);
   };
+
   return (
     <>
       <div className={`flex flex-col relative z-50`}>
         <div
           id="sectorUsuario"
-          className={`p-2 cursor-pointer border ${pathname === "/auth/registrar-usuario" ? "border-black rounded-none" : "border-neutral-200"} bg-white rounded-md ${
+          className={`p-2 cursor-pointer border ${
+            pathname === "/auth/registrar-usuario"
+              ? "border-black rounded-none"
+              : "border-neutral-200"
+          } bg-white rounded-md ${
             campos.idSector != "" ? "text-black" : "text-gray-400"
           }`}
           onClick={() => {
