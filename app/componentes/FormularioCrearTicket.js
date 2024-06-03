@@ -1,17 +1,26 @@
 "use client";
 
+import { useAuth } from "../contexts/authContext";
 import { useEffect, useState } from "react";
 import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
-import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
-import Alerta from "./Alerta";
-import { useAuth } from "../contexts/authContext";
 import { SeleccionarSector } from "./SeleccionarSector";
-import { crearTicket } from "../firebase/CrearTicket";
+import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
+import { Loader } from "@/elementos/Loader";
+import {
+  useCreateMovimientoTicketMutation,
+  useGetTicketsQuery,
+} from "@/services/apiTicket";
+import { useCreateTicketMutation } from "@/services/apiTicket";
+import { traerFechaHora } from "@/funciones/traerFechaHora";
+import Alerta from "./Alerta";
 
 const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   const { usuario } = useAuth();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
+  const { data, error, isLoading, refetch } = useGetTicketsQuery();
+  const [crearTicket] = useCreateTicketMutation();
+  const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
 
   const usuarioEmisor = dataUsuario.find(
     (user) => user.correo === usuario.email && user
@@ -79,12 +88,30 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const fechaHora = traerFechaHora();
     cambiarEstadoAlerta(false);
     if (validarCampos()) {
       return;
     } else {
       try {
-        await crearTicket(campos);
+        await refetch();
+        const idTicket = data.length + 1;
+        await crearTicket({
+          ...campos,
+          idTicket: idTicket,
+          fechaHoraRegistro: fechaHora,
+        });
+        await crearMovimientoTicket({
+          idMovimientoTicket: 1,
+          idTicket: idTicket,
+          idSector: campos.idSector,
+          idEstado: campos.idEstado,
+          prioridad: campos.prioridad,
+          legajoEmisor: campos.legajoEmisor,
+          legajoAsignado: campos.legajoAsignado,
+          fechaHoraRegistro: fechaHora,
+          descripcionMovimiento: `Creación de ticket ${idTicket}`,
+        });
         cambiarEstadoAlerta(true);
         cambiarAlerta({
           tipo: "aceptado",
@@ -103,6 +130,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
           legajoEmisor: usuarioEmisor.idUsuario,
           correoUsuarioEmisor: usuarioEmisor.correo,
         });
+        console.log(data);
       } catch (error) {
         console.log(error);
         cambiarEstadoAlerta(true);
@@ -113,6 +141,8 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
       }
     }
   };
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
       <form className="w-[60%] p-3 py-0 px-8 mt-6" onSubmit={handleSubmit}>

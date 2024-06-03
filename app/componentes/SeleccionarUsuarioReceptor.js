@@ -58,19 +58,17 @@ export const SeleccionarUsuarioReceptor = ({
             </div>
             {dataUsuario &&
               dataUsuario.map((usuario) => (
-                <>
-                  <div
-                    key={usuario.idUsuario}
-                    id="menuLegajoEmisor"
-                    data-valor={usuario.idUsuario}
-                    className={`p-2 bg-white flex flex-row justify-start hover:bg-gray-100 w-full shadow-xl`}
-                    onClick={handleClickUsuarioReceptor}
-                  >
-                    <p className="px-2 pointer-events-none">
-                      {usuario.nombreUsuario + " " + usuario.apellidoUsuario}
-                    </p>
-                  </div>
-                </>
+                <div
+                  key={usuario.idUsuario}
+                  id="menuLegajoEmisor"
+                  data-valor={usuario.idUsuario}
+                  className={`p-2 bg-white flex flex-row justify-start hover:bg-gray-100 w-full shadow-xl`}
+                  onClick={handleClickUsuarioReceptor}
+                >
+                  <p className="px-2 pointer-events-none">
+                    {usuario.nombreUsuario + " " + usuario.apellidoUsuario}
+                  </p>
+                </div>
               ))}
           </div>
         )}

@@ -2,17 +2,25 @@
 
 import { DetalleResponsable } from "./DetalleResponsable";
 import { InformacionTicket } from "./InformacionTicket";
-import useTraerTicket from "@/hooks/useTraerTicket";
+// import useTraerTicket from "@/hooks/useTraerTicket";
+import { useGetTicketIdQuery } from "@/services/apiTicket";
 import useTraerMovimientos from "@/hooks/useTraerMovimientos";
-import styles from "@/componentes/admin.module.css"
+import styles from "@/componentes/admin.module.css";
+import { Loader } from "@/elementos/Loader";
 
 export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
-  const [ticket] = useTraerTicket(idTicket);
+  // const [ticket] = useTraerTicket(idTicket);
+  const { data, error, isLoading } = useGetTicketIdQuery();
+  const ticket = data;
   const dataMovimientos = useTraerMovimientos(idTicket);
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
       {ticket && (
-        <aside className={`w-[20%] min-w-[300px] border-l border-opacity-5 relative flex flex-row gap-1 p-2 pb-3 overflow-auto flex-wrap justify-center h-[92vh] ${styles.asideDetalles}`}>
+        <aside
+          className={`w-[20%] min-w-[300px] border-l border-opacity-5 relative flex flex-row gap-1 p-2 pb-3 overflow-auto flex-wrap justify-center h-[92vh] ${styles.asideDetalles}`}
+        >
           <header className="border-y self-center border-opacity-5 w-full py-4 px-4 bg-white shadow-sm rounded-sm">
             <h2 className="text-center font-semibold text-lg">Detalles</h2>
           </header>

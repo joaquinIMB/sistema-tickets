@@ -1,13 +1,12 @@
 "use client";
 
 import { useContext, useState, useEffect, createContext } from "react";
-import { auth, providerGoogle } from "../firebase/FirebaseConfig";
+import { auth } from "../firebase/FirebaseConfig";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  signInWithPopup,
 } from "firebase/auth";
 import { Loader } from "@/elementos/Loader";
 import { usePathname } from "next/navigation";
@@ -26,9 +25,6 @@ const registrarUsuario = async (campos) => {
 };
 const cerrarSesion = async () => {
   await signOut(auth);
-};
-const iniciarSesionGoogle = async () => {
-  await signInWithPopup(auth, providerGoogle);
 };
 
 function AuthProvider({ children }) {
@@ -67,7 +63,6 @@ function AuthProvider({ children }) {
         iniciarSesion,
         registrarUsuario,
         cerrarSesion,
-        iniciarSesionGoogle,
       }}
     >
       {cargando && pathname != "/" ? <Loader /> : children}

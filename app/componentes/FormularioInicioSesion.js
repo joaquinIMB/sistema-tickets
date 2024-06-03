@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +14,7 @@ const FormularioIniciarSesion = () => {
   });
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
-  const { iniciarSesion, iniciarSesionGoogle } = useAuth();
+  const { iniciarSesion } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,23 +85,8 @@ const FormularioIniciarSesion = () => {
   };
 
   return (
-    <div className="bg-white container p-4 pb-2 border border-black border-opacity-5">
-      <button
-        onClick={iniciarSesionGoogle}
-        className="flex items-center justify-start gap-4 w-full border border-black hover:bg-zinc-200 text-zinc-800 p-4 py-2 my-2 font-bold"
-      >
-        <span>
-          <Image
-            src={"/buscarConGoogle.png"}
-            alt="Logo de Google, continuar iniciar sesión con Google"
-            className="w-8"
-            width={100}
-            height={100}
-          />
-        </span>
-        Continuar con Google
-      </button>
-      <h1 className="text-base font-bold w-full py-2">
+    <div className="container p-4 pb-2 pt-0">
+      <h1 className="text-base font-bold w-full pt-4 pb-2 text-gray-600">
         Inicia sesión en tu cuenta de Helpdesk Unity
       </h1>
       <form

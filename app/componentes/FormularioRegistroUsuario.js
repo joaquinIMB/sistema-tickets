@@ -143,8 +143,8 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
   };
 
   return (
-    <div className="bg-white container p-4 py-2 border border-black border-opacity-5">
-      <h1 className="text-base font-bold mb- w-full px-4 pt-4">
+    <div className="container p-4 pb-2 pt-0">
+      <h1 className="text-base font-bold mb- w-full px-4 pt-4 pb-2 text-gray-600">
         Registrate para comenzar.
       </h1>
       <form

@@ -1,7 +1,6 @@
 import { db } from "./FirebaseConfig";
 import { updateDoc, doc, setDoc } from "firebase/firestore";
 import { traerFechaHora } from "../funciones/traerFechaHora";
-import { API_URL } from "@/routes/apiRoutes";
 
 export const crearMovimientoTicket = async (campos) => {
   const fechaHora = traerFechaHora();
@@ -25,7 +24,7 @@ export const crearMovimientoTicket = async (campos) => {
       legajoEmisor: campos.legajoEmisor,
       legajoAsignado: campos.legajoAsignado,
       fechaHoraRegistro: fechaHora,
-      descripcionMovimiento: campos.descripcionMovimiento || "",
+      descripcionMovimiento: campos.descripcionMovimiento,
     });
     console.log(`Movimiento de ticket ${idMovTicket.toString()} agregado`);
   } catch (error) {
@@ -34,7 +33,7 @@ export const crearMovimientoTicket = async (campos) => {
 };
 
 export const actualizarAperturaTicket = async (campos) => {
-  if (campos || campos.idTicket) {
+  if (campos) {
     const ticketRef = doc(db, "tickets", `${campos.idTicket}`);
     try {
       await updateDoc(ticketRef, {

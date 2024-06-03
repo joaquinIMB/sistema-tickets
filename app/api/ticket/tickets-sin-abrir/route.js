@@ -1,14 +1,13 @@
-import { getConnection } from "@/sql/sqlConfig";
+import { getConnection } from "@/database/sqlConfig";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const pool = await getConnection();
-
   try {
+    const pool = await getConnection();
     const result = await pool.request().query("SELECT * FROM ST_tickets where idEstado = 'nuevo'")
-
-    return NextResponse.json(result);
-  } catch (err) {
-    console.error("Error al obtener datos.", err);
+    return NextResponse.json(result.recordset);
+  } catch (error) {
+    console.error("Error al obtener datos.", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

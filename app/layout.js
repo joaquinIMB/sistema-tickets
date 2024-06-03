@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="w-full">
-        <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

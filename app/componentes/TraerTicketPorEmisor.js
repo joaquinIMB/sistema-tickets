@@ -18,7 +18,7 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
     );
     setUsuarioActual(usuarioActual);
     if (usuarioActual && data) {
-      const ticketsDeUsuario = data.map(
+      const ticketsDeUsuario = data.filter(
         (ticket) => ticket.legajoEmisor === usuarioActual.idUsuario && ticket
       );
       return setTicket(ticketsDeUsuario);

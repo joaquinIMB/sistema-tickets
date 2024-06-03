@@ -1,17 +1,19 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "@/elementos/Loader";
 import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { useAuth } from "../contexts/authContext";
 import { Ticket } from "./Ticket";
-import { useTraerTicketsNuevos } from "@/hooks/useTraerTicketsNuevos";
+import { useGetNewTicketsQuery } from "@/services/apiTicket";
 
 export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
   const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
   const [usuarioActual, setUsuarioActual] = useState();
-  const data = useTraerTicketsNuevos();
+  // const data = useTraerTicketsNuevos();
+  const { data, error, isLoading, refetch } = useGetNewTicketsQuery();
 
   useEffect(() => {
     const usuarioActual = dataUsuario.find(
@@ -22,7 +24,7 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
     );
     setUsuarioActual(usuarioActual);
     if (sectorActual && data) {
-      const ticketsDeSector = data.map(
+      const ticketsDeSector = data.filter(
         (ticket) =>
           ticket.idSector === sectorActual.nombreSector &&
           ticket.legajoAsignado === "Todos" &&
@@ -31,19 +33,28 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
       return setTicket(ticketsDeSector);
     }
   }, [dataSector, data, dataUsuario, usuario.email]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  });
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <HeaderListaTickets />
-        {ticket &&
-          ticket.map((ticket) => (
-            <Ticket
-              key={ticket.idTicket}
-              ticket={ticket}
-              usuarioActual={usuarioActual}
-            />
-          ))}
-      </Suspense>
+      <HeaderListaTickets />
+      {ticket &&
+        ticket.map((ticket) => (
+          <Ticket
+            key={ticket.idTicket}
+            ticket={ticket}
+            usuarioActual={usuarioActual}
+          />
+        ))}
     </>
   );
 };

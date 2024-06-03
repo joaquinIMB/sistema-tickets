@@ -1,7 +1,7 @@
 export const API_URL =
 process.env.NODE_ENV === "production"
-  ? "https://helpdeskunity.netlify.app/api/ticket"
-  : "http://127.0.0.1:3000/api/ticket";
+  ? process.env.URL_PROD
+  : process.env.URL_DEV
 
 export const apiUsuarios = () => {
     return API_URL + '/usuarios'

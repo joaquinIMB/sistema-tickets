@@ -17,7 +17,7 @@ export default async function Inicio() {
             className="inline-flex h-8 items-center justify-center bg-blue-700 p-5 text-base font-medium shadow transition-colors border border-blue-600 hover:bg-blue-600 "
             href="/auth/iniciar-sesion"
           >
-            Iniciar Sesion
+            Acceder
           </Link>
           <Link
             className="inline-flex h-8 items-center justify-center hover:border-gray-700 hover:text-gray-700 border border-black text-black p-5 text-base font-medium shadow transition-color"
@@ -50,7 +50,7 @@ export default async function Inicio() {
             className="inline-flex h-8 items-center justify-center bg-blue-700 p-5 text-base font-medium shadow transition-colors border border-blue-600 hover:bg-blue-600 "
             href="/auth/iniciar-sesion"
           >
-            Iniciar Sesion
+            Acceder
           </Link>
           <Link
             className="inline-flex h-8 items-center justify-center hover:border-gray-700 hover:text-gray-700 border border-black text-black p-5 text-base font-medium shadow transition-color"

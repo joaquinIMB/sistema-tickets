@@ -8,7 +8,9 @@ export const metadata = {
 };
 
 export default async function TicketsSinAbrir() {
-  const dataSector = await fetch(`${apiSectores()}`)
+  const dataSector = await fetch(`${apiSectores()}`,{
+    cache:"no-store"
+  })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
@@ -19,11 +21,9 @@ export default async function TicketsSinAbrir() {
     .catch((error) => console.log(error));
 
   return (
-    <>
       <TicketSinAbrirPorSector
         dataSector={dataSector}
         dataUsuario={dataUsuario}
       />
-    </>
   );
 }
