@@ -7,7 +7,7 @@ export async function GET(req, { params }) {
     const pool = await getConnection();
     const result = await pool
       .request()
-      .query(`select * from ST_tickets where idTicket = ${idTicket}`);
+      .query`select * from ST_tickets where idTicket = ${idTicket}`;
 
     return NextResponse.json(result.recordset);
   } catch (err) {

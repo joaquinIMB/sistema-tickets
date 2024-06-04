@@ -12,7 +12,6 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
   const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
   const [usuarioActual, setUsuarioActual] = useState();
-  // const data = useTraerTicketsNuevos();
   const { data, error, isLoading, refetch } = useGetNewTicketsQuery();
 
   useEffect(() => {

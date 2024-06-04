@@ -3,15 +3,26 @@
 import { BotonOpciones } from "@/elementos/BotonOpciones";
 import { useEffect, useState } from "react";
 import { SeleccionarEstado } from "./SeleccionarEstado";
-import { crearMovimientoTicket } from "../firebase/CrearMovimientoTicket";
+import {
+  useCreateMovimientoTicketMutation,
+  useGetMovimientoTicketQuery,
+  useUpdateTicketMutation,
+} from "@/services/apiTicket";
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
-import { actualizarTicket } from "@/firebase/ActualizarTicket";
 import Alerta from "./Alerta";
+import { traerFechaHora } from "@/funciones/traerFechaHora";
+import { Loader } from "@/elementos/Loader";
 
 const FormularioMovimientoTicket = ({ ticket }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
+  const [desplegar, setDesplegar] = useState(false);
+  const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
+  const [actualizarTicket] = useUpdateTicketMutation();
+  const { data, error, isLoading } = useGetMovimientoTicketQuery(
+    ticket.idTicket
+  );
 
   useEffect(() => {
     if (ticket) {
@@ -25,8 +36,6 @@ const FormularioMovimientoTicket = ({ ticket }) => {
     }
   }, [ticket, cambiarCampos]);
 
-  const [desplegar, setDesplegar] = useState(false);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     cambiarCampos((prevData) => ({
@@ -36,9 +45,15 @@ const FormularioMovimientoTicket = ({ ticket }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const fechaHora = traerFechaHora();
     if (campos) {
       try {
-        await crearMovimientoTicket(campos);
+        const idMovimientoTicket = data ? data.length + 1 : 1;
+        await crearMovimientoTicket({
+          ...campos,
+          idMovimientoTicket: idMovimientoTicket,
+          fechaHoraRegistro: fechaHora,
+        });
         await actualizarTicket(campos);
         cambiarEstadoAlerta(true);
         cambiarAlerta({
@@ -57,6 +72,8 @@ const FormularioMovimientoTicket = ({ ticket }) => {
       }
     }
   };
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
       <form

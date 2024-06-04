@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function MisTickets() {
   const dataUsuario = await fetch(`${apiUsuarios()}`, {
-    cache: "no-cache",
+    cache: "no-store",
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));

@@ -1,22 +1,31 @@
-export const MovimientoTicket = ({ dataMovimientos, dataUsuario }) => {
+import { Loader } from "@/elementos/Loader";
+import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
+
+export const MovimientoTicket = ({ ticket, dataUsuario }) => {
+  const { data, error, isLoading } = useGetMovimientoTicketQuery(
+    ticket.idTicket
+  );
   let ultimoMovimiento = null;
   let emisorMovimiento = null;
   let usuarioEmisor = null;
 
-  if (dataMovimientos && dataMovimientos.length > 0) {
-    ultimoMovimiento = dataMovimientos[dataMovimientos.length - 1];
+  if (data && data.length > 0) {
+    ultimoMovimiento = data[data.length - 1];
     emisorMovimiento = ultimoMovimiento.legajoEmisor;
     // Buscar el usuario emisor en la lista de usuarios
     if (dataUsuario) {
       usuarioEmisor = dataUsuario.find(
-        (user) => user.idUsuario === emisorMovimiento
+        (user) => Number(user.idUsuario) === emisorMovimiento
       );
     }
   }
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
-      {dataMovimientos &&
-        dataMovimientos.map((movimiento) => {
+      {data &&
+        data.map((movimiento) => {
           if (movimiento.idEstado != "nuevo") {
             return (
               <section

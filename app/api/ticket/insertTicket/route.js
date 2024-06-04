@@ -15,7 +15,6 @@ export async function POST(req) {
       .input("idEstado", sql.VarChar(12), body.idEstado)
       .input("idSector", sql.VarChar(14), body.idSector)
       .input("idTicket", sql.Int, body.idTicket)
-      .input("legajoAsignado", sql.VarChar(5), body.legajoAsignado)
       .input("nombreEmisor", sql.VarChar(18), body.nombreEmisor)
       .input(
         "nombreUsuarioAsignado",
@@ -24,9 +23,10 @@ export async function POST(req) {
       )
       .input("prioridad", sql.Char(5), body.prioridad)
       .input("tituloTicket", sql.VarChar(50), body.tituloTicket)
-      .input("legajoEmisor", sql.VarChar(50), body.legajoEmisor)
+      .input("legajoEmisor", sql.VarChar(4), body.legajoEmisor)
+      .input("legajoAsignado", sql.VarChar(5), body.legajoAsignado)
       .query(
-        "INSERT INTO ST_tickets (correoUsuarioEmisor, descripcionTicket, fechaHoraRegistro, idEstado, idSector, idTicket, legajoAsignado, nombreEmisor, nombreUsuarioAsignado, prioridad, tituloTicket, legajoEmisor) VALUES (@correoUsuarioEmisor, @descripcionTicket, @fechaHoraRegistro, @idEstado, @idSector, @idTicket, @legajoAsignado, @nombreEmisor, @nombreUsuarioAsignado, @prioridad, @tituloTicket, @legajoEmisor)"
+        "INSERT INTO ST_tickets (correoUsuarioEmisor, descripcionTicket, fechaHoraRegistro, idEstado, idSector, idTicket, nombreEmisor, nombreUsuarioAsignado, prioridad, tituloTicket, legajoEmisor, legajoAsignado) VALUES (@correoUsuarioEmisor, @descripcionTicket, @fechaHoraRegistro, @idEstado, @idSector, @idTicket, @nombreEmisor, @nombreUsuarioAsignado, @prioridad, @tituloTicket, @legajoEmisor, @legajoAsignado)"
       );
 
     // Usar res para enviar una respuesta exitosa

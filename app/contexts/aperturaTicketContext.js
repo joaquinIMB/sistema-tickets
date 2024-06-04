@@ -1,11 +1,12 @@
 "use client";
 
 import { useContext, createContext, useState, useEffect } from "react";
-import {
-  crearMovimientoTicket,
-  actualizarAperturaTicket,
-} from "../firebase/CrearMovimientoTicket";
 import { useRouter } from "next/navigation";
+import {
+  useCreateMovimientoTicketMutation,
+  useUpdateTicketMutation,
+} from "@/services/apiTicket";
+import { traerFechaHora } from "@/funciones/traerFechaHora";
 
 const AperturaTicketContext = createContext();
 
@@ -14,32 +15,43 @@ const useAperturaTicket = () => {
 };
 
 function AperturaTicketProvider({ children }) {
-  const [data, setData] = useState("");
+  const [dataTicket, setDataTicket] = useState("");
+  const [dataMovimiento, setDataMovimiento] = useState("");
   const [usuario, obtenerUsuario] = useState("");
   const [campos, setCampos] = useState(null);
   const router = useRouter();
+  const [actualizarTicket] = useUpdateTicketMutation();
+  const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
+
+  const fechaHora = traerFechaHora();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (data && usuario && !campos) {
+        if (dataTicket && usuario && !campos) {
           if (
-            data.legajoAsignado === "Todos" &&
-            data.nombreUsuarioAsignado === "Todos"
+            dataTicket.legajoAsignado === "Todos" &&
+            dataTicket.nombreUsuarioAsignado === "Todos"
           ) {
             const updatedCampos = {
-              ...data,
+              ...dataTicket,
               idEstado: "abierto",
               legajoAsignado: usuario.idUsuario,
               nombreUsuarioAsignado: `${usuario.nombreUsuario} ${usuario.apellidoUsuario}`,
+              fechaHoraRegistro: fechaHora,
+              descripcionMovimiento: `Apertura de ticket ${dataTicket.idTicket}`,
             };
 
-            await crearMovimientoTicket(updatedCampos);
-            await actualizarAperturaTicket(updatedCampos);
+            crearMovimientoTicket({
+              ...updatedCampos,
+              idMovimientoTicket: dataMovimiento.idMovimientoTicket,
+              legajoAsignado: usuario.idUsuario,
+            });
+            actualizarTicket(updatedCampos);
             setCampos(null);
             obtenerUsuario("");
-            setData("");
-            router.push(`/admin/ticket/movimientos-ticket/${data.idTicket}`);
+            setDataTicket("");
+            router.push(`/admin/ticket/movimientos-ticket/${dataTicket.idTicket}`);
           }
         }
       } catch (error) {
@@ -48,10 +60,21 @@ function AperturaTicketProvider({ children }) {
     };
 
     fetchData();
-  }, [data, usuario, campos, router]);
+  }, [
+    dataTicket,
+    usuario,
+    campos,
+    router,
+    fechaHora,
+    dataMovimiento,
+    crearMovimientoTicket,
+    actualizarTicket,
+  ]);
 
   return (
-    <AperturaTicketContext.Provider value={{ setData, obtenerUsuario }}>
+    <AperturaTicketContext.Provider
+      value={{ setDataTicket, obtenerUsuario, setDataMovimiento }}
+    >
       {children}
     </AperturaTicketContext.Provider>
   );

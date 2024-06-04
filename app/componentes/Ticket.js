@@ -6,16 +6,20 @@ import { useAperturaTicket } from "../contexts/aperturaTicketContext";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
+import { Loader } from "@/elementos/Loader";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
-  const { setData, obtenerUsuario } = useAperturaTicket();
+  const { setDataTicket, obtenerUsuario, setDataMovimiento } = useAperturaTicket();
   const pathname = usePathname();
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();
+  const { data, error, isLoading, refetch } = useGetMovimientoTicketQuery(
+    ticket.idTicket
+  );
   const colorActual = colorEstado.find(
     (color) => color.estado === ticket.idEstado
   );
-
   const handleClick = () => {
     try {
       if (
@@ -23,7 +27,12 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         ticket.idEstado === "nuevo"
       ) {
         obtenerUsuario(usuarioActual);
-        setData({ ...ticket });
+        setDataTicket({
+          ...ticket,
+        });
+        setDataMovimiento({
+          idMovimientoTicket: data.length + 1,
+        });
       } else {
         return;
       }
@@ -36,11 +45,15 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       pathname !== "/admin/ticket/tickets-creados" &&
       ticket.idEstado === "nuevo"
     ) {
+      refetch()
       return setPopUp(true);
     } else {
       router.push(`movimientos-ticket/${ticket.idTicket}`);
     }
   };
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
       {ticket && (

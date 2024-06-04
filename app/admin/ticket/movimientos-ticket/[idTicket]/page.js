@@ -1,5 +1,5 @@
 import { AsideDetalles } from "@/componentes/AsideDetalles";
-import SeccionMovimientoTicket from "@/componentes/SeccionMovimientosTicket";
+import {SeccionMovimientoTicket} from "@/componentes/SeccionMovimientosTicket";
 import { MovimientoTicketProvider } from "@/contexts/movimientosContext";
 import styles from "@/componentes/admin.module.css";
 import { apiSectores, apiUsuarios } from "@/routes/apiRoutes";

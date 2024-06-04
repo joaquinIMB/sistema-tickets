@@ -2,12 +2,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   reducerPath: "api",
-  tagTypes: ["tickets","newTicket"],
+  tagTypes: ["tickets", "newTicket", "movTicket", "getTicketID"],
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api" }), // Ajusta la URL base
   endpoints: (builder) => ({
     getTickets: builder.query({
       query: () => "ticket",
-      providesTags:["tickets"]
+      providesTags: ["tickets"],
     }),
     getNewTickets: builder.query({
       query: () => "ticket/tickets-sin-abrir",
@@ -15,6 +15,7 @@ export const api = createApi({
     }),
     getTicketId: builder.query({
       query: (idTicket) => `ticket/${idTicket}`,
+      providesTags: ["getTicketID"],
     }),
     getStateId: builder.query({
       query: (idEstado) => `ticket/estado/${idEstado}`,
@@ -42,6 +43,7 @@ export const api = createApi({
     }),
     getMovimientoTicket: builder.query({
       query: (idTicket) => `ticket/movimientos/${idTicket}`,
+      providesTags: ["movTicket"],
     }),
     createMovimientoTicket: builder.mutation({
       query: (campos) => ({
@@ -56,10 +58,24 @@ export const api = createApi({
           idTicket: campos.idTicket,
           legajoAsignado: campos.legajoAsignado,
           legajoEmisor: campos.legajoEmisor,
-          prioridad: campos.prioridad
+          prioridad: campos.prioridad,
         }),
       }),
-      invalidatesTags:["tickets"],
+      invalidatesTags: ["tickets", "movTicket", "getTicketID"],
+    }),
+    updateTicket: builder.mutation({
+      query: (campos) => ({
+        url: `/ticket/updateTicket/${campos.idTicket}`,
+        method: "POST",
+        body: JSON.stringify({
+          idEstado: campos.idEstado,
+          idSector: campos.idSector,
+          legajoAsignado: campos.legajoAsignado,
+          nombreUsuarioAsignado: campos.nombreUsuarioAsignado,
+          prioridad: campos.prioridad,
+        }),
+      }),
+      invalidatesTags: ["newTicket", "tickets"],
     }),
   }),
 });
@@ -72,4 +88,5 @@ export const {
   useCreateTicketMutation,
   useGetMovimientoTicketQuery,
   useCreateMovimientoTicketMutation,
+  useUpdateTicketMutation,
 } = api;

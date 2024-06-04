@@ -1,9 +1,6 @@
 export const TicketAbierto = ({ticket}) => {
   return (
-    <>
-      {ticket && (
         <section
-          key={ticket.idTicket}
           className="w-[80%] border relative border-black border-opacity-5 h-auto rounded-md overflow-hidden"
         >
           <header className="flex flex-row justify-between bg-neutral-800 min-h-[22%] py-1 px-4">
@@ -20,7 +17,5 @@ export const TicketAbierto = ({ticket}) => {
             <p className="p-4 break-words">{ticket.descripcionTicket}</p>
           </main>
         </section>
-      )}
-    </>
   );
 };
