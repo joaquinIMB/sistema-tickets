@@ -53,10 +53,6 @@ const FormularioIniciarSesion = () => {
         mensaje: `¡Bienvenidx de vuelta!`,
       });
       router.replace("/admin/ticket/tickets-sin-abrir");
-      establecerCampos({
-        correo: "",
-        contraseña: "",
-      });
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
@@ -104,6 +100,7 @@ const FormularioIniciarSesion = () => {
             type="email"
             id="email"
             name="correo"
+            placeholder="Correo electrónico"
             value={campos.correo}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-black outline-none"
@@ -122,6 +119,7 @@ const FormularioIniciarSesion = () => {
             type="password"
             id="password"
             name="contraseña"
+            placeholder="Ingresá tu contraseña"
             value={campos.contraseña}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-black outline-none"

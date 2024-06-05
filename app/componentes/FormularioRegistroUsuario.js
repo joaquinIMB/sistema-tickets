@@ -163,6 +163,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="text"
               id="nombre"
               name="nombreUsuario"
+              placeholder="Nombre completo"
               value={campos.nombreUsuario}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
@@ -179,6 +180,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="text"
               id="apellido"
               name="apellidoUsuario"
+              placeholder="Apellido"
               value={campos.apellidoUsuario}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
@@ -207,6 +209,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="number"
               id="legajo"
               name="idUsuario"
+              placeholder="Legajo asignado"
               value={campos.idUsuario}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
@@ -223,6 +226,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="number"
               id="contacto"
               name="telefonoContacto"
+              placeholder="Número celular"
               value={campos.telefonoContacto}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
@@ -241,6 +245,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
             type="email"
             id="correo"
             name="correo"
+            placeholder="Correo electrónico"
             value={campos.correo}
             onChange={handleChange}
             className="bg-white p-2 w-full border border-black outline-none "
@@ -259,6 +264,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="password"
               id="contraseña"
               name="contraseña"
+              placeholder="Creá tu contraseña"
               value={campos.contraseña}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
@@ -276,6 +282,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               id="confirmarContraseña"
               name="confirmarContraseña"
               value={campos.confirmarContraseña}
+              placeholder="Repetí tu contraseña"
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
             />
