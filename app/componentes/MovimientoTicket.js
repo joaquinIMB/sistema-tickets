@@ -30,11 +30,11 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
             return (
               <section
                 key={movimiento.idMovimientoTicket}
-                className="w-[80%] h-auto rounded-md overflow-hidden relative"
+                className="w-[90%] h-auto rounded-md overflow-hidden relative"
               >
                 <header className="flex flex-row justify-between bg-neutral-800 min-h-[22%] py-1 px-4">
                   <div className="flex flex-col w-[25%]">
-                    <h1 className=" text-base text-[#fcfcfc]">
+                    <h1 className=" text-base text-[#fcfcfc] capitalize">
                       {usuarioEmisor
                         ? `${usuarioEmisor.nombreUsuario} ${usuarioEmisor.apellidoUsuario}`
                         : ""}

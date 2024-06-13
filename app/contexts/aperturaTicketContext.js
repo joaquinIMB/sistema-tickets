@@ -18,7 +18,7 @@ function AperturaTicketProvider({ children }) {
   const [dataTicket, setDataTicket] = useState("");
   const [dataMovimiento, setDataMovimiento] = useState("");
   const [usuario, obtenerUsuario] = useState("");
-  const [campos, setCampos] = useState(null);
+  // const [campos, setCampos] = useState(null);
   const router = useRouter();
   const [actualizarTicket] = useUpdateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
@@ -28,7 +28,7 @@ function AperturaTicketProvider({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (dataTicket && usuario && !campos) {
+        if (dataTicket && usuario) {
           if (
             dataTicket.legajoAsignado === "Todos" &&
             dataTicket.nombreUsuarioAsignado === "Todos"
@@ -36,22 +36,21 @@ function AperturaTicketProvider({ children }) {
             const updatedCampos = {
               ...dataTicket,
               idEstado: "abierto",
-              legajoAsignado: usuario.idUsuario,
               nombreUsuarioAsignado: `${usuario.nombreUsuario} ${usuario.apellidoUsuario}`,
               fechaHoraRegistro: fechaHora,
               descripcionMovimiento: `Apertura de ticket ${dataTicket.idTicket}`,
             };
-
             crearMovimientoTicket({
               ...updatedCampos,
               idMovimientoTicket: dataMovimiento.idMovimientoTicket,
               legajoAsignado: usuario.idUsuario,
             });
             actualizarTicket(updatedCampos);
-            setCampos(null);
             obtenerUsuario("");
             setDataTicket("");
-            router.push(`/admin/ticket/movimientos-ticket/${dataTicket.idTicket}`);
+            router.push(
+              `/admin/ticket/movimientos-ticket/${dataTicket.idTicket}`
+            );
           }
         }
       } catch (error) {
@@ -63,7 +62,6 @@ function AperturaTicketProvider({ children }) {
   }, [
     dataTicket,
     usuario,
-    campos,
     router,
     fechaHora,
     dataMovimiento,
@@ -73,7 +71,7 @@ function AperturaTicketProvider({ children }) {
 
   return (
     <AperturaTicketContext.Provider
-      value={{ setDataTicket, obtenerUsuario, setDataMovimiento }}
+      value={{ setDataTicket, obtenerUsuario, setDataMovimiento, crearMovimientoTicket, actualizarTicket }}
     >
       {children}
     </AperturaTicketContext.Provider>

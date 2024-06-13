@@ -15,15 +15,19 @@ export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
   const { data, error, isLoading, refetch } = useGetStateIdQuery(idEstado);
 
   useEffect(() => {
-    const usuarioActual = dataUsuario.find(
-      (user) => user.correo === usuario.email
-    );
-    setUsuarioActual(usuarioActual);
-    if (usuarioActual && data) {
-      const ticketsDeUsuario = data.filter(
-        (ticket) => ticket.legajoAsignado.trim() === usuarioActual.idUsuario && ticket
+    if (dataUsuario) {
+      const [usuarioActual] = dataUsuario.filter(
+        (user) => user.correo.trim() === usuario.email
       );
-      return setTicket(ticketsDeUsuario);
+      setUsuarioActual(usuarioActual);
+      if (usuarioActual && data) {
+        const ticketsDeUsuario = data.filter((ticket) => {
+          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim()) {
+            return ticket;
+          }
+        });
+        return setTicket(ticketsDeUsuario);
+      }
     }
   }, [dataUsuario, usuario.email, data]);
 

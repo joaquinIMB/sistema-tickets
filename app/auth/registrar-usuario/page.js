@@ -11,8 +11,22 @@ export default async function RegistrarUsuario() {
   const dataSector = await fetch(`${apiSectores()}`, {
     cache: "no-store",
   })
-  .then(res => res.json())
-  .catch(err => console.log(err))
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
 
-  return <FormularioRegistroUsuario dataSector={dataSector} />;
+  const dataUsuarios = await fetch(
+    `http://localhost:3000/api/ticket/usuarios`,
+    {
+      cache: "no-store",
+    }
+  )
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+
+  return (
+    <FormularioRegistroUsuario
+      dataSector={dataSector}
+      dataUsuarios={dataUsuarios}
+    />
+  );
 }

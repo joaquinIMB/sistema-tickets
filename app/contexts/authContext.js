@@ -1,13 +1,6 @@
 "use client";
 
 import { useContext, useState, useEffect, createContext } from "react";
-import { auth } from "../firebase/FirebaseConfig";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
 import { Loader } from "@/elementos/Loader";
 import { usePathname } from "next/navigation";
 
@@ -17,55 +10,56 @@ const useAuth = () => {
   return useContext(AuthContext);
 };
 
-const iniciarSesion = async (campos) => {
-  await signInWithEmailAndPassword(auth, campos.correo, campos.contraseña);
-};
-const registrarUsuario = async (campos) => {
-  await createUserWithEmailAndPassword(auth, campos.correo, campos.contraseña);
-};
-const cerrarSesion = async () => {
-  await signOut(auth);
-};
-
 function AuthProvider({ children }) {
   const [usuario, cambiarUsuario] = useState({
     logged: false,
     email: null,
-    uid: null,
+    legajo: null,
   });
   const [cargando, cambiarCargando] = useState(true);
-  const pathname = usePathname()
-  //Hook para realizar una comprobación una unica vez y asi saber si el usuario ingreso.
+  const pathname = usePathname();
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        cambiarUsuario({
-          logged: true,
-          email: user.email,
-          uid: user.uid,
-        });
-        cambiarCargando(false);
-      } else {
-        cambiarUsuario({
-          logged: false,
-          email: null,
-          uid: null,
-        });
-        cambiarCargando(false);
+    // Verificar el estado de autenticación en localStorage
+    const storedUser = localStorage.getItem("usuario");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      if (parsedUser.logged) {
+        cambiarUsuario(parsedUser);
       }
-    });
+    }
+    cambiarCargando(false);
   }, []);
+
+  const iniciarSesion = (usuarioActual) => {
+    const newUser = {
+      logged: true,
+      email:usuarioActual.correo,
+      legajo:usuarioActual.idUsuario,
+    };
+    cambiarUsuario(newUser);
+    localStorage.setItem("usuario", JSON.stringify(newUser));
+  };
+
+  const cerrarSesion = () => {
+    const loggedOutUser = {
+      logged: false,
+      email: null,
+      legajo: null,
+    };
+    cambiarUsuario(loggedOutUser);
+    localStorage.removeItem("usuario");
+  };
 
   return (
     <AuthContext.Provider
       value={{
         usuario,
         iniciarSesion,
-        registrarUsuario,
         cerrarSesion,
       }}
     >
-      {cargando && pathname != "/" ? <Loader /> : children}
+      {cargando && pathname !== "/" ? <Loader /> : children}
     </AuthContext.Provider>
   );
 }

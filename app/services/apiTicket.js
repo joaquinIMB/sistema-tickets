@@ -77,6 +77,15 @@ export const api = createApi({
       }),
       invalidatesTags: ["newTicket", "tickets"],
     }),
+    updateDataUsuario: builder.mutation({
+      query: (campos) => ({
+        url: `/ticket/updateSector/${campos.idUsuario}`,
+        method: "POST",
+        body: JSON.stringify({
+          idSector: campos.idSector,
+        }),
+      }),
+    }),
   }),
 });
 
@@ -89,4 +98,5 @@ export const {
   useGetMovimientoTicketQuery,
   useCreateMovimientoTicketMutation,
   useUpdateTicketMutation,
+  useUpdateDataUsuarioMutation,
 } = api;

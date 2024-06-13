@@ -62,7 +62,7 @@ export default async function Inicio() {
       </main>
       <footer className="flex items-center justify-center py-4 border-t-2 border-black border-opacity-5 text-black">
         <p className="text-sm">
-          © 2024 Helpdesk Unity. Todos los derechos reservados.
+          © 2024 Sports Family S.A. Todos los derechos reservados.
         </p>
       </footer>
     </div>

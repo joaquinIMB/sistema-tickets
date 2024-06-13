@@ -32,7 +32,7 @@ export const SideBar = ({ desplegar, setDesplegar }) => {
                     </Link>
                   </li>{" "}
                 </div>
-                <div>
+                {/* <div>
                   <li className="py-2">
                     <Image
                       src={"/informacion.png"}
@@ -51,7 +51,7 @@ export const SideBar = ({ desplegar, setDesplegar }) => {
                       height={100}
                     />
                   </li>
-                </div>
+                </div> */}
               </div>
             </ul>
           </nav>

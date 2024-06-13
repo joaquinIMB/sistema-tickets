@@ -56,7 +56,6 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-0"
                     href={enlace.href}
-                    onClick={() => setDesplegar(true)}
                   >
                     {enlace.label}
                   </Link>

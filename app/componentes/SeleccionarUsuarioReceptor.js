@@ -47,8 +47,8 @@ export const SeleccionarUsuarioReceptor = ({
           </div>
         </div>
 
-        {seleccionUsuario && (
-          <div className="absolute top-12 border border-neutral-200 rounded-md shadow-2xl z-50 cursor-pointer left-0 max-h-72 backdrop-blur-sm bg-white w-full ">
+        {seleccionUsuario &&(
+          <div className="absolute overflow-auto top-12 border border-neutral-200 rounded-md shadow-2xl z-50 cursor-pointer left-0 max-h-72 backdrop-blur-sm bg-white w-full ">
             <div
               data-valor={"Todos"}
               className={`p-2 bg-white flex flex-row justify-start hover:bg-gray-100 w-full shadow-xl`}

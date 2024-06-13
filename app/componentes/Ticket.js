@@ -8,9 +8,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 import { Loader } from "@/elementos/Loader";
+import { traerFechaHora } from "@/funciones/traerFechaHora";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
-  const { setDataTicket, obtenerUsuario, setDataMovimiento } = useAperturaTicket();
+  const {
+    setDataTicket,
+    obtenerUsuario,
+    setDataMovimiento,
+    crearMovimientoTicket,
+    actualizarTicket,
+  } = useAperturaTicket();
   const pathname = usePathname();
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();
@@ -20,11 +27,14 @@ export const Ticket = ({ ticket, usuarioActual }) => {
   const colorActual = colorEstado.find(
     (color) => color.estado === ticket.idEstado
   );
+  const fechaHora = traerFechaHora();
   const handleClick = () => {
     try {
       if (
         pathname !== "/admin/ticket/tickets-creados" &&
-        ticket.idEstado === "nuevo"
+        ticket.idEstado === "nuevo" &&
+        ticket.legajoAsignado === "Todos" &&
+        ticket.nombreUsuarioAsignado === "Todos"
       ) {
         obtenerUsuario(usuarioActual);
         setDataTicket({
@@ -33,8 +43,23 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         setDataMovimiento({
           idMovimientoTicket: data.length + 1,
         });
-      } else {
-        return;
+      } else if (
+        ticket.legajoAsignado !== "Todos" &&
+        ticket.nombreUsuarioAsignado !== "Todos"
+      ) {
+        const updatedCampos = {
+          ...ticket,
+          idEstado: "abierto",
+          fechaHoraRegistro: fechaHora,
+          descripcionMovimiento: `Apertura de ticket ${ticket.idTicket}`,
+          idMovimientoTicket: data.length + 1,
+        };
+        crearMovimientoTicket({
+          ...updatedCampos,
+          legajoAsignado: usuarioActual.idUsuario,
+        });
+        actualizarTicket(updatedCampos);
+        router.push(`/admin/ticket/movimientos-ticket/${ticket.idTicket}`);
       }
     } catch (error) {
       console.error("Error en handleClick:", error.message);
@@ -45,8 +70,8 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       pathname !== "/admin/ticket/tickets-creados" &&
       ticket.idEstado === "nuevo"
     ) {
-      refetch()
-      return setPopUp(true);
+      refetch();
+      setPopUp(true);
     } else {
       router.push(`movimientos-ticket/${ticket.idTicket}`);
     }

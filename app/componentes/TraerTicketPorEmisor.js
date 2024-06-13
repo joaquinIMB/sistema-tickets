@@ -11,18 +11,24 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
   const [ticket, setTicket] = useState();
   const [usuarioActual, setUsuarioActual] = useState();
   const { usuario } = useAuth();
-  const {data, error, isLoading, refetch} = useGetTicketsQuery()
+  const { data, error, isLoading, refetch } = useGetTicketsQuery();
 
   useEffect(() => {
-    const usuarioActual = dataUsuario.find(
-      (user) => user.correo === usuario.email
-    );
-    setUsuarioActual(usuarioActual);
-    if (usuarioActual && data) {
-      const ticketsDeUsuario = data.filter(
-        (ticket) => ticket.legajoEmisor === usuarioActual.idUsuario && ticket
+    if (dataUsuario) {
+      const [usuarioActual] = dataUsuario.filter(
+        (user) => user.correo.trim() === usuario.email
       );
-      return setTicket(ticketsDeUsuario);
+      setUsuarioActual(usuarioActual);
+      if (usuarioActual && data) {
+        const ticketsDeUsuario = data.filter(
+          (ticket) => {
+            if (ticket.legajoEmisor.trim() === usuarioActual.idUsuario.trim()) {
+              return ticket;
+            }
+          }
+        );
+        return setTicket(ticketsDeUsuario);
+      }
     }
   }, [dataUsuario, usuario.email, data]);
 

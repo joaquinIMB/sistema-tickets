@@ -5,16 +5,18 @@ import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/contexts/modalContext";
 
-const FormularioIniciarSesion = () => {
+const FormularioIniciarSesion = ({ dataUsuarios }) => {
   const router = useRouter();
   const [campos, establecerCampos] = useState({
-    correo: "",
+    idUsuario: "",
     contraseña: "",
   });
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
   const { iniciarSesion } = useAuth();
+  const {setIsModalOpen} = useModal()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,56 +30,37 @@ const FormularioIniciarSesion = () => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
-    const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
-    if (!expresionRegular.test(campos.correo)) {
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "error",
-        mensaje: "Por favor ingresa un correo válido",
-      });
-      return;
-    }
-    if (campos.correo === "" || campos.contraseña === "") {
+    const [usuarioActual] = dataUsuarios.filter(user => user.idUsuario.trim() === campos.idUsuario)
+    if (campos.idUsuario === "" || campos.contraseña === "") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
         mensaje: "Por favor rellena todos los campos",
       });
-      return;
+    return;
     }
-    try {
-      await iniciarSesion(campos);
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "aceptado",
-        mensaje: `¡Bienvenidx de vuelta!`,
-      });
-      router.replace("/admin/ticket/tickets-sin-abrir");
-    } catch (error) {
-      switch (error.code) {
-        case "auth/wrong-password":
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "La contraseña no es correcta",
-          });
-          break;
-        case "auth/user-not-found":
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "No se encontró ningun usuario con estos datos",
-          });
-          break;
-        default:
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "Hubo un error al intentar iniciar sesion",
-          });
-          break;
+    if (
+      usuarioActual.idUsuario.trim() !== campos.idUsuario &&
+      usuarioActual.contraseña.trim() !== campos.contraseña
+    ) {
+      return
+    }
+      try {
+        iniciarSesion({
+          ...usuarioActual,
+          correo: usuarioActual.correo.trim(),
+          legajo:usuarioActual.idUsuario.trim()
+        })
+        cambiarEstadoAlerta(true);
+        cambiarAlerta({
+          tipo: "aceptado",
+          mensaje: `¡Bienvenidx de vuelta!`,
+        });
+        router.replace("/admin/ticket/tickets-sin-abrir");
+      } catch (error) {
+        console.log(error)
       }
-    }
+    
   };
 
   return (
@@ -91,16 +74,16 @@ const FormularioIniciarSesion = () => {
       >
         <div className="w-full">
           <label
-            htmlFor="email"
+            htmlFor="legajo"
             className="block text-base font-medium text-gray-700"
           >
-            Email
+            Legajo
           </label>
           <input
-            type="email"
-            id="email"
-            name="correo"
-            placeholder="Correo electrónico"
+            type="text"
+            id="legajo"
+            name="idUsuario"
+            placeholder="Ingresá tu legajo"
             value={campos.correo}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-black outline-none"
@@ -140,6 +123,7 @@ const FormularioIniciarSesion = () => {
           <Link
             href={"/auth/registrar-usuario"}
             className="text-blue-600 font-bold cursor-pointer"
+            onClick={() => setIsModalOpen(true)}
           >
             Crea tu cuenta
           </Link>

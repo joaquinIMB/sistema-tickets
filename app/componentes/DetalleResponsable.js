@@ -1,87 +1,86 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { SeleccionarSector } from "./SeleccionarSector";
 import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
 
 export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
-  const [agente, cambiarAgente] = useState(false);
-  const [sector, cambiarSector] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const { campos, cambiarCampos } = useMovimientoTicket();
 
-  const usuarioAsignado = dataUsuario.find(
-    (usuario) => usuario.idUsuario === campos.legajoAsignado
-  );
+  const usuarioAsignado = useMemo(() => {
+    return dataUsuario.find(
+      (usuario) => usuario.idUsuario === campos.legajoAsignado
+    );
+  }, [dataUsuario, campos.legajoAsignado]);
 
-  useEffect(() => {
-    if (agente && usuarioAsignado) {
-      cambiarSector(true);
-      cambiarCampos((prevcampos) => ({
-        ...prevcampos,
-        idSector: usuarioAsignado.idSector,
-        nombreUsuarioAsignado:
-          usuarioAsignado.nombreUsuario + " " + usuarioAsignado.apellidoUsuario,
-      }));
-    } else if (sector) {
-      console.log('aca')
-      cambiarCampos((prevcampos) => ({
-        ...prevcampos,
-        nombreUsuarioAsignado: "Todos",
-        idSector: campos.idSector,
-      }));
-    } else {
-      cambiarCampos((prevData) => ({
-        ...prevData,
+  const handleEditToggle = () => {
+    setEditMode((prevEditMode) => !prevEditMode);
+    if (!editMode) {
+      // Solo establecer campos cuando se activa el modo de edición
+      cambiarCampos((prevCampos) => ({
+        ...prevCampos,
         idSector: ticket.idSector,
-        legajoAsignado: ticket.legajoAsignado,
+        legajoAsignado: ticket.legajoAsignado.trim(),
         nombreUsuarioAsignado: ticket.nombreUsuarioAsignado,
       }));
     }
-  }, [
-    usuarioAsignado,
-    campos.idSector,
-    sector,
-    agente,
-    cambiarCampos,
-    ticket.idSector,
-    ticket.legajoAsignado,
-    ticket.nombreUsuarioAsignado,
-  ]);
-
-  const handleResetAgente = () => {
-    cambiarAgente(!agente);
-    cambiarSector(false);
-    cambiarCampos((prevData) => ({
-      ...prevData,
-      idSector: ticket.idSector,
-      legajoAsignado: ticket.legajoAsignado,
-      nombreUsuarioAsignado: ticket.nombreUsuarioAsignado,
-    }));
   };
 
+  useEffect(() => {
+    if (usuarioAsignado) {
+      if (editMode && campos.legajoAsignado === "Todos") {
+        cambiarCampos((prevCampos) => ({
+          ...prevCampos,
+          idSector: campos.idSector,
+          nombreUsuarioAsignado: "",
+        }));
+      } else if (editMode && campos.legajoAsignado !== "Todos") {
+        cambiarCampos((prevCampos) => ({
+          ...prevCampos,
+          idSector: usuarioAsignado.idSector,
+          legajoAsignado: usuarioAsignado.idUsuario,
+          nombreUsuarioAsignado:
+            usuarioAsignado.nombreUsuario +
+            " " +
+            usuarioAsignado.apellidoUsuario,
+        }));
+      } else if (editMode && campos.idSector !== ticket.idSector) {
+        cambiarCampos((prevCampos) => ({
+          ...prevCampos,
+          idSector: campos.idSector,
+          legajoAsignado: "",
+        }));
+      }
+    }
+  }, [
+    editMode,
+    campos.legajoAsignado,
+    cambiarCampos,
+    usuarioAsignado,
+    campos.idSector,
+    ticket.idSector,
+  ]);
+
   return (
-    <div className="p-4 bg-white min-h-[250px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
-      <h2 className="font-semibold text-lg">Responsable</h2>
+    <section className="p-4 bg-white min-h-[250px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
+      <header className="flex flex-row justify-between">
+        <h2 className="font-semibold text-lg">Responsable</h2>
+        <span
+          className={`font-semibold ${
+            editMode ? "text-red-600" : "text-blue-600"
+          } cursor-pointer`}
+          onClick={handleEditToggle}
+        >
+          {editMode ? "Cancelar" : "Editar"}
+        </span>
+      </header>
       <div className="flex flex-col pt-4">
         <div className="flex flex-row w-full justify-between">
-          <span className="font-semibold pb-2">Sector</span>
-          <span
-            onClick={() => {
-              cambiarSector(!sector);
-              cambiarCampos((prevcampos) => ({
-                ...prevcampos,
-                idSector: ticket.idSector,
-              }));
-            }}
-            className={`font-semibold ${
-              sector ? "text-red-600" : "text-blue-600"
-            }  cursor-pointer`}
-          >
-            {sector ? "Cancelar" : "Cambiar"}
-          </span>
+          <span className="font-semibold pb-2">Sector / Sucursal</span>
         </div>
-        {sector ? (
+        {editMode ? (
           <SeleccionarSector
             campos={campos}
             cambiarCampos={cambiarCampos}
@@ -90,27 +89,12 @@ export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
         ) : (
           <span className="p-2">{ticket.idSector}</span>
         )}
-        {sector &&
-          campos.idSector != ticket.idSector &&
-          campos.legajoAsignado === ticket.legajoAsignado && (
-            <button className="bg-blue-600 text-white py-1 font-semibold ">
-              Guardar cambios
-            </button>
-          )}
       </div>
-      <div className="flex flex-col  pt-3">
+      <div className="flex flex-col pt-3">
         <div className="flex flex-row w-full justify-between">
           <span className="font-semibold pb-2">Agente</span>
-          <span
-            onClick={handleResetAgente}
-            className={`font-semibold ${
-              agente ? "text-red-600" : "text-blue-600"
-            }  cursor-pointer`}
-          >
-            {agente ? "Cancelar" : "Cambiar"}
-          </span>
         </div>
-        {agente ? (
+        {editMode ? (
           <SeleccionarUsuarioReceptor
             campos={campos}
             cambiarCampos={cambiarCampos}
@@ -118,12 +102,10 @@ export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
           />
         ) : (
           <span className="p-2">
-            {ticket.legajoAsignado != "Todos"
-              ? ticket.legajoAsignado + " " + ticket.nombreUsuarioAsignado
-              : ticket.legajoAsignado}
+            {ticket.legajoAsignado + " " + ticket.nombreUsuarioAsignado}
           </span>
         )}
       </div>
-    </div>
+    </section>
   );
 };

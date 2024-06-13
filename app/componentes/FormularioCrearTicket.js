@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "../contexts/authContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
 import { SeleccionarSector } from "./SeleccionarSector";
 import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
@@ -9,8 +9,8 @@ import { Loader } from "@/elementos/Loader";
 import {
   useCreateMovimientoTicketMutation,
   useGetTicketsQuery,
+  useCreateTicketMutation,
 } from "@/services/apiTicket";
-import { useCreateTicketMutation } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import Alerta from "./Alerta";
 
@@ -22,9 +22,9 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   const [crearTicket] = useCreateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
 
-  const usuarioEmisor = dataUsuario.find(
-    (user) => user.correo === usuario.email && user
-  );
+  const usuarioEmisor = useMemo(() => {
+    return dataUsuario.find((user) => user.correo.trim() === usuario.email);
+  }, [dataUsuario, usuario.email]);
 
   const [campos, cambiarCampos] = useState({
     tituloTicket: "",
@@ -34,15 +34,14 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     idSector: "",
     nombreUsuarioAsignado: "",
     legajoAsignado: "",
-    nombreEmisor:
-      usuarioEmisor.nombreUsuario + " " + usuarioEmisor.apellidoUsuario,
-    legajoEmisor: usuarioEmisor.idUsuario,
-    correoUsuarioEmisor: usuarioEmisor.correo,
+    nombreEmisor: usuarioEmisor ? `${usuarioEmisor.nombreUsuario} ${usuarioEmisor.apellidoUsuario}` : "",
+    legajoEmisor: usuarioEmisor ? usuarioEmisor.idUsuario : "",
+    correoUsuarioEmisor: usuarioEmisor ? usuarioEmisor.correo.trim() : "",
   });
 
-  const usuarioAsignado = dataUsuario.find(
-    (usuario) => usuario.idUsuario === campos.legajoAsignado
-  );
+  const usuarioAsignado = useMemo(() => {
+    return dataUsuario.find((usuario) => usuario.idUsuario === campos.legajoAsignado);
+  }, [dataUsuario, campos.legajoAsignado]);
 
   const validarCampos = () => {
     const camposVacios = Object.values(campos).some(
@@ -54,6 +53,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
         tipo: "error",
         mensaje: "Por favor rellena todos los campos",
       });
+
       return true;
     }
     return false;
@@ -67,15 +67,12 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     }));
   };
 
-  //Si tengo un usuario seleccionado recupero el legajo y obtengo el sector donde esta ubicado
-
   useEffect(() => {
-    if (campos.legajoAsignado != "Todos" && usuarioAsignado) {
+    if (campos.legajoAsignado !== "Todos" && usuarioAsignado) {
       cambiarCampos((prevcampos) => ({
         ...prevcampos,
         idSector: usuarioAsignado.idSector,
-        nombreUsuarioAsignado:
-          usuarioAsignado.nombreUsuario + " " + usuarioAsignado.apellidoUsuario,
+        nombreUsuarioAsignado: `${usuarioAsignado.nombreUsuario} ${usuarioAsignado.apellidoUsuario}`,
       }));
     } else {
       cambiarCampos((prevcampos) => ({
@@ -92,60 +89,59 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     cambiarEstadoAlerta(false);
     if (validarCampos()) {
       return;
-    } else {
-      try {
-        await refetch();
-        const idTicket = data.length + 1;
-        await crearTicket({
-          ...campos,
-          idTicket: idTicket,
-          fechaHoraRegistro: fechaHora,
-        });
-        await crearMovimientoTicket({
-          idMovimientoTicket: 1,
-          idTicket: idTicket,
-          idSector: campos.idSector,
-          idEstado: campos.idEstado,
-          prioridad: campos.prioridad,
-          legajoEmisor: campos.legajoEmisor,
-          legajoAsignado: campos.legajoAsignado,
-          fechaHoraRegistro: fechaHora,
-          descripcionMovimiento: `Creación de ticket ${idTicket}`,
-        });
-        cambiarEstadoAlerta(true);
-        cambiarAlerta({
-          tipo: "aceptado",
-          mensaje: `¡El ticket se creó correctamente!`,
-        });
-        cambiarCampos({
-          tituloTicket: "",
-          descripcionTicket: "",
-          prioridad: "",
-          idEstado: "nuevo",
-          idSector: "",
-          nombreUsuarioAsignado: "",
-          legajoAsignado: "",
-          nombreEmisor:
-            usuarioEmisor.nombreUsuario + " " + usuarioEmisor.apellidoUsuario,
-          legajoEmisor: usuarioEmisor.idUsuario,
-          correoUsuarioEmisor: usuarioEmisor.correo,
-        });
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-        cambiarEstadoAlerta(true);
-        cambiarAlerta({
-          tipo: "error",
-          mensaje: error,
-        });
-      }
+    }
+    try {
+      await refetch();
+      const idTicket = data.length + 1;
+      await crearTicket({
+        ...campos,
+        idTicket,
+        fechaHoraRegistro: fechaHora,
+      });
+      await crearMovimientoTicket({
+        idMovimientoTicket: 1,
+        idTicket,
+        idSector: campos.idSector,
+        idEstado: campos.idEstado,
+        prioridad: campos.prioridad,
+        legajoEmisor: campos.legajoEmisor,
+        legajoAsignado: campos.legajoAsignado,
+        fechaHoraRegistro: fechaHora,
+        descripcionMovimiento: `Creación de ticket ${idTicket}`,
+      });
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "aceptado",
+        mensaje: `¡El ticket se creó correctamente!`,
+      });
+      cambiarCampos({
+        tituloTicket: "",
+        descripcionTicket: "",
+        prioridad: "",
+        idEstado: "nuevo",
+        idSector: "",
+        nombreUsuarioAsignado: "",
+        legajoAsignado: "",
+        nombreEmisor: `${usuarioEmisor.nombreUsuario} ${usuarioEmisor.apellidoUsuario}`,
+        legajoEmisor: usuarioEmisor.idUsuario,
+        correoUsuarioEmisor: usuarioEmisor.correo.trim(),
+      });
+    } catch (error) {
+      console.error("Error creating ticket:", error);
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: "Hubo un error al crear el ticket",
+      });
     }
   };
+
   if (isLoading) return <Loader />;
   if (error) return <div>Error: {error.message}</div>;
+
   return (
     <>
-      <form className="w-[60%] p-3 py-0 px-8 mt-6" onSubmit={handleSubmit}>
+      <form className="w-[80%] p-3 py-0 px-8 mt-6" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col">
             <label className="pb-2 text-lg font-medium text-gray-700">
@@ -198,7 +194,6 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
               Descripción
             </label>
             <textarea
-              type="text"
               id="descripcionTicket"
               name="descripcionTicket"
               value={campos.descripcionTicket}
@@ -207,7 +202,6 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
             />
             <div className="mt-6 absolute bottom-0 right-0">
               <button
-                as={"button"}
                 type="submit"
                 className="w-md px-4 py-2 m-2 bg-blue-700 rounded-md text-white font-semibold hover:shadow-4xl transition"
               >

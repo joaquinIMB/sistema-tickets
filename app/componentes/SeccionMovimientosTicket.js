@@ -6,9 +6,16 @@ import { TicketAbierto } from "@/elementos/TicketAbierto";
 import { useGetTicketIdQuery } from "@/services/apiTicket";
 import styles from "@/componentes/admin.module.css";
 import { Loader } from "@/elementos/Loader";
+import { useAuth } from "@/contexts/authContext";
 
 export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
   const { data, error, isLoading } = useGetTicketIdQuery(idTicket);
+
+  const { usuario } = useAuth();
+
+  const usuarioEmisor = dataUsuario.find(
+    (user) => user.correo.trim() === usuario.email
+  );
 
   if (isLoading) return <Loader />;
   if (error) return <div>Error: {error.message}</div>;
@@ -24,7 +31,10 @@ export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
               <TicketAbierto ticket={ticket} />
               <MovimientoTicket ticket={ticket} dataUsuario={dataUsuario} />
             </main>
-            <FormularioMovimientoTicket ticket={ticket} />
+            <FormularioMovimientoTicket
+              ticket={ticket}
+              usuarioEmisor={usuarioEmisor}
+            />
           </section>
         ))}
     </>

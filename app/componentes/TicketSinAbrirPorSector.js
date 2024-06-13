@@ -15,21 +15,27 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
   const { data, error, isLoading, refetch } = useGetNewTicketsQuery();
 
   useEffect(() => {
-    const usuarioActual = dataUsuario.find(
-      (user) => user.correo === usuario.email
-    );
-    const sectorActual = dataSector.find(
-      (sector) => sector.nombreSector === usuarioActual.idSector
-    );
-    setUsuarioActual(usuarioActual);
-    if (sectorActual && data) {
-      const ticketsDeSector = data.filter(
-        (ticket) =>
-          ticket.idSector === sectorActual.nombreSector &&
-          ticket.legajoAsignado === "Todos" &&
-          ticket
+    if (dataUsuario) {
+      const [usuarioActual] = dataUsuario.filter(
+        (user) => user.correo.trim() === usuario.email.trim()
       );
-      return setTicket(ticketsDeSector);
+      const sectorActual = dataSector.filter(
+        (sector) => sector.nombreSector === usuarioActual.idSector
+      );
+
+      setUsuarioActual(usuarioActual);
+      if (sectorActual && data) {
+        const [sector] = sectorActual;
+        const ticketsDeSector = data.filter((ticket) => {
+          if (
+            ticket.idSector === sector.nombreSector &&
+            ticket.legajoAsignado === "Todos"
+          ) {
+            return ticket;
+          }
+        });
+        return setTicket(ticketsDeSector);
+      }
     }
   }, [dataSector, data, dataUsuario, usuario.email]);
 

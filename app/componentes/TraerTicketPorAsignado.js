@@ -14,15 +14,19 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   const { data, error, isLoading, refetch } = useGetTicketsQuery();
 
   useEffect(() => {
-    const usuarioActual = dataUsuario.find(
-      (user) => user.correo === usuario.email
-    );
-    setUsuarioActual(usuarioActual);
-    if (usuarioActual && data) {
-      const ticketsDeUsuario = data.filter(
-        (ticket) => ticket.legajoAsignado.trim() === usuarioActual.idUsuario && ticket
+    if (dataUsuario && data) {
+      const [usuarioActual] = dataUsuario.filter(
+        (user) => user.correo.trim() === usuario.email
       );
-      return setTicket(ticketsDeUsuario);
+      setUsuarioActual(usuarioActual);
+      if (usuarioActual && data) {
+        const ticketsDeUsuario = data.filter((ticket) => {
+          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim()) {
+            return ticket;
+          }
+        });
+        return setTicket(ticketsDeUsuario);
+      }
     }
   }, [dataUsuario, usuario.email, data]);
 

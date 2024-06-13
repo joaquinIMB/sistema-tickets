@@ -1,15 +1,18 @@
 export const TicketAbierto = ({ticket}) => {
   return (
         <section
-          className="w-[80%] border relative border-black border-opacity-5 h-auto rounded-md overflow-hidden"
+          className="w-[90%] border relative border-black border-opacity-5 h-auto rounded-md overflow-hidden"
         >
           <header className="flex flex-row justify-between bg-neutral-800 min-h-[22%] py-1 px-4">
-            <div className="flex flex-col w-[50%]">
-              <h1 className=" text-base text-[#fcfcfc]">
+            <div className="flex flex-col w-[30%]">
+              <h1 className=" text-base text-[rgb(252,252,252)]">
                 {ticket.nombreEmisor}
               </h1>
             </div>
-            <div className="flex flex-col text-end text-base w-[25%]">
+            <div className="flex flex-col text-end text-base w-[20%]">
+              <span className="text-[#ffffff]">{`Ticket ${ticket.idTicket}`}</span>
+            </div>
+            <div className="flex flex-col text-end text-base w-[40%]">
               <span className="text-[#fcfcfc]">{ticket.fechaHoraRegistro}</span>
             </div>
           </header>

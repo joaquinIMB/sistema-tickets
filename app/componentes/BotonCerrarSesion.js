@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 const BotonCerrarSesion = () => {
   const { cerrarSesion } = useAuth();
   const router = useRouter();
-  const handleClick = async () => {
-    await cerrarSesion();
+  const handleClick = () => {
+    cerrarSesion();
     router.push("/");
   };
   return (

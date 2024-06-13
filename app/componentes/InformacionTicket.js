@@ -6,7 +6,7 @@ import { useMovimientoTicket } from "@/contexts/movimientosContext";
 import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 import { Loader } from "@/elementos/Loader";
 
-export const InformacionTicket = ({ ticket, idTicket }) => {
+export const InformacionTicket = ({ ticket }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
   const { data, error, isLoading } = useGetMovimientoTicketQuery(
     ticket.idTicket

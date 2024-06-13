@@ -10,24 +10,30 @@ export const metadata = {
 };
 
 export default async function CrearTicket() {
-  const dataUsuario = await fetch(`${apiUsuarios()}`, {
-    cache: "no-store",
-  })
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
+  try {
+    const [dataUsuarioResponse, dataSectorResponse] = await Promise.all([
+      fetch(apiUsuarios(), { cache: "no-store" }),
+      fetch(apiSectores()),
+    ]);
 
-  const dataSector = await fetch(`${apiSectores()}`)
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
+    if (!dataUsuarioResponse.ok || !dataSectorResponse.ok) {
+      throw new Error("Error fetching data");
+    }
 
-  return (
-    <Suspense fallback={<Loader />}>
-      {dataUsuario && dataSector && (
-        <FormularioCrearTicket
-          dataUsuario={dataUsuario}
-          dataSector={dataSector}
-        />
-      )}
-    </Suspense>
-  );
+    const [dataUsuario, dataSector] = await Promise.all([
+      dataUsuarioResponse.json(),
+      dataSectorResponse.json(),
+    ]);
+    
+    return (
+      <Suspense fallback={<Loader />}>
+        {dataUsuario && dataSector && (
+          <FormularioCrearTicket dataUsuario={dataUsuario} dataSector={dataSector} />
+        )}
+      </Suspense>
+    );
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return <div>Error loading data</div>;
+  }
 }

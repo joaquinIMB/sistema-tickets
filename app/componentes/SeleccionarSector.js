@@ -11,12 +11,19 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
     cambiarUsuario,
   } = useDesplegable();
 
-  const handleClick = (e) => {
+  const handleSelect = (e) => {
     cambiarCampos({
       ...campos,
       idSector: e.currentTarget.dataset.valor,
+      legajoAsignado: "Todos"
     });
     cambiarSeleccion(false);
+  };
+
+  const handleClick = () => {
+    cambiarSeleccion(!seleccion);
+    cambiarSeleccionPrioridad(false);
+    cambiarUsuario(false);
   };
 
   return (
@@ -31,16 +38,12 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
           } bg-white rounded-md ${
             campos.idSector != "" ? "text-black" : "text-gray-400"
           }`}
-          onClick={() => {
-            cambiarSeleccion(!seleccion);
-            cambiarSeleccionPrioridad(false);
-            cambiarUsuario(false);
-          }}
+          onClick={handleClick}
         >
-          {campos.idSector === "" ? "Sector" : campos.idSector}
+          {campos.idSector === "" ? "Selecciona tu sector" : campos.idSector}
         </div>
         {seleccion && (
-          <div className="absolute overflow-x-hidden top-12 border border-neutral-200 rounded-md shadow-2xl left-0 max-h-72 backdrop-blur-sm bg-white w-full z-50">
+          <div className="absolute overflow-auto top-12 border border-neutral-200 rounded-md shadow-2xl left-0 max-h-72 backdrop-blur-sm bg-white w-full z-50">
             {dataSector &&
               dataSector.map(
                 (sector) =>
@@ -49,7 +52,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
                       key={sector.idSector}
                       data-valor={sector.nombreSector}
                       className={`p-2 cursor-pointer hover:bg-[#ececec] rounded-sm`}
-                      onClick={handleClick}
+                      onClick={handleSelect}
                     >
                       {sector.nombreSector}
                     </div>
@@ -60,7 +63,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
                 key={sucursal.idSucursal}
                 data-valor={`Sucursal ${sucursal.idSucursal}`}
                 className={`p-2 cursor-pointer hover:bg-[#ececec] rounded-sm`}
-                onClick={handleClick}
+                onClick={handleSelect}
               >
                 {`Sucursal ${sucursal.idSucursal}`}
               </div>
