@@ -1,31 +1,40 @@
-export const MovimientoTicket = ({ dataMovimientos, dataUsuario }) => {
+import { Loader } from "@/elementos/Loader";
+import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
+
+export const MovimientoTicket = ({ ticket, dataUsuario }) => {
+  const { data, error, isLoading } = useGetMovimientoTicketQuery(
+    ticket.idTicket
+  );
   let ultimoMovimiento = null;
   let emisorMovimiento = null;
   let usuarioEmisor = null;
 
-  if (dataMovimientos && dataMovimientos.length > 0) {
-    ultimoMovimiento = dataMovimientos[dataMovimientos.length - 1];
+  if (data && data.length > 0) {
+    ultimoMovimiento = data[data.length - 1];
     emisorMovimiento = ultimoMovimiento.legajoEmisor;
     // Buscar el usuario emisor en la lista de usuarios
     if (dataUsuario) {
       usuarioEmisor = dataUsuario.find(
-        (user) => user.idUsuario === emisorMovimiento
+        (user) => Number(user.idUsuario) === emisorMovimiento
       );
     }
   }
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
-      {dataMovimientos &&
-        dataMovimientos.map((movimiento) => {
+      {data &&
+        data.map((movimiento) => {
           if (movimiento.idEstado != "nuevo") {
             return (
               <section
                 key={movimiento.idMovimientoTicket}
-                className="w-[80%] h-auto rounded-md overflow-hidden relative"
+                className="w-[90%] h-auto rounded-md overflow-hidden relative"
               >
                 <header className="flex flex-row justify-between bg-neutral-800 min-h-[22%] py-1 px-4">
                   <div className="flex flex-col w-[25%]">
-                    <h1 className=" text-base text-[#fcfcfc]">
+                    <h1 className=" text-base text-[#fcfcfc] capitalize">
                       {usuarioEmisor
                         ? `${usuarioEmisor.nombreUsuario} ${usuarioEmisor.apellidoUsuario}`
                         : ""}

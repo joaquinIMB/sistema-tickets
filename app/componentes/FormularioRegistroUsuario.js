@@ -1,28 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alerta from "./Alerta";
-import { useAuth } from "../contexts/authContext";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebase/FirebaseConfig";
 import Link from "next/link";
 import { SeleccionarSector } from "./SeleccionarSector";
+import ModalLegajo from "./ModalLegajo";
+import { useModal } from "@/contexts/modalContext";
+import { useUpdateDataUsuarioMutation } from "@/services/apiTicket";
 
-const FormularioRegistroUsuario = ({ dataSector }) => {
-  const { registrarUsuario } = useAuth();
+const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
+  const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
+  const { isModalOpen, handleModalOpen, handleCloseModal } = useModal();
+  const [actualizarDatosUser] = useUpdateDataUsuarioMutation();
+  const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
+  const [alerta, cambiarAlerta] = useState({});
+  const [legajo, setLegajo] = useState("");
+  const [dataUser, setDataUser] = useState();
+
   const [campos, cambiarCampos] = useState({
     idUsuario: "",
     idSector: "",
     nombreUsuario: "",
     apellidoUsuario: "",
-    telefonoContacto: "",
     correo: "",
     contraseña: "",
     confirmarContraseña: "",
   });
-  const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
-  const [alerta, cambiarAlerta] = useState({});
-  const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
+
+  useEffect(() => {
+    if (dataUser) {
+      if (dataUser.length > 0) {
+        const user = dataUser[0];
+        cambiarCampos((prevCampos) => ({
+          ...prevCampos,
+          idUsuario: user ? user.idUsuario : "",
+          nombreUsuario: user.nombreUsuario || "",
+          apellidoUsuario: user.apellidoUsuario || "",
+          correo: user.correo || "",
+          idSector: user.idSector || "",
+          contraseña: user.contraseña || "",
+          confirmarContraseña: user.contraseña || "",
+        }));
+        handleCloseModal();
+      } else {
+        cambiarEstadoAlerta(true);
+        cambiarAlerta({
+          tipo: "error",
+          mensaje: "El legajo no existe, o es incorrecto",
+        });
+      }
+    }
+  }, [dataUser, handleCloseModal]);
 
   const validarCampos = () => {
     const camposVacios = Object.values(campos).some((valor) => valor === "");
@@ -35,17 +63,6 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
       return true;
     }
     return false;
-  };
-
-  const crearUsuario = async (campos) => {
-    const docRef = doc(db, "usuarios", campos.idUsuario);
-    return setDoc(docRef, { ...campos }).then(() => {
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "correcto",
-        mensaje: "Se creó el usuario correctamente",
-      });
-    });
   };
 
   const handleChange = (e) => {
@@ -79,33 +96,17 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
       });
       return;
     }
-    if (campos.idSector === "Sucursal") {
+    try {
+      await actualizarDatosUser({
+        idSector: campos.idSector,
+        idUsuario: campos.idUsuario,
+      });
       cambiarEstadoAlerta(true);
       cambiarAlerta({
-        tipo: "error",
-        mensaje: "Selecciona una sucursal",
-      });
-      return;
-    }
-    try {
-      await registrarUsuario(campos);
-      await crearUsuario(campos);
-      cambiarAlerta({
         tipo: "aceptado",
-        mensaje: `¡Se registró correctamente!`,
+        mensaje: `¡Sector registrado correctamente!`,
       });
-      cambiarCampos({
-        idUsuario: "",
-        idSector: "",
-        nombreUsuario: "",
-        apellidoUsuario: "",
-        telefonoContacto: "",
-        correo: "",
-        contraseña: "",
-        confirmarContraseña: "",
-      });
-      establecerSector("Selecciona un sector");
-      establecerSucursal("Ingresa tu sucursal");
+      handleModalOpen();
     } catch (error) {
       switch (error.code) {
         case "auth/weak-password":
@@ -143,8 +144,8 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
   };
 
   return (
-    <div className="bg-white container p-4 py-2 border border-black border-opacity-5">
-      <h1 className="text-base font-bold mb- w-full px-4 pt-4">
+    <div className="container p-4 pb-2 pt-0">
+      <h1 className="text-base font-bold mb- w-full px-4 pt-4 pb-2 text-gray-600">
         Registrate para comenzar.
       </h1>
       <form
@@ -163,9 +164,10 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="text"
               id="nombre"
               name="nombreUsuario"
+              placeholder="Nombre completo"
               value={campos.nombreUsuario}
               onChange={handleChange}
-              className="bg-white p-2 w-full border border-black outline-none "
+              className="bg-white p-2 w-full border border-black outline-none capitalize"
             />
           </div>
           <div>
@@ -179,6 +181,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="text"
               id="apellido"
               name="apellidoUsuario"
+              placeholder="Apellido"
               value={campos.apellidoUsuario}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
@@ -186,14 +189,36 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           </div>
         </div>
         <div>
-          <span className="block text-base font-medium text-gray-700 py-3 pb-2">
-            Sector
-          </span>
-          <SeleccionarSector
-            dataSector={dataSector}
-            campos={campos}
-            cambiarCampos={cambiarCampos}
-          />
+          {campos.idSector ? (
+            <div>
+              <label
+                htmlFor="legajo"
+                className="block text-base font-medium text-gray-700 py-3 pb-2"
+              >
+                Sector
+              </label>
+              <input
+                type="text"
+                id="sector"
+                name="idSector"
+                placeholder="Sector actual"
+                value={campos.idSector}
+                onChange={handleChange}
+                className="bg-white p-2 w-full border border-black outline-none "
+              />
+            </div>
+          ) : (
+            <div className="w-[100%]">
+              <span className="block text-lg font-medium text-gray-700 py-2">
+                Sector
+              </span>
+              <SeleccionarSector
+                dataSector={dataSector}
+                campos={campos}
+                cambiarCampos={cambiarCampos}
+              />
+            </div>
+          )}
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -204,15 +229,16 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               Legajo
             </label>
             <input
-              type="number"
+              type="text"
               id="legajo"
               name="idUsuario"
+              placeholder="Legajo asignado"
               value={campos.idUsuario}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
             />
           </div>
-          <div>
+          {/* <div>
             <label
               htmlFor="contacto"
               className="block text-base font-medium text-gray-700 py-3 pb-2"
@@ -220,14 +246,15 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               Contacto
             </label>
             <input
-              type="number"
+              type="text"
               id="contacto"
               name="telefonoContacto"
+              placeholder="Número celular"
               value={campos.telefonoContacto}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
             />
-          </div>
+          </div> */}
         </div>
 
         <div>
@@ -241,6 +268,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
             type="email"
             id="correo"
             name="correo"
+            placeholder="Correo electrónico"
             value={campos.correo}
             onChange={handleChange}
             className="bg-white p-2 w-full border border-black outline-none "
@@ -259,6 +287,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               type="password"
               id="contraseña"
               name="contraseña"
+              placeholder="Creá tu contraseña"
               value={campos.contraseña}
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
@@ -276,6 +305,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
               id="confirmarContraseña"
               name="confirmarContraseña"
               value={campos.confirmarContraseña}
+              placeholder="Repetí tu contraseña"
               onChange={handleChange}
               className="bg-white p-2 w-full border border-black outline-none "
             />
@@ -306,6 +336,16 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
         estadoAlerta={estadoAlerta}
         cambiarEstadoAlerta={cambiarEstadoAlerta}
       />
+      {isModalOpen && (
+        <ModalLegajo
+          dataUsuarios={dataUsuarios}
+          legajo={legajo}
+          setLegajo={setLegajo}
+          setDataUser={setDataUser}
+          cambiarEstadoAlerta={cambiarEstadoAlerta}
+          cambiarAlerta={cambiarAlerta}
+        />
+      )}
     </div>
   );
 };

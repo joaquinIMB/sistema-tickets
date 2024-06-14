@@ -3,19 +3,20 @@
 import { useState } from "react";
 import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/contexts/modalContext";
 
-const FormularioIniciarSesion = () => {
+const FormularioIniciarSesion = ({ dataUsuarios }) => {
   const router = useRouter();
   const [campos, establecerCampos] = useState({
-    correo: "",
+    idUsuario: "",
     contraseña: "",
   });
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
-  const { iniciarSesion, iniciarSesionGoogle } = useAuth();
+  const { iniciarSesion } = useAuth();
+  const {setIsModalOpen} = useModal()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,80 +30,42 @@ const FormularioIniciarSesion = () => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
-    const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
-    if (!expresionRegular.test(campos.correo)) {
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "error",
-        mensaje: "Por favor ingresa un correo válido",
-      });
-      return;
-    }
-    if (campos.correo === "" || campos.contraseña === "") {
+    const [usuarioActual] = dataUsuarios.filter(user => user.idUsuario.trim() === campos.idUsuario)
+    if (campos.idUsuario === "" || campos.contraseña === "") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
         mensaje: "Por favor rellena todos los campos",
       });
-      return;
+    return;
     }
-    try {
-      await iniciarSesion(campos);
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "aceptado",
-        mensaje: `¡Bienvenidx de vuelta!`,
-      });
-      router.replace("/admin/ticket/tickets-sin-abrir");
-      establecerCampos({
-        correo: "",
-        contraseña: "",
-      });
-    } catch (error) {
-      switch (error.code) {
-        case "auth/wrong-password":
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "La contraseña no es correcta",
-          });
-          break;
-        case "auth/user-not-found":
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "No se encontró ningun usuario con estos datos",
-          });
-          break;
-        default:
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "Hubo un error al intentar iniciar sesion",
-          });
-          break;
+    if (
+      usuarioActual.idUsuario.trim() !== campos.idUsuario &&
+      usuarioActual.contraseña.trim() !== campos.contraseña
+    ) {
+      return
+    }
+      try {
+        iniciarSesion({
+          ...usuarioActual,
+          correo: usuarioActual.correo.trim(),
+          legajo:usuarioActual.idUsuario.trim()
+        })
+        cambiarEstadoAlerta(true);
+        cambiarAlerta({
+          tipo: "aceptado",
+          mensaje: `¡Bienvenidx de vuelta!`,
+        });
+        router.replace("/admin/ticket/tickets-sin-abrir");
+      } catch (error) {
+        console.log(error)
       }
-    }
+    
   };
 
   return (
-    <div className="bg-white container p-4 pb-2 border border-black border-opacity-5">
-      <button
-        onClick={iniciarSesionGoogle}
-        className="flex items-center justify-start gap-4 w-full border border-black hover:bg-zinc-200 text-zinc-800 p-4 py-2 my-2 font-bold"
-      >
-        <span>
-          <Image
-            src={"/buscarConGoogle.png"}
-            alt="Logo de Google, continuar iniciar sesión con Google"
-            className="w-8"
-            width={100}
-            height={100}
-          />
-        </span>
-        Continuar con Google
-      </button>
-      <h1 className="text-base font-bold w-full py-2">
+    <div className="container p-4 pb-2 pt-0">
+      <h1 className="text-base font-bold w-full pt-4 pb-2 text-gray-600">
         Inicia sesión en tu cuenta de Helpdesk Unity
       </h1>
       <form
@@ -111,15 +74,16 @@ const FormularioIniciarSesion = () => {
       >
         <div className="w-full">
           <label
-            htmlFor="email"
+            htmlFor="legajo"
             className="block text-base font-medium text-gray-700"
           >
-            Email
+            Legajo
           </label>
           <input
-            type="email"
-            id="email"
-            name="correo"
+            type="text"
+            id="legajo"
+            name="idUsuario"
+            placeholder="Ingresá tu legajo"
             value={campos.correo}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-black outline-none"
@@ -138,6 +102,7 @@ const FormularioIniciarSesion = () => {
             type="password"
             id="password"
             name="contraseña"
+            placeholder="Ingresá tu contraseña"
             value={campos.contraseña}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-black outline-none"
@@ -158,6 +123,7 @@ const FormularioIniciarSesion = () => {
           <Link
             href={"/auth/registrar-usuario"}
             className="text-blue-600 font-bold cursor-pointer"
+            onClick={() => setIsModalOpen(true)}
           >
             Crea tu cuenta
           </Link>

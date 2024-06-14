@@ -3,23 +3,16 @@
 import { Header } from "@/elementos/Header";
 import Aside from "@/elementos/Aside";
 import { useAuth } from "@/contexts/authContext";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { AperturaTicketProvider } from "@/contexts/aperturaTicketContext";
 import { DesplegableProvider } from "@/contexts/desplegableContext";
+import { Provider } from "react-redux";
+import { store } from "@/store";
 
 export default function RootLayout({ children }) {
   const { usuario } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (usuario.logged === false) {
-      router.replace("/");
-    }
-  }, [router, usuario.logged]);
 
   return (
-    <>
+    <Provider store={store}>
       <DesplegableProvider>
         {usuario.logged === true && (
           <div className="flex w-full relative overflow-hidden">
@@ -37,6 +30,6 @@ export default function RootLayout({ children }) {
           </div>
         )}
       </DesplegableProvider>
-    </>
+    </Provider>
   );
 }

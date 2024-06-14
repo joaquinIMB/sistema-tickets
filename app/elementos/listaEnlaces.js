@@ -1,3 +1,5 @@
+import { urlBase, urlState } from "@/routes/appRoutes";
+
 const listaSideBar = [
   {
     label: "Tickets",
@@ -9,15 +11,15 @@ const listaSideBar = [
 const listaCategorias = [
   {
     label: "Nuevos",
-    href: "/admin/ticket/tickets-sin-abrir",
+    href: urlBase("tickets-sin-abrir"),
   },
   {
     label: "Mis tickets",
-    href: "/admin/ticket/mis-tickets",
+    href: urlBase("mis-tickets"),
   },
   {
     label: "Tickets Solicitados",
-    href: "/admin/ticket/tickets-creados",
+    href: urlBase("tickets-creados"),
   },
 ];
 
@@ -25,32 +27,32 @@ const listaEstados = [
   {
     label: "Abiertos",
     estado: "abierto",
-    href: "/admin/ticket/abierto",
+    href: urlState("abierto"),
   },
   {
     label: "Pendientes",
     estado: "pendiente",
-    href: "/admin/ticket/pendiente",
+    href: urlState("pendiente"),
   },
   {
     label: "En Proceso",
     estado: "proceso",
-    href: "/admin/ticket/proceso",
+    href: urlState("proceso"),
   },
   {
     label: "Resueltos",
     estado: "resuelto",
-    href: "/admin/ticket/resuelto",
+    href: urlState("resuelto"),
   },
   {
     label: "Anulados",
     estado: "anulado",
-    href: "/admin/ticket/anulado",
+    href: urlState("anulado"),
   },
   {
     label: "En Revisión",
     estado: "revision",
-    href: "/admin/ticket/revision",
+    href: urlState("revision"),
   },
 ];
 

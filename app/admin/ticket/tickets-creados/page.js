@@ -1,7 +1,5 @@
-import { Loader } from "@/elementos/Loader";
 import { TraerTicketPorEmisor } from "@/componentes/TraerTicketPorEmisor";
 import { apiUsuarios } from "@/routes/apiRoutes";
-import { Suspense } from "react";
 
 export const metadata = {
   title: "Tickets emitidos por mí - Helpdesk Unity - Sistema de tickets",
@@ -15,11 +13,5 @@ export default async function TicketsCreados() {
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
-  return (
-    <>
-      <Suspense fallback={<Loader />}>
-        <TraerTicketPorEmisor dataUsuario={dataUsuario} />
-      </Suspense>
-    </>
-  );
+  return <TraerTicketPorEmisor dataUsuario={dataUsuario} />;
 }

@@ -1,15 +1,13 @@
+import { getConnection } from "@/database/sqlConfig";
 import { NextResponse } from "next/server";
-import { db } from "@/firebase/FirebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
 
-export const GET = async (request) => {
-  const referenciaTicket = collection(db, "tickets");
-
-  const tickets = query(referenciaTicket, where("idEstado", "==", "nuevo"));
-
-  const ticketSnapshot = await getDocs(tickets);
-
-  const documentos = ticketSnapshot.docs.map((ticket) => ticket.data());
-
-  return NextResponse.json(documentos);
-};
+export async function GET() {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query("SELECT * FROM ST_tickets where idEstado = 'nuevo'")
+    return NextResponse.json(result.recordset);
+  } catch (error) {
+    console.error("Error al obtener datos.", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

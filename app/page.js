@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { lobster, poppins } from "@/elementos/fuentes";
 
-export default function Inicio() {
+export default async function Inicio() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex items-center justify-between max-md:justify-center px-12 py-3 pt-4 border-b-2 border-black border-opacity-5 text-white">
@@ -17,7 +17,7 @@ export default function Inicio() {
             className="inline-flex h-8 items-center justify-center bg-blue-700 p-5 text-base font-medium shadow transition-colors border border-blue-600 hover:bg-blue-600 "
             href="/auth/iniciar-sesion"
           >
-            Iniciar Sesion
+            Acceder
           </Link>
           <Link
             className="inline-flex h-8 items-center justify-center hover:border-gray-700 hover:text-gray-700 border border-black text-black p-5 text-base font-medium shadow transition-color"
@@ -45,12 +45,12 @@ export default function Inicio() {
           Tu plataforma centralizada para resolver problemas y recibir
           asistencia técnica.
         </p>
-        <div className={`flex items-center justify-center w-full gap-6 max-md:flex text-white pt-10`}>
+        <div className={`max-md:flex hidden items-center justify-center w-full gap-6 text-white pt-10`}>
           <Link
             className="inline-flex h-8 items-center justify-center bg-blue-700 p-5 text-base font-medium shadow transition-colors border border-blue-600 hover:bg-blue-600 "
             href="/auth/iniciar-sesion"
           >
-            Iniciar Sesion
+            Acceder
           </Link>
           <Link
             className="inline-flex h-8 items-center justify-center hover:border-gray-700 hover:text-gray-700 border border-black text-black p-5 text-base font-medium shadow transition-color"
@@ -62,7 +62,7 @@ export default function Inicio() {
       </main>
       <footer className="flex items-center justify-center py-4 border-t-2 border-black border-opacity-5 text-black">
         <p className="text-sm">
-          © 2024 Helpdesk Unity. Todos los derechos reservados.
+          © 2024 Sports Family S.A. Todos los derechos reservados.
         </p>
       </footer>
     </div>

@@ -3,22 +3,23 @@
 import { useEffect, useState } from "react";
 import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
+import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
+import { Loader } from "@/elementos/Loader";
 
-export const InformacionTicket = ({ ticket, dataMovimientos }) => {
+export const InformacionTicket = ({ ticket }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
-
+  const { data, error, isLoading } = useGetMovimientoTicketQuery(
+    ticket.idTicket
+  );
   const [prioridad, cambiarPrioridad] = useState(false);
 
-  useEffect(() => {
-    if (ticket) {
-      cambiarCampos((prevData) => ({
-        ...prevData,
-        prioridad: ticket.prioridad,
-      }));
-    }
-  }, [ticket, cambiarCampos, ticket.prioridad]);
 
-  const ultimoMovimiento = dataMovimientos[dataMovimientos.length - 1];
+  useEffect(() => {
+    cambiarCampos((prevData) => ({
+      ...prevData,
+      prioridad: ticket.prioridad,
+    }));
+  }, [cambiarCampos, ticket.prioridad]);
 
   const handleResetPrioridad = () => {
     cambiarPrioridad(!prioridad);
@@ -27,6 +28,11 @@ export const InformacionTicket = ({ ticket, dataMovimientos }) => {
       prioridad: ticket.prioridad,
     }));
   };
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
+
+  const ultimoMovimiento = data ? data[data.length - 1] : null;
 
   return (
     <div className="p-4 pb-0 bg-white min-h-[250px] border-y border-opacity-5 shadow-sm rounded-sm  w-full">
@@ -47,7 +53,7 @@ export const InformacionTicket = ({ ticket, dataMovimientos }) => {
         <li>
           Ult movimiento:
           <span className="text-neutral-600 pl-2 font-semibold">
-            {ultimoMovimiento.fechaHoraRegistro}
+            {ultimoMovimiento ? ultimoMovimiento.fechaHoraRegistro : "N/A"}
           </span>
         </li>
         <li>

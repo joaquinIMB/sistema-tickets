@@ -1,43 +1,58 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { Loader } from "@/elementos/Loader";
 import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
-import { useTraerDataTicket } from "@/hooks/useTraerDataTickets";
+import { useGetTicketsQuery } from "@/services/apiTicket";
+import { Loader } from "@/elementos/Loader";
+import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
+import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 
 export const TraerTicketPorEmisor = ({ dataUsuario }) => {
   const [ticket, setTicket] = useState();
   const [usuarioActual, setUsuarioActual] = useState();
   const { usuario } = useAuth();
-  const data = useTraerDataTicket();
+  const { data, error, isLoading, refetch } = useGetTicketsQuery();
+
   useEffect(() => {
-    const usuarioActual = dataUsuario.find(
-      (user) => user.correo === usuario.email
-    );
-    setUsuarioActual(usuarioActual);
-    if (usuarioActual && data) {
-      const ticketsDeUsuario = data.map(
-        (ticket) => ticket.legajoEmisor === usuarioActual.idUsuario && ticket
+    if (dataUsuario) {
+      const [usuarioActual] = dataUsuario.filter(
+        (user) => user.correo.trim() === usuario.email
       );
-      return setTicket(ticketsDeUsuario);
+      setUsuarioActual(usuarioActual);
+      if (usuarioActual && data) {
+        const ticketsDeUsuario = data.filter((ticket) => {
+          if (ticket.legajoEmisor.trim() === usuarioActual.idUsuario.trim()) {
+            return ticket;
+          }
+        });
+        return setTicket(ticketsDeUsuario);
+      }
     }
   }, [dataUsuario, usuario.email, data]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  });
+
+  if (isLoading) return <SkeletonHeaderListaTicket />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <HeaderListaTickets />
-        {ticket &&
-          ticket.map((ticket) => (
+      <HeaderListaTickets />
+      {ticket &&
+        ticket.map((ticket) => (
             <Ticket
               key={ticket.idTicket}
               ticket={ticket}
               usuarioActual={usuarioActual}
             />
-          ))}
-      </Suspense>
+        ))}
     </>
   );
 };

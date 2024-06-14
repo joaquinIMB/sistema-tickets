@@ -50,6 +50,7 @@
   height: 92vh;
 }
 
+
 /* Diseño Adaptable */
 @media screen and (max-width: 1656px) {
   .header {
