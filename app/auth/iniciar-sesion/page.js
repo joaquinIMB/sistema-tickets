@@ -15,5 +15,5 @@ export default async function IniciarSesion() {
     .then((res) => res.json())
     .catch((err) => console.log(err));
 
-  return <FormularioIniciarSesion dataUsuarios={dataUsuarios}/>;
+  return <FormularioIniciarSesion dataUsuarios={dataUsuarios} />;
 }

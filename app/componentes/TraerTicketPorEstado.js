@@ -6,6 +6,7 @@ import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetStateIdQuery } from "@/services/apiTicket";
+import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 
 export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
   const [ticket, setTicket] = useState();
@@ -39,7 +40,7 @@ export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
     return () => clearInterval(interval);
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <SkeletonHeaderListaTicket />;
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>

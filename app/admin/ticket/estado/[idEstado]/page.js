@@ -1,8 +1,6 @@
-import { Loader } from "@/elementos/Loader";
 import { TraerTicketPorEstado } from "@/componentes/TraerTicketPorEstado";
 import { listaEstados } from "@/elementos/listaEnlaces";
 import { apiUsuarios } from "@/routes/apiRoutes";
-import { Suspense } from "react";
 
 export function generateMetadata({ params, searchParams }, parent) {
   const { estado } = params;
@@ -30,9 +28,7 @@ export default async function TicketsPorEstados({ params }) {
   return (
     <>
       {dataUsuario && (
-        <Suspense fallback={<Loader />}>
-          <TraerTicketPorEstado idEstado={idEstado} dataUsuario={dataUsuario} />
-        </Suspense>
+        <TraerTicketPorEstado idEstado={idEstado} dataUsuario={dataUsuario} />
       )}
     </>
   );

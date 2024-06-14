@@ -1,5 +1,5 @@
 import FormularioCrearTicket from "@/componentes/FormularioCrearTicket";
-import { Loader } from "@/elementos/Loader";
+import { SkeletonFormularioCrearTicket } from "@/elementos/skeletons/SkeletonFormCrearTicket";
 import { apiSectores, apiUsuarios } from "@/routes/apiRoutes";
 import { Suspense } from "react";
 
@@ -26,7 +26,7 @@ export default async function CrearTicket() {
     ]);
     
     return (
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<SkeletonFormularioCrearTicket />}>
         {dataUsuario && dataSector && (
           <FormularioCrearTicket dataUsuario={dataUsuario} dataSector={dataSector} />
         )}

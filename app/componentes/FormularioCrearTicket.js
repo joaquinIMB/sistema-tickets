@@ -13,6 +13,7 @@ import {
 } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import Alerta from "./Alerta";
+import { SkeletonFormularioCrearTicket } from "@/elementos/skeletons/SkeletonFormCrearTicket";
 
 const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   const { usuario } = useAuth();
@@ -136,7 +137,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     }
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <SkeletonFormularioCrearTicket />;
   if (error) return <div>Error: {error.message}</div>;
 
   return (

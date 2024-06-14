@@ -6,6 +6,8 @@ import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetTicketsQuery } from "@/services/apiTicket";
+import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
+import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 
 export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   const [ticket, setTicket] = useState();
@@ -38,10 +40,10 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
     return () => clearInterval(interval);
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <SkeletonHeaderListaTicket />;
   if (error) return <div>Error: {error.message}</div>;
   return (
-    <Suspense fallback={<Loader />}>
+    <>
       <HeaderListaTickets />
       {ticket &&
         ticket.map((ticket) => (
@@ -51,6 +53,6 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
             usuarioActual={usuarioActual}
           />
         ))}
-    </Suspense>
+    </>
   );
 };

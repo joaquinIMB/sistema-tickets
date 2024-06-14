@@ -1,11 +1,13 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { Loader } from "@/elementos/Loader";
 import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetTicketsQuery } from "@/services/apiTicket";
+import { Loader } from "@/elementos/Loader";
+import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
+import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 
 export const TraerTicketPorEmisor = ({ dataUsuario }) => {
   const [ticket, setTicket] = useState();
@@ -20,13 +22,11 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
       );
       setUsuarioActual(usuarioActual);
       if (usuarioActual && data) {
-        const ticketsDeUsuario = data.filter(
-          (ticket) => {
-            if (ticket.legajoEmisor.trim() === usuarioActual.idUsuario.trim()) {
-              return ticket;
-            }
+        const ticketsDeUsuario = data.filter((ticket) => {
+          if (ticket.legajoEmisor.trim() === usuarioActual.idUsuario.trim()) {
+            return ticket;
           }
-        );
+        });
         return setTicket(ticketsDeUsuario);
       }
     }
@@ -40,21 +40,19 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
     return () => clearInterval(interval);
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <SkeletonHeaderListaTicket />;
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <HeaderListaTickets />
-        {ticket &&
-          ticket.map((ticket) => (
+      <HeaderListaTickets />
+      {ticket &&
+        ticket.map((ticket) => (
             <Ticket
               key={ticket.idTicket}
               ticket={ticket}
               usuarioActual={usuarioActual}
             />
-          ))}
-      </Suspense>
+        ))}
     </>
   );
 };

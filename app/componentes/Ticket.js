@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 import { Loader } from "@/elementos/Loader";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
+import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
   const {
@@ -77,7 +78,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
     }
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <SkeletonTicket />;
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>
