@@ -54,7 +54,7 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
         cambiarEstadoAlerta(true);
         cambiarAlerta({
           tipo: "aceptado",
-          mensaje: `¡Bienvenidx de vuelta!`,
+          mensaje: `¡Bienvenido/a de vuelta!`,
         });
         router.replace("/admin/ticket/tickets-sin-abrir");
       } catch (error) {

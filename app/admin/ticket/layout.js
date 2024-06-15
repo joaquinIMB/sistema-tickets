@@ -7,9 +7,17 @@ import { AperturaTicketProvider } from "@/contexts/aperturaTicketContext";
 import { DesplegableProvider } from "@/contexts/desplegableContext";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({ children }) {
   const { usuario } = useAuth();
+  const router = useRouter();
+  useMemo(() => {
+    if (!usuario.logged) {
+      router.push("/auth/iniciar-sesion");
+    }
+  }, [usuario.logged, router]);
 
   return (
     <Provider store={store}>
