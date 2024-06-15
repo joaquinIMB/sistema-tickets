@@ -1,5 +1,4 @@
 import FormularioRegistroUsuario from "@/componentes/FormularioRegistroUsuario";
-import { apiSectores } from "@/routes/apiRoutes";
 
 export const metadata = {
   title: "Registrarse - Helpdesk Unity - Sistema de tickets",
@@ -8,18 +7,20 @@ export const metadata = {
 };
 
 export default async function RegistrarUsuario() {
-  const dataSector = await fetch(`${apiSectores()}`, {
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.URL_DEV;
+
+  const dataSector = await fetch(`${API_URL}/sectores`, {
     cache: "no-store",
   })
     .then((res) => res.json())
     .catch((err) => console.log(err));
 
-  const dataUsuarios = await fetch(
-    `http://localhost:3000/api/ticket/usuarios`,
-    {
-      cache: "no-store",
-    }
-  )
+  const dataUsuarios = await fetch(`${API_URL}/usuarios`, {
+    cache: "no-store",
+  })
     .then((res) => res.json())
     .catch((err) => console.log(err));
 

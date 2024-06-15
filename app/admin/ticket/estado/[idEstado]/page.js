@@ -1,6 +1,5 @@
 import { TraerTicketPorEstado } from "@/componentes/TraerTicketPorEstado";
 import { listaEstados } from "@/elementos/listaEnlaces";
-import { apiUsuarios } from "@/routes/apiRoutes";
 
 export function generateMetadata({ params, searchParams }, parent) {
   const { estado } = params;
@@ -20,7 +19,12 @@ export function generateMetadata({ params, searchParams }, parent) {
 export default async function TicketsPorEstados({ params }) {
   const { idEstado } = params;
 
-  const dataUsuario = await fetch(`${apiUsuarios()}`, {
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.URL_DEV;
+
+  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
     cache: "no-store",
   })
     .then((respuesta) => respuesta.json())

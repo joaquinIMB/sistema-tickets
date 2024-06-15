@@ -1,6 +1,5 @@
 import FormularioCrearTicket from "@/componentes/FormularioCrearTicket";
 import { SkeletonFormularioCrearTicket } from "@/elementos/skeletons/SkeletonFormCrearTicket";
-import { apiSectores, apiUsuarios } from "@/routes/apiRoutes";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -10,30 +9,29 @@ export const metadata = {
 };
 
 export default async function CrearTicket() {
-  try {
-    const [dataUsuarioResponse, dataSectorResponse] = await Promise.all([
-      fetch(apiUsuarios(), { cache: "no-store" }),
-      fetch(apiSectores()),
-    ]);
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.URL_DEV;
 
-    if (!dataUsuarioResponse.ok || !dataSectorResponse.ok) {
-      throw new Error("Error fetching data");
-    }
+  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
+    cache: "no-store",
+  })
+    .then((respuesta) => respuesta.json())
+    .catch((error) => console.log(error));
 
-    const [dataUsuario, dataSector] = await Promise.all([
-      dataUsuarioResponse.json(),
-      dataSectorResponse.json(),
-    ]);
-    
-    return (
-      <Suspense fallback={<SkeletonFormularioCrearTicket />}>
-        {dataUsuario && dataSector && (
-          <FormularioCrearTicket dataUsuario={dataUsuario} dataSector={dataSector} />
-        )}
-      </Suspense>
-    );
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return <div>Error loading data</div>;
-  }
+  const dataSector = await fetch(`${API_URL}/sectores`)
+    .then((respuesta) => respuesta.json())
+    .catch((error) => console.log(error));
+
+  return (
+    <Suspense fallback={<SkeletonFormularioCrearTicket />}>
+      {dataUsuario && dataSector && (
+        <FormularioCrearTicket
+          dataUsuario={dataUsuario}
+          dataSector={dataSector}
+        />
+      )}
+    </Suspense>
+  );
 }
