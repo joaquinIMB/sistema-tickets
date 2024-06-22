@@ -1,7 +1,7 @@
 import { getConnection } from "@/database/sqlConfig";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req) {
   try {
     const pool = await getConnection();
     const result = await pool.request().query("SELECT * FROM ST_tickets where idEstado = 'nuevo'")

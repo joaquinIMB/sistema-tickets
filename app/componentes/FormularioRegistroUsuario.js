@@ -6,12 +6,14 @@ import Link from "next/link";
 import { SeleccionarSector } from "./SeleccionarSector";
 import ModalLegajo from "./ModalLegajo";
 import { useModal } from "@/contexts/modalContext";
+import { useAuth } from "@/contexts/authContext";
 import { useUpdateDataUsuarioMutation } from "@/services/apiTicket";
 import { useRouter } from "next/navigation";
 
 const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
   const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
   const { isModalOpen, handleModalOpen, handleCloseModal } = useModal();
+  const { usuarioExistente,setUsuarioExistente } = useAuth();
   const [actualizarDatosUser] = useUpdateDataUsuarioMutation();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
@@ -44,6 +46,9 @@ const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
             tipo: "correcto",
             mensaje: "¡Ya se encuentra registrado!",
           });
+          setUsuarioExistente({
+            legajo: user.idUsuario
+          });
           setTimeout(() => {
             router.push("/auth/iniciar-sesion");
           }, 2000);
@@ -69,7 +74,7 @@ const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
         });
       }
     }
-  }, [dataUser, handleCloseModal, router]);
+  }, [dataUser, handleCloseModal, router, setUsuarioExistente]);
 
   const validarCampos = () => {
     const camposVacios = Object.values(campos).some((valor) => valor === "");

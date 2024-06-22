@@ -17,6 +17,8 @@ function AuthProvider({ children }) {
     legajo: null,
   });
   const [cargando, cambiarCargando] = useState(true);
+  const [usuarioExistente, setUsuarioExistente] = useState();
+
   const pathname = usePathname();
 
   useEffect(() => {
@@ -34,8 +36,8 @@ function AuthProvider({ children }) {
   const iniciarSesion = (usuarioActual) => {
     const newUser = {
       logged: true,
-      email:usuarioActual.correo,
-      legajo:usuarioActual.idUsuario,
+      email: usuarioActual.correo,
+      legajo: usuarioActual.idUsuario,
     };
     cambiarUsuario(newUser);
     localStorage.setItem("usuario", JSON.stringify(newUser));
@@ -55,8 +57,10 @@ function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         usuario,
+        usuarioExistente,
         iniciarSesion,
         cerrarSesion,
+        setUsuarioExistente,
       }}
     >
       {cargando && pathname !== "/" ? <Loader /> : children}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
 import Link from "next/link";
@@ -15,8 +15,21 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
   });
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
-  const { iniciarSesion } = useAuth();
-  const {setIsModalOpen} = useModal()
+  const { iniciarSesion, usuarioExistente } = useAuth();
+  const { setIsModalOpen } = useModal();
+
+  useMemo(() => {
+    if (usuarioExistente) {
+      const [usuarioActual] = dataUsuarios.filter(
+        (user) => user.idUsuario.trim() === usuarioExistente.legajo
+      );
+
+      establecerCampos({
+        idUsuario: usuarioActual.idUsuario,
+        contraseña: usuarioActual.contraseña,
+      });
+    }
+  }, [usuarioExistente, dataUsuarios]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,37 +43,40 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
-    const [usuarioActual] = dataUsuarios.filter(user => user.idUsuario.trim() === campos.idUsuario)
+    const [usuarioActual] = dataUsuarios.filter(
+      (user) => user.idUsuario.trim() === campos.idUsuario
+    );
     if (campos.idUsuario === "" || campos.contraseña === "") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
         mensaje: "Por favor rellena todos los campos",
       });
-    return;
+      return;
     }
-    if (
-      usuarioActual.idUsuario.trim() !== campos.idUsuario &&
-      usuarioActual.contraseña.trim() !== campos.contraseña
-    ) {
-      return
+    if (usuarioActual.contraseña !== campos.contraseña) {
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: "La contraseña ingresada es incorrecta",
+      });
+      return;
     }
-      try {
-        iniciarSesion({
-          ...usuarioActual,
-          correo: usuarioActual.correo.trim(),
-          legajo:usuarioActual.idUsuario.trim()
-        })
-        cambiarEstadoAlerta(true);
-        cambiarAlerta({
-          tipo: "aceptado",
-          mensaje: `¡Bienvenido/a de vuelta!`,
-        });
-        router.replace("/admin/ticket/tickets-sin-abrir");
-      } catch (error) {
-        console.log(error)
-      }
-    
+    try {
+      iniciarSesion({
+        ...usuarioActual,
+        correo: usuarioActual.correo.trim(),
+        legajo: usuarioActual.idUsuario.trim(),
+      });
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "aceptado",
+        mensaje: `¡Bienvenido/a de vuelta!`,
+      });
+      router.replace("/admin/ticket/tickets-sin-abrir");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -84,7 +100,7 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
             id="legajo"
             name="idUsuario"
             placeholder="Ingresá tu legajo"
-            value={campos.correo}
+            value={campos.idUsuario}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-black outline-none"
             required
@@ -93,14 +109,14 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
 
         <div className="mt-4">
           <label
-            htmlFor="password"
+            htmlFor="contraseña"
             className="block text-base font-medium text-gray-700"
           >
             Contraseña
           </label>
           <input
             type="password"
-            id="password"
+            id="contraseña"
             name="contraseña"
             placeholder="Ingresá tu contraseña"
             value={campos.contraseña}
