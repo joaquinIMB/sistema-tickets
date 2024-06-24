@@ -74,7 +74,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       refetch();
       setPopUp(true);
     } else {
-      router.push(`movimientos-ticket/${ticket.idTicket}`);
+      router.replace(`/admin/ticket/movimientos-ticket/${ticket.idTicket}`);
     }
   };
 
