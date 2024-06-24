@@ -12,7 +12,7 @@ export default async function TicketsSinAbrir() {
       ? process.env.NEXT_PUBLIC_API_URL
       : process.env.URL_DEV;
 
-  const dataSector = await fetch(`${API_URL}/sectores`, {
+  const dataSector = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sectores`, {
     cache: "no-store",
   })
     .then((respuesta) => respuesta.json())

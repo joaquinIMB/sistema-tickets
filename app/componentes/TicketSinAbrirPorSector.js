@@ -1,13 +1,11 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
-import { Loader } from "@/elementos/Loader";
 import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { useAuth } from "../contexts/authContext";
 import { Ticket } from "./Ticket";
 import { useGetNewTicketsQuery } from "@/services/apiTicket";
-import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 
 export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
