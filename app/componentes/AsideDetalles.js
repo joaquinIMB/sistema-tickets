@@ -5,7 +5,7 @@ import { DetalleResponsable } from "./DetalleResponsable";
 import { InformacionTicket } from "./InformacionTicket";
 import { useGetTicketIdQuery } from "@/services/apiTicket";
 import styles from "@/componentes/offcanvas.module.css";
-import Offcanvas from "./Offcanvas"; // Importa el componente Offcanvas
+import Offcanvas from "./OffCanvas";
 import { BotonMenuMovimientos } from "./BotonMenuMovimientos";
 
 export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
