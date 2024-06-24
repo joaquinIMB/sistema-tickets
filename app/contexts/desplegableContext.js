@@ -10,15 +10,9 @@ const useDesplegable = () => {
 
 const DesplegableProvider = ({ children }) => {
   const [desplegar, setDesplegar] = useState(false);
-  const [seleccion, cambiarSeleccion] = useState(false);
-  const [seleccionUsuario, cambiarUsuario] = useState(false);
-  const [seleccionPrioridad, cambiarSeleccionPrioridad] = useState(false);
-
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 1350) {
-        setDesplegar(true);
-      } else {
+      if (window.innerWidth > 1028) {
         setDesplegar(false);
       }
     };
@@ -38,13 +32,7 @@ const DesplegableProvider = ({ children }) => {
     <DesplegableContext.Provider
       value={{
         desplegar,
-        seleccion,
-        seleccionUsuario,
-        seleccionPrioridad,
         setDesplegar,
-        cambiarSeleccion,
-        cambiarUsuario,
-        cambiarSeleccionPrioridad,
       }}
     >
       {children}

@@ -64,7 +64,7 @@ export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
   ]);
 
   return (
-    <section className="p-4 bg-white min-h-[250px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
+    <section className="p-4 bg-white min-h-[100px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
       <header className="flex flex-row justify-between">
         <h2 className="font-semibold text-lg">Responsable</h2>
         <span

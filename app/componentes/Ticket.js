@@ -7,9 +7,9 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
-import { Loader } from "@/elementos/Loader";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
+import { ModalAperturaTicket } from "./ModalAperturaTicket";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
   const {
@@ -85,7 +85,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       {ticket && (
         <div onClick={handlePopUp} className="w-full relative cursor-pointer">
           <ul
-            className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black transition-[3s] ${styles.listaTicket}`}
+            className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black transition-all ${styles.listaTicket}`}
           >
             <li className={`w-[25%] ${styles.usuario}`}>
               <h1 className="font-semibold text-lg"> {ticket.nombreEmisor}</h1>
@@ -94,7 +94,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
               </span>
             </li>
             <li
-              className={`w-[35%] text-center font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}
+              className={`w-[30%] text-center font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}
             >
               {ticket.tituloTicket}
             </li>
@@ -114,7 +114,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
               </span>
             </li>
             <li
-              className={`w-[18%] text-end font-semibold text-gray-600 max-md:hidden ${styles.fecha}`}
+              className={`w-[18%] text-end font-semibold text-gray-600 max-sm:hidden ${styles.fecha}`}
             >
               {ticket.fechaHoraRegistro}
             </li>
@@ -122,25 +122,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         </div>
       )}
       {popUp && (
-        <div className="flex p-4 flex-col justify-center gap-3 w-80 bg-[#efefef] absolute z-[999] overflow-hidden shadow-xl rounded-md">
-          <h1 className="text-black font-semibold">
-            ¿Quiere realizar la apertura del ticket {ticket.idTicket}?
-          </h1>
-          <div className="flex flex-row w-full justify-center gap-4 ">
-            <button
-              className="w-md px-4 py-1 bg-blue-700  text-white font-semibold hover:shadow-4xl transition"
-              onClick={handleClick}
-            >
-              Aceptar
-            </button>
-            <button
-              className="w-md px-4 py-1 bg-red-700  text-white font-semibold hover:shadow-4xl transition"
-              onClick={() => setPopUp(false)}
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
+        <ModalAperturaTicket setPopUp={setPopUp} handleClick={handleClick} ticket={ticket}/>
       )}
     </>
   );

@@ -7,7 +7,7 @@
   height: 100%;
   top: 0;
   z-index: 3;
-  animation: entrada .3s ease forwards;
+  animation: entrada 0.3s ease forwards;
 }
 
 .contenedorMovTickets {
@@ -50,7 +50,6 @@
   height: 92vh;
 }
 
-
 /* Diseño Adaptable */
 @media screen and (max-width: 1656px) {
   .header {
@@ -70,35 +69,38 @@
 @media screen and (max-width: 1350px) {
   .asideAdaptable {
     position: absolute;
-    left: 76px;
-    z-index: 99;
+    left: 0px;
+    z-index: 999;
     box-shadow: -2px 1px 40px #00000050;
+    display: flex;
   }
-  .sideBarAdaptable {
+  /* .sideBarAdaptable {
     position: absolute;
     z-index: 999;
     height: 100%;
-  }
+  } */
   .subNavAdaptable {
     box-shadow: 3px 0 18px #00000030;
   }
 }
 
-@media screen and (max-width: 764px) {
-  .listaTicket {
-    padding: 0 1rem;
-  }
+@media screen and (max-width: 548px) {
   .prioridad {
     display: none;
   }
-  .asideAdaptable{
-    left:58px !important;
+  .listaTicket {
+    padding: 0 .75rem !important;
   }
-  .usuario{
+}
+@media screen and (max-width: 764px) {
+  .listaTicket {
+    padding: 0 1.5rem !important;
+  }
+  .usuario {
     width: 60% !important;
   }
-  .estado{
-    width: 40% !important;
+  .estado {
+    width: 20% !important;
   }
 }
 
@@ -111,20 +113,23 @@
   }
 }
 
-@media screen and (max-width: 1012px) {
+@media screen and (max-width: 1064px) {
   .motivo {
     display: none;
   }
+  .usuario {
+    width: 35%;
+  }
   .estado {
-    width: 25% !important;
+    width: 15%;
   }
   .fecha {
     width: 25% !important;
   }
-  .asideDetalles{
+  .asideDetalles {
     display: none !important;
   }
-  .contenedorSeccionMovimientos{
+  .contenedorSeccionMovimientos {
     width: 100% !important;
   }
 }
@@ -132,12 +137,6 @@
 .contraerSideBar {
   @media screen and (max-width: 1175px) {
     width: 0;
-  }
-}
-
-.correo {
-  @media screen and (max-width: 680px) {
-    display: none;
   }
 }
 

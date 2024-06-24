@@ -1,7 +1,7 @@
-import { AsideDetalles } from "@/componentes/AsideDetalles";
-import { SeccionMovimientoTicket } from "@/componentes/SeccionMovimientosTicket";
 import { MovimientoTicketProvider } from "@/contexts/movimientosContext";
+import { SeccionMovimientoTicket } from "@/componentes/SeccionMovimientosTicket";
 import styles from "@/componentes/admin.module.css";
+import { AsideDetalles } from "@/componentes/AsideDetalles";
 
 export function generateMetadata({ params, searchParams }, parent) {
   const { idTicket } = params;

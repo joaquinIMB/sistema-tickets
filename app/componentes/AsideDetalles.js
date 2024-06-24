@@ -4,11 +4,9 @@ import { DetalleResponsable } from "./DetalleResponsable";
 import { InformacionTicket } from "./InformacionTicket";
 import { useGetTicketIdQuery } from "@/services/apiTicket";
 import styles from "@/componentes/admin.module.css";
-import { Loader } from "@/elementos/Loader";
 
 export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
-  const { data, error, isLoading } = useGetTicketIdQuery(idTicket);
-  if (isLoading) return <Loader />;
+  const { data, error } = useGetTicketIdQuery(idTicket);
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>
@@ -27,7 +25,7 @@ export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
               dataSector={dataSector}
               dataUsuario={dataUsuario}
             />
-            <div className="p-4 bg-white h-[200px] min-h-[200px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
+            <div className="p-4 bg-white h-[200px] min-h-[100px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
               <h2 className="font-semibold text-lg">Solicitante</h2>
               <div className="flex flex-col gap-2 py-4">
                 <div className="flex flex-row w-full justify-between">

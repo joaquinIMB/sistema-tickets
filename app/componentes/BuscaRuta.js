@@ -30,7 +30,7 @@ export const BuscaRuta = () => {
   return (
     <div className="flex gap-2 items-center">
       <h1
-        className={`capitalize text-[28px] text-gray-800 font-semibold ${
+        className={`capitalize text-[22px] text-gray-800 font-semibold${
           enlace != "Tickets" && "text-xl"
         }`}
       >{`${enlace != undefined ? enlace : "Crear ticket"}`}</h1>

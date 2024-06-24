@@ -35,7 +35,7 @@ export const InformacionTicket = ({ ticket }) => {
   const ultimoMovimiento = data ? data[data.length - 1] : null;
 
   return (
-    <div className="p-4 pb-0 bg-white min-h-[250px] border-y border-opacity-5 shadow-sm rounded-sm  w-full">
+    <div className="p-4 pb-0 bg-white min-h-[100px] border-y border-opacity-5 shadow-sm rounded-sm  w-full">
       <h2 className="font-semibold text-lg">Información de Ticket</h2>
       <ul className="py-3 flex flex-col gap-3 text-gray-500">
         <li>

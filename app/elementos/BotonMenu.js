@@ -1,10 +1,11 @@
 import Image from "next/image";
+import { useDesplegable } from "@/contexts/desplegableContext";
 
-export default function BotonMenu({ setDesplegar, desplegar }) {
+export default function BotonMenu() {
+  const {desplegar, setDesplegar} = useDesplegable()
   return (
-    <button className="m-auto outline-none">
+    <button onClick={() => setDesplegar(!desplegar)} className={`m-auto mx-0 outline-none cursor-pointer ${desplegar ? "block " : "hidden max-lg:block "}  absolute left-[22px]`}>
       <Image
-        onClick={() => setDesplegar(!desplegar)}
         className={` w-9 m-auto`}
         src="/menu.png"
         alt="Logo de busqueda"
