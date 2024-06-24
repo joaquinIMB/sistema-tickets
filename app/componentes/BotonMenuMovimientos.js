@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-export const BotonMenuMovimientos = () => {
+export const BotonMenuMovimientos = ({handleShowOffcanvas}) => {
   return (
     <>
-      <button className="cursor-pointer" type="button">
+      <button type="button" className="block lg:hidden cursor-pointer" onClick={handleShowOffcanvas}>
         <Image
           className="bg-[#262626] rounded-s-full p-2 max-[1064px]:block hidden absolute right-0 top-[40%]"
           src={"/flecha-hacia-izquierda.png"}

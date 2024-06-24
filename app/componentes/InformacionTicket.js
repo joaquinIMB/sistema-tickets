@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
 import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
-import { Loader } from "@/elementos/Loader";
 
 export const InformacionTicket = ({ ticket }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
-  const { data, error, isLoading } = useGetMovimientoTicketQuery(
+  const { data, error } = useGetMovimientoTicketQuery(
     ticket.idTicket
   );
   const [prioridad, cambiarPrioridad] = useState(false);
@@ -29,7 +28,6 @@ export const InformacionTicket = ({ ticket }) => {
     }));
   };
 
-  if (isLoading) return <Loader />;
   if (error) return <div>Error: {error.message}</div>;
 
   const ultimoMovimiento = data ? data[data.length - 1] : null;
