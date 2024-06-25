@@ -11,7 +11,6 @@ import {
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
 import Alerta from "./Alerta";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
-import { Loader } from "@/elementos/Loader";
 
 const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
@@ -20,7 +19,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   const [desplegar, setDesplegar] = useState(false);
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
   const [actualizarTicket] = useUpdateTicketMutation();
-  const { data, error, isLoading } = useGetMovimientoTicketQuery(
+  const { data, error } = useGetMovimientoTicketQuery(
     ticket.idTicket
   );
 
@@ -102,7 +101,6 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       }
     }
   };
-  if (isLoading) return <Loader />;
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>

@@ -40,7 +40,7 @@ export const api = createApi({
           legajoEmisor: campos.legajoEmisor,
         }),
       }),
-      invalidatesTags: ["newTicket"],
+      invalidatesTags: ["newTicket", "tickets", "getTicketID"],
     }),
     getMovimientoTicket: builder.query({
       query: (idTicket) => `ticket/movimientos/${idTicket}`,

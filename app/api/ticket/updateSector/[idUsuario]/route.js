@@ -12,7 +12,7 @@ export async function POST(req, { params }) {
       .input("idSector", sql.VarChar(14), body.idSector)
       .input("idUsuario", sql.VarChar(8), idUsuario)
       .query(
-        `UPDATE agentes SET idSector = @idSector where codctacte = @idUsuario`
+        `UPDATE Agentes SET idSector = @idSector where codctacte = @idUsuario`
       );
 
     return NextResponse.json(result);

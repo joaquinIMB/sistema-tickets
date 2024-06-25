@@ -12,8 +12,8 @@ import { useRouter } from "next/navigation";
 
 const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
   const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
-  const { isModalOpen, handleModalOpen, handleCloseModal } = useModal();
-  const { usuarioExistente,setUsuarioExistente } = useAuth();
+  const { isModalOpen, handleOpenModal, handleCloseModal } = useModal();
+  const { setUsuarioExistente } = useAuth();
   const [actualizarDatosUser] = useUpdateDataUsuarioMutation();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
@@ -47,7 +47,7 @@ const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
             mensaje: "¡Ya se encuentra registrado!",
           });
           setUsuarioExistente({
-            legajo: user.idUsuario
+            legajo: user.idUsuario,
           });
           setTimeout(() => {
             router.push("/auth/iniciar-sesion");
@@ -125,50 +125,29 @@ const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
         idSector: campos.idSector,
         idUsuario: campos.idUsuario,
       });
+      setUsuarioExistente({
+        legajo: campos.idUsuario,
+      });
+      setTimeout(() => {
+        router.replace("/auth/iniciar-sesion");
+      }, 2000);
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "aceptado",
         mensaje: `¡Sector registrado correctamente!`,
       });
-      handleModalOpen();
+      handleOpenModal();
     } catch (error) {
-      switch (error.code) {
-        case "auth/weak-password":
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "La contraseña tiene que ser de al menos 6 caracteres",
-          });
-          break;
-        case "auth/email-already-in-use":
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje:
-              "Ya existe una cuenta con el correo electrónico proporcionado",
-          });
-          break;
-        case "auth/invalid-email":
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "El correo electrónico no es válido",
-          });
-          break;
-        default:
-          console.log(error);
-          cambiarEstadoAlerta(true);
-          cambiarAlerta({
-            tipo: "error",
-            mensaje: "Hubo un error al intentar crear la cuenta",
-          });
-          break;
-      }
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: `Hubo un error al intentar crear la cuenta: ${error}`,
+      });
     }
   };
 
   return (
-    <div className="container p-4 pb-2 pt-0">
+    <div className="container p-0 pb-2">
       <h1 className="text-base font-bold mb- w-full px-4 pt-4 pb-2 text-gray-600">
         Registrate para comenzar.
       </h1>

@@ -74,11 +74,6 @@
     box-shadow: -2px 1px 40px #00000050;
     display: flex;
   }
-  /* .sideBarAdaptable {
-    position: absolute;
-    z-index: 999;
-    height: 100%;
-  } */
   .subNavAdaptable {
     box-shadow: 3px 0 18px #00000030;
   }
@@ -143,7 +138,7 @@
   }
   .contenedorSeccionMovimientos {
     padding-bottom: 1rem;
-    height: 88vh;
+    height: 90vh;
   }
   .contenedorMovTickets {
     height: 88vh;

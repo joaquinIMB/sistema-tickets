@@ -19,8 +19,6 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
       );
     }
   }
-
-  if (isLoading) return <Loader />;
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>

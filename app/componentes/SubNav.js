@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import BotonCrearTicket from "./BotonCrearTicket";
 import styles from "@/componentes/admin.module.css";
 import BotonCerrarMenu from "@/elementos/BotonCerrarMenu";
+import BotonCerrarSesion from "./BotonCerrarSesion";
 
 export const SubNav = ({ desplegar }) => {
   const pathname = usePathname();
@@ -27,24 +28,24 @@ export const SubNav = ({ desplegar }) => {
       <section
         className={`${
           desplegar
-            ? `w-[300px] absolute z-[999] ${styles.asideAdaptable}`
+            ? `w-[260px] absolute z-[999] ${styles.asideAdaptable}`
             : "relative z-[99]"
         } transition-all flex flex-col overflow-hidden`}
       >
         <main
           className={`${
             desplegar ? "overflow-hidden" : "overflow-visible"
-          } left-[76px] h-screen bg-gradient-to-r w-[inherit] from-[#f7f7f7] to-[#ffffff] border-r ${
+          } left-[76px] h-screen bg-gradient-to-r w-[260px] from-[#f7f7f7] to-[#ffffff] border-r ${
             styles.subNavAdaptable
           } border-black border-opacity-5 overflow-Y-auto`}
         >
-          <header className={`flex flex-row ${desplegar ? "justify-start px-5 items-center" : "justify-between  px-6 "} pb-1 pt-[10px] items-center w-[300px]`}>
+          <header className={`flex flex-row ${desplegar ? "justify-start items-center px-4" : "justify-between  px-4 "} pb-1 pt-[10px] items-center w-[260px]`}>
             {desplegar && <BotonCerrarMenu/>}
             <h1 className="capitalize text-[28px] text-gray-800 font-semibold">{`${ruta}`}</h1>
             {!desplegar  && <BotonCrearTicket />}
           </header>
-          <nav className={`${poppins.className} w-[290px]`}>
-            <ul className={`py-2 px-4 flex flex-col text-zinc-900 gap-2 `}>
+          <nav className={`${poppins.className} w-[260px]`}>
+            <ul className={`py-2 px-3 flex flex-col text-zinc-900 gap-2 `}>
               {listaCategorias.map((enlace) => (
                 <li
                   key={enlace.label}
@@ -62,7 +63,7 @@ export const SubNav = ({ desplegar }) => {
                   </Link>
                 </li>
               ))}
-              <span className="py-4 px-2 pb-1 tracking-wide text-[#707070b2]">
+              <span className="py-4 px-2 pb-3 tracking-wide text-[#707070b2]">
                 Mis tickets por estado
               </span>
               {listaEstados.map((enlace, index) => (
@@ -81,16 +82,9 @@ export const SubNav = ({ desplegar }) => {
                   </Link>
                 </li>
               ))}
+              <BotonCerrarSesion/>
             </ul>
           </nav>
-          {/* <Image
-            src={"/flecha.png"}
-            alt="Logo flecha para desplegar menu de opciones"
-            width={100}
-            height={100}
-            className="w-5 bottom-5 right-5 absolute cursor-pointer rotate-180 z-50"
-            onClick={() => setDesplegar(true)}
-          /> */}
         </main>
       </section>
     </>

@@ -18,7 +18,6 @@ const Offcanvas = ({ handleClose, children }) => {
   return (
     <div className={styles.offcanvasBackdrop} onClick={handleClose}>
       <div className={styles.offcanvas} onClick={(e) => e.stopPropagation()}>
-        <button onClick={handleClose} className={styles.closeButton}>×</button>
         {children}
       </div>
     </div>
