@@ -1,9 +1,10 @@
+import { API_URL } from "@/routes/apiRoutes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   reducerPath: "api",
   tagTypes: ["tickets", "newTicket", "movTicket", "getTicketID"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api" }), // Ajusta la URL base
+  baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}` }), // Ajusta la URL base
   endpoints: (builder) => ({
     getTickets: builder.query({
       query: () => "ticket",
