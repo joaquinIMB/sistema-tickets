@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
 import Link from "next/link";
@@ -21,12 +21,10 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
   useMemo(() => {
     if (usuarioExistente) {
       const [usuarioActual] = dataUsuarios.filter(
-        (user) => user.idUsuario.trim() === usuarioExistente.legajo
+        (user) => user.idUsuario.trim() === usuarioExistente.legajo.trim()
       );
-
       establecerCampos({
         idUsuario: usuarioActual.idUsuario,
-        contraseña: usuarioActual.contraseña,
       });
     }
   }, [usuarioExistente, dataUsuarios]);
