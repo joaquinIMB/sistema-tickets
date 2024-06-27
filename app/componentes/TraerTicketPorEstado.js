@@ -22,7 +22,7 @@ export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
       setUsuarioActual(usuarioActual);
       if (usuarioActual && data) {
         const ticketsDeUsuario = data.filter((ticket) => {
-          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim()) {
+          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim() ) {
             return ticket;
           }
         });

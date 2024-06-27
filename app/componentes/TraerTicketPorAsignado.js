@@ -1,12 +1,10 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { Loader } from "@/elementos/Loader";
+import { useEffect, useState } from "react";
 import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetTicketsQuery } from "@/services/apiTicket";
-import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 
 export const TraerTicketPorAsignado = ({ dataUsuario }) => {
@@ -23,7 +21,7 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
       setUsuarioActual(usuarioActual);
       if (usuarioActual && data) {
         const ticketsDeUsuario = data.filter((ticket) => {
-          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim()) {
+          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim() && ticket.idEstado != "resuelto") {
             return ticket;
           }
         });

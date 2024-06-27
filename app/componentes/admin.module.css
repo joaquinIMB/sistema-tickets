@@ -66,6 +66,7 @@
     padding-right: 1.5rem !important;
   }
 }
+
 @media screen and (max-width: 1350px) {
   .asideAdaptable {
     position: absolute;
@@ -87,6 +88,7 @@
     padding: 0 .75rem !important;
   }
 }
+
 @media screen and (max-width: 764px) {
   .listaTicket {
     padding: 0 1.5rem !important;
@@ -123,12 +125,6 @@
   }
   .contenedorSeccionMovimientos {
     width: 100% !important;
-  }
-}
-
-.contraerSideBar {
-  @media screen and (max-width: 1175px) {
-    width: 0;
   }
 }
 

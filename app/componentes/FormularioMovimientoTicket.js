@@ -19,19 +19,20 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   const [desplegar, setDesplegar] = useState(false);
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
   const [actualizarTicket] = useUpdateTicketMutation();
-  const { data, error } = useGetMovimientoTicketQuery(
-    ticket.idTicket
-  );
+  const { data, error } = useGetMovimientoTicketQuery(ticket.idTicket);
 
   useEffect(() => {
     if (ticket) {
-      cambiarCampos((prevData) => ({
-        ...prevData,
+      cambiarCampos({
         idTicket: ticket.idTicket,
+        idSector: ticket.idSector,
         idEstado: ticket.idEstado,
+        prioridad: ticket.prioridad,
         legajoEmisor: ticket.legajoAsignado,
+        legajoAsignado: ticket.legajoAsignado,
+        nombreUsuarioAsignado: ticket.nombreUsuarioAsignado,
         descripcionMovimiento: "",
-      }));
+      });
     }
   }, [ticket, cambiarCampos]);
 
@@ -44,7 +45,9 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   };
 
   const validarCampos = () => {
-    const camposVacios = Object.values(campos).some((valor) => valor === "");
+    const camposVacios = Object.values(campos).some(
+      (valor) => valor.descripcionMovimiento === ""
+    );
     if (camposVacios) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
@@ -59,6 +62,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const fechaHora = traerFechaHora();
+    const idMovimientoTicket = data ? data.length + 1 : 1;
     if (usuarioEmisor.idUsuario == ticket.legajoEmisor.trim()) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
@@ -68,21 +72,23 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       return;
     }
     if (validarCampos) {
+      cambiarCampos((prevData) => ({
+        ...prevData,
+        fechaHoraRegistro: fechaHora,
+        idMovimientoTicket: idMovimientoTicket,
+      }));
+    }
+    if(campos.idEstado === "resuelto"){
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `Por favor complete todos los campos`,
+        mensaje: `El ticket actual está resuelto`,
       });
-      return;
+      return
     }
     if (campos) {
       try {
-        const idMovimientoTicket = data ? data.length + 1 : 1;
-        await crearMovimientoTicket({
-          ...campos,
-          idMovimientoTicket: idMovimientoTicket,
-          fechaHoraRegistro: fechaHora,
-        });
+        await crearMovimientoTicket(campos);
         await actualizarTicket(campos);
         cambiarEstadoAlerta(true);
         cambiarAlerta({
