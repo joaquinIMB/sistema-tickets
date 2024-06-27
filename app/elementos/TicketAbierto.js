@@ -6,7 +6,7 @@ export const TicketAbierto = ({ticket}) => {
           <header className="flex flex-row justify-between bg-neutral-800 min-h-[22%] py-1 px-4">
             <div className="flex flex-col w-[30%]">
               <h1 className=" text-base text-[rgb(252,252,252)]">
-                {ticket.nombreEmisor}
+                {ticket.legajoEmisor}
               </h1>
             </div>
             <div className="flex flex-col text-end text-base w-[20%]">

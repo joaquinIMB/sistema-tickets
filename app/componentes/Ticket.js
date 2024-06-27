@@ -10,6 +10,7 @@ import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 import { ModalAperturaTicket } from "./ModalAperturaTicket";
+import Alerta from "./Alerta";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
   const {
@@ -21,6 +22,8 @@ export const Ticket = ({ ticket, usuarioActual }) => {
   } = useAperturaTicket();
   const pathname = usePathname();
   const [popUp, setPopUp] = useState(false);
+  const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
+  const [alerta, cambiarAlerta] = useState({});
   const router = useRouter();
   const { data, error, isLoading, refetch } = useGetMovimientoTicketQuery(
     ticket.idTicket
@@ -29,6 +32,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
     (color) => color.estado === ticket.idEstado
   );
   const fechaHora = traerFechaHora();
+
   const handleClick = () => {
     try {
       if (
@@ -51,14 +55,13 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         const updatedCampos = {
           ...ticket,
           idEstado: "abierto",
+          legajoEmisor: ticket.legajoAsignado,
+          legajoAsignado: usuarioActual.idUsuario,
           fechaHoraRegistro: fechaHora,
           descripcionMovimiento: `Apertura de ticket ${ticket.idTicket}`,
           idMovimientoTicket: data.length + 1,
         };
-        crearMovimientoTicket({
-          ...updatedCampos,
-          legajoAsignado: usuarioActual.idUsuario,
-        });
+        crearMovimientoTicket(updatedCampos);
         actualizarTicket(updatedCampos);
         router.push(`/admin/ticket/movimientos-ticket/${ticket.idTicket}`);
       }
@@ -67,9 +70,16 @@ export const Ticket = ({ ticket, usuarioActual }) => {
     }
   };
   const handlePopUp = () => {
+    const ultimoMovimiento =
+      data &&
+      data.filter((movimiento) =>
+        movimiento.idMovimientoTicket === data.length > 1 ? data.length - 1 : 1
+      );
+    const [movimiento] = ultimoMovimiento;
     if (
       pathname !== "/admin/ticket/tickets-creados" &&
-      ticket.idEstado === "nuevo"
+      ticket.idEstado === "nuevo" &&
+      Number(usuarioActual.idUsuario) !== movimiento.legajoEmisor
     ) {
       refetch();
       setPopUp(true);
@@ -89,9 +99,11 @@ export const Ticket = ({ ticket, usuarioActual }) => {
           >
             <li className={`w-[25%] ${styles.usuario}`}>
               <h1 className="font-semibold text-lg"> {ticket.nombreEmisor}</h1>
-              <span className={`text-gray-600 ${styles.correo}`}>
-                {ticket.correoUsuarioEmisor}
-              </span>
+              {ticket.nombreEmisor.length < 25 && (
+                <span className={`text-gray-600 ${styles.correo}`}>
+                  {ticket.correoUsuarioEmisor}
+                </span>
+              )}
             </li>
             <li
               className={`w-[30%] text-center font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}
@@ -122,8 +134,18 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         </div>
       )}
       {popUp && (
-        <ModalAperturaTicket setPopUp={setPopUp} handleClick={handleClick} ticket={ticket}/>
+        <ModalAperturaTicket
+          setPopUp={setPopUp}
+          handleClick={handleClick}
+          ticket={ticket}
+        />
       )}
+      <Alerta
+        tipo={alerta.tipo}
+        mensaje={alerta.mensaje}
+        estadoAlerta={estadoAlerta}
+        cambiarEstadoAlerta={cambiarEstadoAlerta}
+      />
     </>
   );
 };

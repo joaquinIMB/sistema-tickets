@@ -10,7 +10,7 @@ import styles from "@/componentes/admin.module.css";
 import BotonCerrarMenu from "@/elementos/BotonCerrarMenu";
 import BotonCerrarSesion from "./BotonCerrarSesion";
 
-export const SubNav = ({ desplegar }) => {
+export const SubNav = ({ desplegar, setDesplegar }) => {
   const pathname = usePathname();
   const [ruta, cambiarRuta] = useState();
 
@@ -31,6 +31,7 @@ export const SubNav = ({ desplegar }) => {
             ? `w-[260px] absolute z-[999] ${styles.asideAdaptable}`
             : "relative z-[99]"
         } transition-all flex flex-col overflow-hidden`}
+        onClick={() => setDesplegar(false)}
       >
         <main
           className={`${
@@ -39,10 +40,16 @@ export const SubNav = ({ desplegar }) => {
             styles.subNavAdaptable
           } border-black border-opacity-5 overflow-Y-auto`}
         >
-          <header className={`flex flex-row ${desplegar ? "justify-start items-center px-4" : "justify-between  px-4 "} pb-1 pt-[10px] items-center w-[260px]`}>
-            {desplegar && <BotonCerrarMenu/>}
+          <header
+            className={`flex flex-row relative ${
+              desplegar
+                ? "justify-start items-center px-4"
+                : "justify-between  px-4 "
+            } pb-1 pt-[10px] items-center w-[260px]`}
+          >
+            {desplegar && <BotonCerrarMenu />}
             <h1 className="capitalize text-[28px] text-gray-800 font-semibold">{`${ruta}`}</h1>
-            {!desplegar  && <BotonCrearTicket />}
+            {!desplegar && <BotonCrearTicket />}
           </header>
           <nav className={`${poppins.className} w-[260px]`}>
             <ul className={`py-2 px-3 flex flex-col text-zinc-900 gap-2 `}>
@@ -54,6 +61,7 @@ export const SubNav = ({ desplegar }) => {
                       ? " text-blue-600 rounded-md"
                       : "hover:text-blue-600 "
                   }`}
+                  onClick={() => setDesplegar(false)}
                 >
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-2"
@@ -74,15 +82,17 @@ export const SubNav = ({ desplegar }) => {
                       ? " text-blue-600 rounded-md"
                       : "hover:text-blue-600 "
                   }`}
+                  onClick={() => setDesplegar(false)}
                 >
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-2"
-                    href={enlace.href}                  >
+                    href={enlace.href}
+                  >
                     {enlace.label}
                   </Link>
                 </li>
               ))}
-              <BotonCerrarSesion/>
+              <BotonCerrarSesion />
             </ul>
           </nav>
         </main>

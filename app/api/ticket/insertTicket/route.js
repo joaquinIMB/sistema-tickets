@@ -9,13 +9,13 @@ export async function POST(req) {
     const pool = await getConnection();
     const result = await pool
       .request()
-      .input("correoUsuarioEmisor", sql.VarChar(30), body.correoUsuarioEmisor)
+      .input("correoUsuarioEmisor", sql.VarChar(50), body.correoUsuarioEmisor)
       .input("descripcionTicket", sql.VarChar(100), body.descripcionTicket)
       .input("fechaHoraRegistro", sql.Char(18), body.fechaHoraRegistro)
       .input("idEstado", sql.VarChar(12), body.idEstado)
       .input("idSector", sql.VarChar(14), body.idSector)
       .input("idTicket", sql.Int, body.idTicket)
-      .input("nombreEmisor", sql.VarChar(18), body.nombreEmisor)
+      .input("nombreEmisor", sql.VarChar(30), body.nombreEmisor)
       .input(
         "nombreUsuarioAsignado",
         sql.VarChar(30),

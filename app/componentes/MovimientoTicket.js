@@ -1,8 +1,8 @@
-import { Loader } from "@/elementos/Loader";
+
 import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 
 export const MovimientoTicket = ({ ticket, dataUsuario }) => {
-  const { data, error, isLoading } = useGetMovimientoTicketQuery(
+  const { data, error } = useGetMovimientoTicketQuery(
     ticket.idTicket
   );
   let ultimoMovimiento = null;
@@ -34,11 +34,11 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
                   <div className="flex flex-col w-[25%]">
                     <h1 className=" text-base text-[#fcfcfc] capitalize">
                       {usuarioEmisor
-                        ? `${usuarioEmisor.nombreUsuario} ${usuarioEmisor.apellidoUsuario}`
+                        ? `${usuarioEmisor.idUsuario}`
                         : ""}
                     </h1>
                   </div>
-                  <div className="flex flex-col text-end text-base w-[25%]">
+                  <div className="flex flex-col text-end text-base w-[45%]">
                     <span className="text-[#fcfcfc]">
                       {movimiento.fechaHoraRegistro}
                     </span>

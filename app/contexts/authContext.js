@@ -3,6 +3,7 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { Loader } from "@/elementos/Loader";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
 
@@ -18,6 +19,7 @@ function AuthProvider({ children }) {
   });
   const [cargando, cambiarCargando] = useState(true);
   const [usuarioExistente, setUsuarioExistente] = useState();
+  const router = useRouter()
 
   const pathname = usePathname();
 
@@ -51,6 +53,7 @@ function AuthProvider({ children }) {
     };
     cambiarUsuario(loggedOutUser);
     localStorage.removeItem("usuario");
+    router.push("/auth/iniciar-sesion")
   };
 
   return (

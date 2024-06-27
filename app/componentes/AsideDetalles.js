@@ -23,7 +23,7 @@ export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
         data.map((ticket) => (
           <aside
             key={ticket.idTicket}
-            className={`w-[20%] min-w-[300px] border-l border-opacity-5 relative flex flex-row gap-1 p-2 pb-3 pt-1 overflow-auto flex-wrap justify-center h-[92vh] ${styles.asideDetalles}`}
+            className={`w-[20%] min-w-[300px] border-l border-opacity-5 relative flex flex-row gap-1 pb-3 pt-1 overflow-auto flex-wrap justify-center h-[92vh] ${styles.asideDetalles}`}
           >
             <InformacionTicket ticket={ticket} idTicket={idTicket} />
             <DetalleResponsable
@@ -31,7 +31,7 @@ export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
               dataSector={dataSector}
               dataUsuario={dataUsuario}
             />
-            <div className="p-4 bg-white h-[200px] min-h-[200px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
+            <div className="p-4 bg-white min-h-[200px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
               <h2 className="font-semibold text-lg">Solicitante</h2>
               <div className="flex flex-col gap-2 py-4">
                 <div className="flex flex-row w-full justify-between">
@@ -61,13 +61,18 @@ export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
           {data &&
             data.map((ticket) => (
               <div key={ticket.idTicket}>
+                <header className=" self-center w-full py-4 px-4 bg-white rounded-sm">
+                  <h2 className="text-center font-semibold text-lg">
+                    Detalles
+                  </h2>
+                </header>
                 <InformacionTicket ticket={ticket} idTicket={idTicket} />
                 <DetalleResponsable
                   ticket={ticket}
                   dataSector={dataSector}
                   dataUsuario={dataUsuario}
                 />
-                <div className="p-4 bg-white h-[200px] min-h-[200px] border-y border-opacity-5 shadow-sm rounded-sm w-full">
+                <div className="p-4 bg-white h-[200px] min-h-[200px] rounded-sm w-full">
                   <h2 className="font-semibold text-lg">Solicitante</h2>
                   <div className="flex flex-col gap-2 py-4">
                     <div className="flex flex-row w-full justify-between">

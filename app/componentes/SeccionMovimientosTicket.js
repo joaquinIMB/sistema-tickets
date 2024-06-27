@@ -15,7 +15,7 @@ export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
   const { usuario } = useAuth();
 
   const usuarioEmisor = dataUsuario.find(
-    (user) => user.correo.trim() === usuario.email
+    (user) => user.correo.trim() === usuario.email.trim()
   );
 
   if (isLoading) return <SkeletonSeccionMovimientos />;

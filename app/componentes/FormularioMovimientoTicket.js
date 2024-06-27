@@ -44,26 +44,30 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
     }));
   };
 
-  const validarCampos = () => {
-    const camposVacios = Object.values(campos).some(
-      (valor) => valor.descripcionMovimiento === ""
-    );
-    if (camposVacios) {
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "error",
-        mensaje: "Por favor rellena todos los campos",
-      });
-      return true;
-    }
-    return false;
-  };
+  // const validarCampos = () => {
+  //   const camposVacios = Object.values(campos).some(
+  //     (valor) => valor.descripcionMovimiento === ""
+  //   );
+  //   if (camposVacios) {
+  //     cambiarEstadoAlerta(true);
+  //     cambiarAlerta({
+  //       tipo: "error",
+  //       mensaje: "Por favor rellena todos los campos",
+  //     });
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const fechaHora = traerFechaHora();
-    const idMovimientoTicket = data ? data.length + 1 : 1;
-    if (usuarioEmisor.idUsuario == ticket.legajoEmisor.trim()) {
+    const ultimoMovimiento =
+      data &&
+      data.filter(
+        (movimiento) => movimiento.idMovimientoTicket === data.length > 1 ? data.length - 1 : 1
+      );
+    const [movimiento] = ultimoMovimiento;
+    if (Number(usuarioEmisor.idUsuario) === movimiento.legajoEmisor) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
@@ -71,24 +75,32 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       });
       return;
     }
-    if (validarCampos) {
-      cambiarCampos((prevData) => ({
-        ...prevData,
-        fechaHoraRegistro: fechaHora,
-        idMovimientoTicket: idMovimientoTicket,
-      }));
-    }
-    if(campos.idEstado === "resuelto"){
+
+    if (campos.idEstado === "resuelto" || campos.idEstado === "anulado") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `El ticket actual está resuelto`,
+        mensaje: `El ticket actual está ${campos.idEstado}`,
       });
-      return
+      return;
+    }
+    if (campos.descripcionMovimiento === "") {
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: `Debe ingresar una descripción al movimiento`,
+      });
+      return;
     }
     if (campos) {
       try {
-        await crearMovimientoTicket(campos);
+        const fechaHora = traerFechaHora();
+        const idMovimientoTicket = data ? data.length + 1 : 1;
+        await crearMovimientoTicket({
+          ...campos,
+          idMovimientoTicket: idMovimientoTicket,
+          fechaHoraRegistro: fechaHora,
+        });
         await actualizarTicket(campos);
         cambiarEstadoAlerta(true);
         cambiarAlerta({

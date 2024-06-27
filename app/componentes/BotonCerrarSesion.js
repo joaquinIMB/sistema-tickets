@@ -1,14 +1,9 @@
-"use client";
-
 import { useAuth } from "../contexts/authContext";
-import { useRouter } from "next/navigation";
 
 const BotonCerrarSesion = () => {
   const { cerrarSesion } = useAuth();
-  const router = useRouter()
-  const handleClick = () => {
-    cerrarSesion();
-    router.replace('/auth/iniciar-sesion')
+  const handleClick = async () => {
+     cerrarSesion();
   };
   return (
     <li

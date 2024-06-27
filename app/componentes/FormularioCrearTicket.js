@@ -5,7 +5,6 @@ import { useEffect, useState, useMemo } from "react";
 import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
 import { SeleccionarSector } from "./SeleccionarSector";
 import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
-import { Loader } from "@/elementos/Loader";
 import {
   useCreateMovimientoTicketMutation,
   useGetTicketsQuery,

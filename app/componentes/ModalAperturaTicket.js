@@ -1,6 +1,11 @@
-export const ModalAperturaTicket = ({setPopUp, handleClick, ticket}) => {
+import styles from "@/componentes/admin.module.css"
+
+export const ModalAperturaTicket = ({ setPopUp, handleClick, ticket }) => {
   return (
-<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[999]">
+    <div
+      className={` ${styles.modalAperturaTicket}`}
+      onClick={() => setPopUp(false)}
+    >
       <div className="flex p-4 flex-col justify-center gap-3 w-80 bg-[#efefef] absolute z-[999] overflow-hidden shadow-xl rounded-md">
         <h1 className="text-black font-semibold">
           ¿Quiere realizar la apertura del ticket {ticket.idTicket}?
@@ -13,7 +18,7 @@ export const ModalAperturaTicket = ({setPopUp, handleClick, ticket}) => {
             Aceptar
           </button>
           <button
-            className="w-md px-4 py-1 bg-red-700 text-white font-semibold hover:shadow-4xl transition rounded-sm"
+            className="w-md px-4 py-1 bg-neutral-800 text-white font-semibold hover:shadow-4xl transition rounded-sm"
             onClick={() => setPopUp(false)}
           >
             Cancelar
