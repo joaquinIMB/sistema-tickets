@@ -1,6 +1,5 @@
 "use client";
 
-import { BotonOpciones } from "@/elementos/BotonOpciones";
 import { useEffect, useState } from "react";
 import { SeleccionarEstado } from "./SeleccionarEstado";
 import {
@@ -28,13 +27,13 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
         idSector: ticket.idSector,
         idEstado: ticket.idEstado,
         prioridad: ticket.prioridad,
-        legajoEmisor: ticket.legajoAsignado,
+        legajoEmisor: usuarioEmisor.idUsuario,
         legajoAsignado: ticket.legajoAsignado,
         nombreUsuarioAsignado: ticket.nombreUsuarioAsignado,
         descripcionMovimiento: "",
       });
     }
-  }, [ticket, cambiarCampos]);
+  }, [ticket, cambiarCampos, usuarioEmisor.idUsuario]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,21 +60,17 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const ultimoMovimiento =
-      data &&
-      data.filter(
-        (movimiento) => movimiento.idMovimientoTicket === data.length > 1 ? data.length - 1 : 1
-      );
-    const [movimiento] = ultimoMovimiento;
-    if (Number(usuarioEmisor.idUsuario) === movimiento.legajoEmisor) {
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "error",
-        mensaje: `Usted creó el ticket, no puede realizar cambios en el mismo`,
-      });
-      return;
-    }
+    // const ultimoMovimiento = data.filter(movimiento => movimiento.idMovimientoTicket === data.length)
 
+    // const [movimiento] = ultimoMovimiento;
+    // if (Number(usuarioEmisor.idUsuario) === movimiento.legajoEmisor) {
+    //   cambiarEstadoAlerta(true);
+    //   cambiarAlerta({
+    //     tipo: "error",
+    //     mensaje: `Usted creó el ticket, no puede realizar cambios en el mismo`,
+    //   });
+    //   return;
+    // }
     if (campos.idEstado === "resuelto" || campos.idEstado === "anulado") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
@@ -101,7 +96,9 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
           idMovimientoTicket: idMovimientoTicket,
           fechaHoraRegistro: fechaHora,
         });
-        await actualizarTicket(campos);
+        await actualizarTicket({...campos,
+          nombreUsuarioAsignado: campos.legajoAsignado === "Todos" ? "Todos" : campos.nombreUsuarioAsignado
+        });
         cambiarEstadoAlerta(true);
         cambiarAlerta({
           tipo: "aceptado",
@@ -111,7 +108,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
           ...prevData,
           idTicket: ticket.idTicket,
           idEstado: ticket.idEstado,
-          legajoEmisor: ticket.legajoAsignado,
+          legajoEmisor: campos.legajoEmisor,
           descripcionMovimiento: "",
         }));
       } catch (error) {

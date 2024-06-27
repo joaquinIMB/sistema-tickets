@@ -102,7 +102,7 @@ export const DetalleResponsable = ({ ticket, dataUsuario, dataSector }) => {
           />
         ) : (
           <span className="p-2">
-            {ticket.legajoAsignado + " " + ticket.nombreUsuarioAsignado}
+            {ticket.legajoAsignado !== "Todos" ? ticket.legajoAsignado + " " + ticket.nombreUsuarioAsignado: "Todos"}
           </span>
         )}
       </div>

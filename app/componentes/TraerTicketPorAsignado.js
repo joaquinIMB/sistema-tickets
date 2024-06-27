@@ -21,7 +21,7 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
       setUsuarioActual(usuarioActual);
       if (usuarioActual && data) {
         const ticketsDeUsuario = data.filter((ticket) => {
-          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim() && ticket.idEstado != "resuelto") {
+          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim() && ticket.idEstado !== "resuelto") {
             return ticket;
           }
         });

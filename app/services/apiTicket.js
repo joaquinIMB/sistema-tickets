@@ -76,7 +76,7 @@ export const api = createApi({
           prioridad: campos.prioridad,
         }),
       }),
-      invalidatesTags: ["newTicket", "tickets"],
+      invalidatesTags: ["newTicket", "tickets", "getTicketID"],
     }),
     updateDataUsuario: builder.mutation({
       query: (campos) => ({

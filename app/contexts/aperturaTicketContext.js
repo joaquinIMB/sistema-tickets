@@ -18,7 +18,6 @@ function AperturaTicketProvider({ children }) {
   const [dataTicket, setDataTicket] = useState("");
   const [dataMovimiento, setDataMovimiento] = useState("");
   const [usuario, obtenerUsuario] = useState("");
-  // const [campos, setCampos] = useState(null);
   const router = useRouter();
   const [actualizarTicket] = useUpdateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
@@ -39,13 +38,17 @@ function AperturaTicketProvider({ children }) {
               nombreUsuarioAsignado: `${usuario.nombreUsuario} ${usuario.apellidoUsuario}`,
               fechaHoraRegistro: fechaHora,
               descripcionMovimiento: `Apertura de ticket ${dataTicket.idTicket}`,
+              legajoAsignado: usuario.idUsuario,
+              legajoEmisor: usuario.idUsuario,
             };
             crearMovimientoTicket({
               ...updatedCampos,
               idMovimientoTicket: dataMovimiento.idMovimientoTicket,
               legajoAsignado: usuario.idUsuario,
             });
-            actualizarTicket(updatedCampos);
+            actualizarTicket({
+              ...updatedCampos,
+            });
             obtenerUsuario("");
             setDataTicket("");
             router.push(

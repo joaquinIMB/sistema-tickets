@@ -10,7 +10,6 @@ import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 import { ModalAperturaTicket } from "./ModalAperturaTicket";
-import Alerta from "./Alerta";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
   const {
@@ -22,8 +21,6 @@ export const Ticket = ({ ticket, usuarioActual }) => {
   } = useAperturaTicket();
   const pathname = usePathname();
   const [popUp, setPopUp] = useState(false);
-  const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
-  const [alerta, cambiarAlerta] = useState({});
   const router = useRouter();
   const { data, error, isLoading, refetch } = useGetMovimientoTicketQuery(
     ticket.idTicket
@@ -55,7 +52,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         const updatedCampos = {
           ...ticket,
           idEstado: "abierto",
-          legajoEmisor: ticket.legajoAsignado,
+          legajoEmisor: usuarioActual.idUsuario,
           legajoAsignado: usuarioActual.idUsuario,
           fechaHoraRegistro: fechaHora,
           descripcionMovimiento: `Apertura de ticket ${ticket.idTicket}`,
@@ -140,12 +137,6 @@ export const Ticket = ({ ticket, usuarioActual }) => {
           ticket={ticket}
         />
       )}
-      <Alerta
-        tipo={alerta.tipo}
-        mensaje={alerta.mensaje}
-        estadoAlerta={estadoAlerta}
-        cambiarEstadoAlerta={cambiarEstadoAlerta}
-      />
     </>
   );
 };
