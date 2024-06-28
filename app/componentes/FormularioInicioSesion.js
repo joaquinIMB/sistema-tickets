@@ -71,7 +71,7 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
         tipo: "aceptado",
         mensaje: `¡Bienvenido/a de vuelta!`,
       });
-      router.replace("/admin/ticket/tickets-sin-abrir");
+      router.replace("/admin/ticket/tickets-de-sector");
     } catch (error) {
       console.log(error);
     }

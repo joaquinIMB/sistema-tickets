@@ -9,6 +9,7 @@ import {
 } from "@/services/apiTicket";
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
 import Alerta from "./Alerta";
+import { useRouter } from "next/navigation";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 
 const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
@@ -19,6 +20,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
   const [actualizarTicket] = useUpdateTicketMutation();
   const { data, error } = useGetMovimientoTicketQuery(ticket.idTicket);
+  const router = useRouter()
 
   useEffect(() => {
     if (ticket) {
@@ -60,6 +62,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const [ultimoMov] = data.filter(movimiento => movimiento.idMovimientoTicket === data.length && movimiento)
     // const ultimoMovimiento = data.filter(movimiento => movimiento.idMovimientoTicket === data.length)
 
     // const [movimiento] = ultimoMovimiento;
@@ -71,6 +74,23 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
     //   });
     //   return;
     // }
+    if(ultimoMov.idSector != usuarioEmisor.idSector){
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: `El ticket ya no pertenece a tu sector`,
+      });
+      router.replace("/admin/ticket/tickets-de-sector")
+      return
+    }
+    if(ultimoMov.idEstado === "nuevo"){
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: `El ticket aún no está abierto`,
+      });
+      return
+    }
     if (campos.idEstado === "resuelto" || campos.idEstado === "anulado") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({

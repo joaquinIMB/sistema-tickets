@@ -11,7 +11,7 @@ export const api = createApi({
       providesTags: ["tickets"],
     }),
     getNewTickets: builder.query({
-      query: () => "ticket/tickets-sin-abrir",
+      query: () => "ticket/tickets-de-sector",
       providesTags: ["newTicket"],
     }),
     getTicketId: builder.query({

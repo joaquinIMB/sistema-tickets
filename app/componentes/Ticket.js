@@ -61,25 +61,43 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         crearMovimientoTicket(updatedCampos);
         actualizarTicket(updatedCampos);
         router.push(`/admin/ticket/movimientos-ticket/${ticket.idTicket}`);
+      } else if (
+        ticket.idEstado != "nuevo" &&
+        ticket.legajoAsignado === "Todos" &&
+        ticket.nombreUsuarioAsignado === "Todos"
+      ) {
+        const updatedCampos = {
+          ...ticket,
+          legajoAsignado: usuarioActual.idUsuario,
+          fechaHoraRegistro: fechaHora,
+          descripcionMovimiento: `${usuarioActual.idUsuario} tomó el ticket ${ticket.idTicket}`,
+          idMovimientoTicket: data.length + 1,
+          nombreUsuarioAsignado:
+            usuarioActual.nombreUsuario + " " + usuarioActual.apellidoUsuario,
+        };
+        crearMovimientoTicket(updatedCampos);
+        actualizarTicket(updatedCampos);
+        router.push(`/admin/ticket/movimientos-ticket/${ticket.idTicket}`);
       }
     } catch (error) {
       console.error("Error en handleClick:", error.message);
     }
   };
   const handlePopUp = () => {
-    const ultimoMovimiento =
+    const primerMovimiento =
       data &&
       data.filter((movimiento) =>
-        movimiento.idMovimientoTicket === data.length > 1 ? data.length - 1 : 1
+        movimiento.idMovimientoTicket === 1
       );
-    const [movimiento] = ultimoMovimiento;
+    const [movimiento] = primerMovimiento;
     if (
       pathname !== "/admin/ticket/tickets-creados" &&
-      ticket.idEstado === "nuevo" &&
-      Number(usuarioActual.idUsuario) !== movimiento.legajoEmisor
+      Number(usuarioActual.idUsuario) !== movimiento.legajoEmisor &&
+      ticket.legajoAsignado === "Todos"
     ) {
       refetch();
       setPopUp(true);
+      console.log(primerMovimiento)
     } else {
       router.replace(`/admin/ticket/movimientos-ticket/${ticket.idTicket}`);
     }
