@@ -21,6 +21,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   const { data, error, isLoading, refetch } = useGetTicketsQuery();
   const [crearTicket] = useCreateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const usuarioEmisor = useMemo(() => {
     return dataUsuario.find((user) => user.correo.trim() === usuario.email);
@@ -90,6 +91,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     if (validarCampos()) {
       return;
     }
+    setIsSubmitting(true);
     try {
       await refetch();
       const idTicket = data.length + 1;
@@ -133,6 +135,8 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
         tipo: "error",
         mensaje: "Hubo un error al crear el ticket",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -142,50 +146,54 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   return (
     <>
       <form className="w-full md:w-[80%] p-3 py-0 px-4 md:px-8 mt-4" onSubmit={handleSubmit}>
-  <div className="flex flex-col gap-4">
-    <div className="flex flex-col">
-      <label className="pb-2 text-lg font-medium text-gray-700">Asunto</label>
-      <input
-        type="text"
-        id="asunto"
-        name="tituloTicket"
-        placeholder="Asunto..."
-        value={campos.tituloTicket}
-        onChange={handleChange}
-        className="p-2 w-full border border-neutral-200 rounded-md outline-none"
-      />
-    </div>
-    <div className="flex flex-col md:flex-row justify-between gap-4 items-end">
-      <div className="w-full md:w-[40%]">
-        <span className="block text-lg font-medium text-gray-700 py-2">Asignar a</span>
-        <SeleccionarUsuarioReceptor campos={campos} cambiarCampos={cambiarCampos} dataUsuario={dataUsuario} />
-      </div>
-      <div className="w-full md:w-[30%]">
-        <span className="block text-lg font-medium text-gray-700 pt-2">Sector</span>
-        <SeleccionarSector dataSector={dataSector} campos={campos} cambiarCampos={cambiarCampos} />
-      </div>
-      <div className="w-full md:w-[30%]">
-        <span className="block text-lg font-medium text-gray-700 pt-2">Prioridad</span>
-        <SeleccionarPrioridad campos={campos} cambiarCampos={cambiarCampos} />
-      </div>
-    </div>
-    <div className="relative flex flex-col">
-      <label className="block relative z-10 text-lg font-medium text-gray-700 pt-2">Descripción</label>
-      <textarea
-        id="descripcionTicket"
-        name="descripcionTicket"
-        value={campos.descripcionTicket}
-        onChange={handleChange}
-        className="p-2 px-4 w-full border border-neutral-200 h-72 max-md:h-40 rounded-lg outline-none resize-none"
-      />
-      <div className="mt-6 absolute bottom-0 right-0">
-        <button type="submit" className="w-md px-4 py-2 m-2 bg-blue-700 rounded-md text-white font-semibold hover:shadow-4xl transition">
-          Enviar
-        </button>
-      </div>
-    </div>
-  </div>
-</form>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col">
+            <label className="pb-2 text-lg font-medium text-gray-700">Asunto</label>
+            <input
+              type="text"
+              id="asunto"
+              name="tituloTicket"
+              placeholder="Asunto..."
+              value={campos.tituloTicket}
+              onChange={handleChange}
+              className="p-2 w-full border border-neutral-200 rounded-md outline-none"
+            />
+          </div>
+          <div className="flex flex-col md:flex-row justify-between gap-4 items-end">
+            <div className="w-full md:w-[40%]">
+              <span className="block text-lg font-medium text-gray-700 py-2">Asignar a</span>
+              <SeleccionarUsuarioReceptor campos={campos} cambiarCampos={cambiarCampos} dataUsuario={dataUsuario} />
+            </div>
+            <div className="w-full md:w-[30%]">
+              <span className="block text-lg font-medium text-gray-700 pt-2">Sector</span>
+              <SeleccionarSector dataSector={dataSector} campos={campos} cambiarCampos={cambiarCampos} />
+            </div>
+            <div className="w-full md:w-[30%]">
+              <span className="block text-lg font-medium text-gray-700 pt-2">Prioridad</span>
+              <SeleccionarPrioridad campos={campos} cambiarCampos={cambiarCampos} />
+            </div>
+          </div>
+          <div className="relative flex flex-col">
+            <label className="block relative z-10 text-lg font-medium text-gray-700 pt-2">Descripción</label>
+            <textarea
+              id="descripcionTicket"
+              name="descripcionTicket"
+              value={campos.descripcionTicket}
+              onChange={handleChange}
+              className="p-2 px-4 w-full border border-neutral-200 h-72 max-md:h-40 rounded-lg outline-none resize-none"
+            />
+            <div className="mt-6 absolute bottom-0 right-0">
+              <button 
+                type="submit" 
+                className="w-md px-4 py-2 m-2 bg-blue-700 rounded-md text-white font-semibold hover:shadow-4xl transition"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Enviando...' : 'Enviar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
 
       <Alerta
         tipo={alerta.tipo}

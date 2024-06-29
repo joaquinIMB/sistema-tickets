@@ -20,7 +20,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
   const [actualizarTicket] = useUpdateTicketMutation();
   const { data, error } = useGetMovimientoTicketQuery(ticket.idTicket);
-  const router = useRouter()
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (ticket) {
@@ -62,34 +62,25 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const [ultimoMov] = data.filter(movimiento => movimiento.idMovimientoTicket === data.length && movimiento)
-    // const ultimoMovimiento = data.filter(movimiento => movimiento.idMovimientoTicket === data.length)
-
-    // const [movimiento] = ultimoMovimiento;
-    // if (Number(usuarioEmisor.idUsuario) === movimiento.legajoEmisor) {
-    //   cambiarEstadoAlerta(true);
-    //   cambiarAlerta({
-    //     tipo: "error",
-    //     mensaje: `Usted creó el ticket, no puede realizar cambios en el mismo`,
-    //   });
-    //   return;
-    // }
-    if(ultimoMov.idSector != usuarioEmisor.idSector){
+    const [ultimoMov] = data.filter(
+      (movimiento) =>
+        movimiento.idMovimientoTicket === data.length && movimiento
+    );
+    if (ultimoMov.idSector != usuarioEmisor.idSector) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `El ticket ya no pertenece a tu sector`,
+        mensaje: `No podes interactuar con el ticket`,
       });
-      router.replace("/admin/ticket/tickets-de-sector")
-      return
+      return;
     }
-    if(ultimoMov.idEstado === "nuevo"){
+    if (Number(usuarioEmisor.idUsuario) === ultimoMov.legajoEmisor && ticket.idEstado === "nuevo") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `El ticket aún no está abierto`,
+        mensaje: `No puede realizar cambios en ticket ya que usted lo creó`,
       });
-      return
+      return;
     }
     if (ticket.idEstado === "resuelto" || ticket.idEstado === "anulado") {
       cambiarEstadoAlerta(true);
@@ -107,6 +98,17 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       });
       return;
     }
+    if (
+      ultimoMov.idEstado === "nuevo" &&
+      ultimoMov.legajoAsignado === "Todos"
+    ) {
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: `El ticket aún no está abierto`,
+      });
+      return;
+    }
     if (campos) {
       try {
         const fechaHora = traerFechaHora();
@@ -116,8 +118,12 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
           idMovimientoTicket: idMovimientoTicket,
           fechaHoraRegistro: fechaHora,
         });
-        await actualizarTicket({...campos,
-          nombreUsuarioAsignado: campos.legajoAsignado === "Todos" ? "Todos" : campos.nombreUsuarioAsignado
+        await actualizarTicket({
+          ...campos,
+          nombreUsuarioAsignado:
+            campos.legajoAsignado === "Todos"
+              ? "Todos"
+              : campos.nombreUsuarioAsignado,
         });
         cambiarEstadoAlerta(true);
         cambiarAlerta({
@@ -167,11 +173,13 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
                 campos={campos}
                 cambiarCampos={cambiarCampos}
               />
+
               <button
                 type="submit"
                 className="px-4 py-1 rounded-md bg-blue-700 hover:bg-blue-600 text-white border border-blue-700 font-semibold hover:shadow-4xl transition"
+                disabled={isSubmitting}
               >
-                Enviar
+                {isSubmitting ? "Enviando..." : "Enviar"}
               </button>
             </div>
           </label>

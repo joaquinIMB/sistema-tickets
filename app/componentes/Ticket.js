@@ -85,13 +85,11 @@ export const Ticket = ({ ticket, usuarioActual }) => {
   };
   const handlePopUp = () => {
     const primerMovimiento =
-      data &&
-      data.filter((movimiento) =>
-        movimiento.idMovimientoTicket === 1
-      );
+      data && data.filter((movimiento) => movimiento.idMovimientoTicket === 1);
     const [movimiento] = primerMovimiento;
     if (
       pathname !== "/admin/ticket/tickets-creados" &&
+      pathname !== "/admin/ticket/ticket/mis-tickets" &&
       Number(usuarioActual.idUsuario) !== movimiento.legajoEmisor &&
       ticket.legajoAsignado === "Todos"
     ) {

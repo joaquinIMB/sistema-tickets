@@ -31,13 +31,14 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
             ticket.idSector === sector.nombreSector &&
             ticket.legajoAsignado === "Todos"
           ) {
+            refetch()
             return ticket;
           }
         });
         return setTicket(ticketsDeSector);
       }
     }
-  }, [dataSector, data, dataUsuario, usuario.email]);
+  }, [dataSector, data, dataUsuario, usuario.email, refetch]);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,6 +47,7 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
 
     return () => clearInterval(interval);
   });
+
   if (error) return <Error error={error} refetch={refetch}/>
   if (isLoading) return <SkeletonHeaderListaTicket />;
 

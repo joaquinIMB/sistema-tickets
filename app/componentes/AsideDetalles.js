@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DetalleResponsable } from "./DetalleResponsable";
 import { InformacionTicket } from "./InformacionTicket";
 import { useGetTicketIdQuery } from "@/services/apiTicket";
@@ -11,18 +11,22 @@ import { BotonMenuMovimientos } from "./BotonMenuMovimientos";
 export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
   const { data, error } = useGetTicketIdQuery(idTicket);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-
-  if (error) return <div>Error: {error.message}</div>;
+  const [sectorEmisor, setSectorEmisor] = useState();
 
   const handleShowOffcanvas = () => setShowOffcanvas(true);
   const handleHideOffcanvas = () => setShowOffcanvas(false);
 
-  const [ticket] = data;
+  useMemo(() => {
+    if (data) {
+      const [ticket] = data;
+      const [usuarioEmisor] = dataUsuario.filter(
+        (user) => user.idUsuario === ticket.legajoEmisor
+      );
+      setSectorEmisor(usuarioEmisor.idSector);
+    }
+  }, [data, dataUsuario]);
 
-  const [usuarioEmisorDeTicket] = dataUsuario.filter(
-    (usuario) => usuario.idUsuario === ticket.legajoEmisor
-  );
-
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
       {data &&
@@ -44,18 +48,16 @@ export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
                   <h3 className="font-semibold">Agente</h3>
                 </div>
                 <div>
-                  <h5 className=" pb-2 text-neutral-600">
+                  <h5 className=" pb-2 text-neutral-700">
                     Legajo:
-                    <span className="text-neutral-600 font-semibold pl-2">
+                    <span className="text-neutral-800 font-semibold pl-2">
                       {ticket.legajoEmisor}
                     </span>
                   </h5>
-                  <h5 className="text-neutral-600 font-semibold pb-2">
+                  <h5 className="text-neutral-700 font-semibold pb-2">
                     {ticket.nombreEmisor}
                   </h5>
-                  <h6 className="text-neutral-600">
-                    Sector: {usuarioEmisorDeTicket.idSector}
-                  </h6>
+                  <h6 className="text-neutral-700">Sector: {" "} {sectorEmisor}</h6>
                 </div>
               </div>
             </div>
@@ -94,9 +96,7 @@ export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
                       <h5 className="text-neutral-600 font-semibold pb-2">
                         {ticket.nombreEmisor}
                       </h5>
-                      <h6 className="text-neutral-600">
-                        Sector: {usuarioEmisorDeTicket.idSector}
-                      </h6>
+                      <h6 className="text-neutral-600">Sector: {" "} {sectorEmisor}</h6>
                     </div>
                   </div>
                 </div>

@@ -9,7 +9,7 @@ const Alerta = ({ mensaje, tipo, estadoAlerta, cambiarEstadoAlerta }) => {
     if (estadoAlerta === true) {
       tiempo = setTimeout(() => {
         cambiarEstadoAlerta(false);
-      }, 2000);
+      }, 3000);
     }
     return () => clearTimeout(tiempo);
   }, [estadoAlerta, cambiarEstadoAlerta]);
