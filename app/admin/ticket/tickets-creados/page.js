@@ -21,7 +21,7 @@ export default async function TicketsCreados() {
   return (
     <>
       <HeaderListaTickets />
-      {dataUsuario && <TraerTicketPorEmisor dataUsuario={dataUsuario} />}
+      <TraerTicketPorEmisor dataUsuario={dataUsuario} />
     </>
   );
 }

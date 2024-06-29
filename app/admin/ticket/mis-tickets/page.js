@@ -22,7 +22,7 @@ export default async function MisTickets() {
   return (
     <>
       <HeaderListaTickets />
-      {dataUsuario && <TraerTicketPorAsignado dataUsuario={dataUsuario} />}
+      <TraerTicketPorAsignado dataUsuario={dataUsuario} />
     </>
   );
 }

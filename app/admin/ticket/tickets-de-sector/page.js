@@ -29,12 +29,10 @@ export default async function TicketsSinAbrir() {
   return (
     <>
       <HeaderListaTickets />
-      {dataUsuario && dataSector && (
-        <TicketSinAbrirPorSector
-          dataSector={dataSector}
-          dataUsuario={dataUsuario}
-        />
-      )}
+      <TicketSinAbrirPorSector
+        dataSector={dataSector}
+        dataUsuario={dataUsuario}
+      />
     </>
   );
 }

@@ -3,23 +3,27 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   reducerPath: "api",
-  tagTypes: ["tickets", "newTicket", "movTicket", "getTicketID"],
   baseQuery: fetchBaseQuery({ baseUrl: `${API_URL_SERVICES}` }), // Ajusta la URL base
+  tagTypes: ["tickets", "newTicket", "movTicket", "getTicketID"],
   endpoints: (builder) => ({
     getTickets: builder.query({
       query: () => "ticket",
       providesTags: ["tickets"],
+      keepUnusedDataFor: 60, // Cache por 1 minuto
     }),
     getNewTickets: builder.query({
       query: () => "ticket/tickets-de-sector",
       providesTags: ["newTicket"],
+      keepUnusedDataFor: 60, // Cache por 1 minuto
     }),
     getTicketId: builder.query({
       query: (idTicket) => `ticket/${idTicket}`,
       providesTags: ["getTicketID"],
+      keepUnusedDataFor: 60, // Cache por 1 minuto
     }),
     getStateId: builder.query({
       query: (idEstado) => `ticket/estado/${idEstado}`,
+      keepUnusedDataFor: 60, // Cache por 1 minuto
     }),
     createTicket: builder.mutation({
       query: (campos) => ({
@@ -45,6 +49,7 @@ export const api = createApi({
     getMovimientoTicket: builder.query({
       query: (idTicket) => `ticket/movimientos/${idTicket}`,
       providesTags: ["movTicket"],
+      keepUnusedDataFor: 60, // Cache por 1 minuto
     }),
     createMovimientoTicket: builder.mutation({
       query: (campos) => ({

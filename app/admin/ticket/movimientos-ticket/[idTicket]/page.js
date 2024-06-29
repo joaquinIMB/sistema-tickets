@@ -32,21 +32,19 @@ export default async function MovimientosTicket({ params }) {
 
   return (
     <>
-      {dataUsuario && dataSector && (
-        <MovimientoTicketProvider>
-          <div className={`${styles.contenedorMovTickets}`}>
-            <SeccionMovimientoTicket
-              idTicket={idTicket}
-              dataUsuario={dataUsuario}
-            />
-            <AsideDetalles
-              idTicket={idTicket}
-              dataUsuario={dataUsuario}
-              dataSector={dataSector}
-            />
-          </div>
-        </MovimientoTicketProvider>
-      )}
+      <MovimientoTicketProvider>
+        <div className={`${styles.contenedorMovTickets}`}>
+          <SeccionMovimientoTicket
+            idTicket={idTicket}
+            dataUsuario={dataUsuario}
+          />
+          <AsideDetalles
+            idTicket={idTicket}
+            dataUsuario={dataUsuario}
+            dataSector={dataSector}
+          />
+        </div>
+      </MovimientoTicketProvider>
     </>
   );
 }

@@ -26,12 +26,10 @@ export default async function CrearTicket() {
 
   return (
     <Suspense fallback={<SkeletonFormularioCrearTicket />}>
-      {dataUsuario && dataSector && (
-        <FormularioCrearTicket
-          dataUsuario={dataUsuario}
-          dataSector={dataSector}
-        />
-      )}
+      <FormularioCrearTicket
+        dataUsuario={dataUsuario}
+        dataSector={dataSector}
+      />
     </Suspense>
   );
 }
