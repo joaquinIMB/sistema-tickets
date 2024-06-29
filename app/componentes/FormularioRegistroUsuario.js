@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Alerta from "./Alerta";
 import Link from "next/link";
 import { SeleccionarSector } from "./SeleccionarSector";
@@ -30,6 +30,10 @@ const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
     contraseña: "",
     confirmarContraseña: "",
   });
+
+  useMemo(() => {
+    localStorage.removeItem("usuario")
+  },[])
 
   useEffect(() => {
     if (dataUser) {

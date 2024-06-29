@@ -11,7 +11,7 @@ export async function POST(req) {
       .request()
       .input("correoUsuarioEmisor", sql.VarChar(50), body.correoUsuarioEmisor)
       .input("descripcionTicket", sql.VarChar(100), body.descripcionTicket)
-      .input("fechaHoraRegistro", sql.Char(18), body.fechaHoraRegistro)
+      .input("fechaHoraRegistro", sql.VarChar(25), body.fechaHoraRegistro)
       .input("idEstado", sql.VarChar(12), body.idEstado)
       .input("idSector", sql.VarChar(14), body.idSector)
       .input("idTicket", sql.Int, body.idTicket)

@@ -1,3 +1,4 @@
+import { Error } from "@/componentes/Error";
 import { TicketSinAbrirPorSector } from "@/componentes/TicketSinAbrirPorSector";
 
 export const metadata = {

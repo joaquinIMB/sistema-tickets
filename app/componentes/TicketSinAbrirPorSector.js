@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/authContext";
 import { Ticket } from "./Ticket";
 import { useGetNewTicketsQuery } from "@/services/apiTicket";
 import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
+import { Error } from "./Error";
 
 export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
   const { usuario } = useAuth();
@@ -22,7 +23,6 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
       const sectorActual = dataSector.filter(
         (sector) => sector.nombreSector === usuarioActual.idSector
       );
-
       setUsuarioActual(usuarioActual);
       if (sectorActual && data) {
         const [sector] = sectorActual;
@@ -38,15 +38,15 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
       }
     }
   }, [dataSector, data, dataUsuario, usuario.email]);
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   });
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <Error error={error} refetch={refetch}/>
   if (isLoading) return <SkeletonHeaderListaTicket />;
 
   return (

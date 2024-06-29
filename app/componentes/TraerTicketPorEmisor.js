@@ -1,13 +1,14 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetTicketsQuery } from "@/services/apiTicket";
-import { Loader } from "@/elementos/Loader";
-import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
+// import { Loader } from "@/elementos/Loader";
+// import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
+import { Error } from "./Error";
 
 export const TraerTicketPorEmisor = ({ dataUsuario }) => {
   const [ticket, setTicket] = useState();
@@ -35,13 +36,13 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   });
 
   if (isLoading) return <SkeletonHeaderListaTicket />;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <Error error={error} refetch={refetch}/>;
   return (
     <>
       <HeaderListaTickets />

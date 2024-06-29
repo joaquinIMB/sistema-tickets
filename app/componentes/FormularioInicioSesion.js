@@ -19,6 +19,10 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
   const { setIsModalOpen } = useModal();
 
   useMemo(() => {
+    localStorage.removeItem("usuario")
+  },[])
+
+  useMemo(() => {
     if (usuarioExistente) {
       const [usuarioActual] = dataUsuarios.filter(
         (user) => user.idUsuario.trim() === usuarioExistente.legajo.trim()

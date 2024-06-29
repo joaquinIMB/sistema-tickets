@@ -6,6 +6,7 @@ import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetTicketsQuery } from "@/services/apiTicket";
 import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
+import { Error } from "./Error";
 
 export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   const [ticket, setTicket] = useState();
@@ -21,7 +22,7 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
       setUsuarioActual(usuarioActual);
       if (usuarioActual && data) {
         const ticketsDeUsuario = data.filter((ticket) => {
-          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim() && ticket.idEstado !== "resuelto") {
+          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim()) {
             return ticket;
           }
         });
@@ -33,13 +34,13 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   });
 
   if (isLoading) return <SkeletonHeaderListaTicket />;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <Error error={error} refetch={refetch}/>;
   return (
     <>
       <HeaderListaTickets />

@@ -56,7 +56,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
               {listaCategorias.map((enlace) => (
                 <li
                   key={enlace.label}
-                  className={` tracking-wide relative h-8 ${
+                  className={` tracking-wide relative h-8 pt-2 ${
                     enlace.href === pathname
                       ? " text-blue-600 rounded-md"
                       : "hover:text-blue-600 "
@@ -64,10 +64,13 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   onClick={() => setDesplegar(false)}
                 >
                   <Link
-                    className="absolute left-0 w-full py-1 pb-2 px-2"
+                    className="relative left-0 w-full py-1 pb-2 px-2"
                     href={enlace.href}
                   >
                     {enlace.label}
+                    {/* <span class="absolute top-[0px] right-[-25px] rounded-full w-8 h-4 bg-red-600 text-xs text-white content-center text-center">
+                      99+
+                    </span> */}
                   </Link>
                 </li>
               ))}

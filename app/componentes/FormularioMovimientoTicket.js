@@ -91,11 +91,11 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       });
       return
     }
-    if (campos.idEstado === "resuelto" || campos.idEstado === "anulado") {
+    if (ticket.idEstado === "resuelto" || ticket.idEstado === "anulado") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `El ticket actual está ${campos.idEstado}`,
+        mensaje: `El ticket actual está ${ticket.idEstado}`,
       });
       return;
     }
