@@ -1,4 +1,5 @@
 import { TraerTicketPorEstado } from "@/componentes/TraerTicketPorEstado";
+import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { listaEstados } from "@/elementos/listaEnlaces";
 
 export function generateMetadata({ params, searchParams }, parent) {
@@ -31,6 +32,7 @@ export default async function TicketsPorEstados({ params }) {
     .catch((error) => console.log(error));
   return (
     <>
+      <HeaderListaTickets />
       {dataUsuario && (
         <TraerTicketPorEstado idEstado={idEstado} dataUsuario={dataUsuario} />
       )}

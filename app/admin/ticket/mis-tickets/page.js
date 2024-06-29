@@ -1,4 +1,5 @@
 import { TraerTicketPorAsignado } from "@/componentes/TraerTicketPorAsignado";
+import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 
 export const metadata = {
   title: "Mis tickets a resolver - Helpdesk Unity - Sistema de tickets",
@@ -18,5 +19,10 @@ export default async function MisTickets() {
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
-  return <TraerTicketPorAsignado dataUsuario={dataUsuario} />;
+  return (
+    <>
+      <HeaderListaTickets />
+      {dataUsuario && <TraerTicketPorAsignado dataUsuario={dataUsuario} />}
+    </>
+  );
 }

@@ -49,11 +49,10 @@ export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
   });
 
   if (error) return <Error error={error} refetch={refetch}/>
-  if (isLoading) return <SkeletonHeaderListaTicket />;
+  // if (isLoading) return <SkeletonHeaderListaTicket />;
 
   return (
     <>
-      <HeaderListaTickets />
       {ticket &&
         ticket.map((ticket) => (
           <Ticket

@@ -1,5 +1,6 @@
 import { Error } from "@/componentes/Error";
 import { TicketSinAbrirPorSector } from "@/componentes/TicketSinAbrirPorSector";
+import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 
 export const metadata = {
   title: "Tickets nuevos de mi sector - Helpdesk Unity - Sistema de tickets",
@@ -13,12 +14,9 @@ export default async function TicketsSinAbrir() {
       ? process.env.NEXT_PUBLIC_API_URL
       : process.env.URL_DEV;
 
-  const dataSector = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/sectores`,
-    {
-      cache: "no-store",
-    }
-  )
+  const dataSector = await fetch(`${API_URL}/sectores`, {
+    cache: "no-store",
+  })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
@@ -30,6 +28,7 @@ export default async function TicketsSinAbrir() {
 
   return (
     <>
+      <HeaderListaTickets />
       {dataUsuario && dataSector && (
         <TicketSinAbrirPorSector
           dataSector={dataSector}

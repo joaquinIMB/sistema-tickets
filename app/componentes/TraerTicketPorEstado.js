@@ -40,11 +40,10 @@ export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
     return () => clearInterval(interval);
   });
 
-  if (isLoading) return <SkeletonHeaderListaTicket />;
+  // if (isLoading) return <SkeletonHeaderListaTicket />;
   if (error) return <Error error={error} refetch={refetch} />;
   return (
     <>
-      <HeaderListaTickets />
       {ticket &&
         ticket.map((ticket) => (
           <Ticket

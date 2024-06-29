@@ -1,4 +1,5 @@
 import { TraerTicketPorEmisor } from "@/componentes/TraerTicketPorEmisor";
+import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 
 export const metadata = {
   title: "Tickets emitidos por mí - Helpdesk Unity - Sistema de tickets",
@@ -18,6 +19,9 @@ export default async function TicketsCreados() {
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
   return (
-    <>{dataUsuario && <TraerTicketPorEmisor dataUsuario={dataUsuario} />}</>
+    <>
+      <HeaderListaTickets />
+      {dataUsuario && <TraerTicketPorEmisor dataUsuario={dataUsuario} />}
+    </>
   );
 }
