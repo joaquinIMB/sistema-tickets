@@ -17,5 +17,7 @@ export default async function TicketsCreados() {
   })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
-  return <TraerTicketPorEmisor dataUsuario={dataUsuario} />;
+  return (
+    <>{dataUsuario && <TraerTicketPorEmisor dataUsuario={dataUsuario} />}</>
+  );
 }

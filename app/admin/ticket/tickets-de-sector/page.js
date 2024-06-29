@@ -13,9 +13,12 @@ export default async function TicketsSinAbrir() {
       ? process.env.NEXT_PUBLIC_API_URL
       : process.env.URL_DEV;
 
-  const dataSector = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sectores`, {
-    cache: "no-store",
-  })
+  const dataSector = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/sectores`,
+    {
+      cache: "no-store",
+    }
+  )
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
@@ -26,9 +29,13 @@ export default async function TicketsSinAbrir() {
     .catch((error) => console.log(error));
 
   return (
-    <TicketSinAbrirPorSector
-      dataSector={dataSector}
-      dataUsuario={dataUsuario}
-    />
+    <>
+      {dataUsuario && dataSector && (
+        <TicketSinAbrirPorSector
+          dataSector={dataSector}
+          dataUsuario={dataUsuario}
+        />
+      )}
+    </>
   );
 }
