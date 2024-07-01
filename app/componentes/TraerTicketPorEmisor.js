@@ -1,19 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetTicketsQuery } from "@/services/apiTicket";
-// import { Loader } from "@/elementos/Loader";
-// import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
-import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 import { Error } from "./Error";
 
 export const TraerTicketPorEmisor = ({ dataUsuario }) => {
+  const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
   const [usuarioActual, setUsuarioActual] = useState();
-  const { usuario } = useAuth();
   const { data, error, isLoading, refetch } = useGetTicketsQuery();
 
   useEffect(() => {
@@ -42,16 +38,16 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
   });
 
   // if (isLoading) return <SkeletonHeaderListaTicket />;
-  if (error) return <Error error={error} refetch={refetch}/>;
+  if (error) return <Error error={error} refetch={refetch} />;
   return (
     <>
       {ticket &&
         ticket.map((ticket) => (
-            <Ticket
-              key={ticket.idTicket}
-              ticket={ticket}
-              usuarioActual={usuarioActual}
-            />
+          <Ticket
+            key={ticket.idTicket}
+            ticket={ticket}
+            usuarioActual={usuarioActual}
+          />
         ))}
     </>
   );

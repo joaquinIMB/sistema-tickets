@@ -3,26 +3,34 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: `${API_URL_SERVICES}` }), // Ajusta la URL base
+  baseQuery: fetchBaseQuery({ baseUrl: `${API_URL_SERVICES}` }),
   tagTypes: ["tickets", "newTicket", "movTicket", "getTicketID"],
   endpoints: (builder) => ({
     getTickets: builder.query({
       query: () => "ticket",
       providesTags: ["tickets"],
-      keepUnusedDataFor: 60, // Cache por 1 minuto
+      keepUnusedDataFor: 10, // Cache por 1 minuto
     }),
     getNewTickets: builder.query({
       query: () => "ticket/tickets-de-sector",
       providesTags: ["newTicket"],
-      keepUnusedDataFor: 60, // Cache por 1 minuto
+      keepUnusedDataFor: 10, // Cache por 1 minuto
     }),
     getTicketId: builder.query({
       query: (idTicket) => `ticket/${idTicket}`,
       providesTags: ["getTicketID"],
-      keepUnusedDataFor: 60, // Cache por 1 minuto
+      keepUnusedDataFor: 10, // Cache por 1 minuto
     }),
     getStateId: builder.query({
       query: (idEstado) => `ticket/estado/${idEstado}`,
+      keepUnusedDataFor: 60, // Cache por 1 minuto
+    }),
+    getTicketIdSector: builder.query({
+      query: (idSector) => `ticket/ticket-sector/${idSector}`,
+      keepUnusedDataFor: 60, // Cache por 1 minuto
+    }),
+    getTicketIdUsuario: builder.query({
+      query: (idUsuario) => `ticket/ticketPorAsignado/${idUsuario}`,
       keepUnusedDataFor: 60, // Cache por 1 minuto
     }),
     createTicket: builder.mutation({
@@ -49,7 +57,7 @@ export const api = createApi({
     getMovimientoTicket: builder.query({
       query: (idTicket) => `ticket/movimientos/${idTicket}`,
       providesTags: ["movTicket"],
-      keepUnusedDataFor: 60, // Cache por 1 minuto
+      keepUnusedDataFor: 10, // Cache por 1 minuto
     }),
     createMovimientoTicket: builder.mutation({
       query: (campos) => ({
@@ -91,18 +99,21 @@ export const api = createApi({
           idSector: campos.idSector,
         }),
       }),
+      invalidatesTags: ["tickets", "newTicket", "getTicketID"],
     }),
   }),
 });
 
 export const {
   useGetTicketsQuery,
+  useGetStateIdQuery,
   useGetNewTicketsQuery,
   useGetTicketIdQuery,
-  useGetStateIdQuery,
   useCreateTicketMutation,
   useGetMovimientoTicketQuery,
   useCreateMovimientoTicketMutation,
   useUpdateTicketMutation,
   useUpdateDataUsuarioMutation,
+  useGetTicketIdSectorQuery,
+  useGetTicketIdUsuarioQuery,
 } = api;

@@ -62,7 +62,7 @@ export const SeleccionarUsuarioReceptor = ({
         </div>
 
         {seleccionUsuario && (
-          <div className="absolute overflow-auto top-12 border border-neutral-200 rounded-md shadow-2xl z-50 cursor-pointer left-0 max-h-72 backdrop-blur-sm bg-white w-full">
+          <div className="absolute overflow-auto top-12 border border-neutral-200 rounded-md shadow-2xl z-[99] cursor-pointer left-0 max-h-72 backdrop-blur-sm bg-white w-full">
             <input
               type="text"
               placeholder="Buscar usuario..."

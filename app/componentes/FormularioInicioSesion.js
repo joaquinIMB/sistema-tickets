@@ -69,6 +69,7 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
         ...usuarioActual,
         correo: usuarioActual.correo.trim(),
         legajo: usuarioActual.idUsuario.trim(),
+        idSector:usuarioActual.idSector
       });
       cambiarEstadoAlerta(true);
       cambiarAlerta({

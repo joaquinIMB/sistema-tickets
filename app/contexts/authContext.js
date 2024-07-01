@@ -16,10 +16,11 @@ function AuthProvider({ children }) {
     logged: false,
     email: null,
     legajo: null,
+    idSector: null,
   });
   const [cargando, cambiarCargando] = useState(true);
   const [usuarioExistente, setUsuarioExistente] = useState();
-  const router = useRouter()
+  const router = useRouter();
 
   const pathname = usePathname();
 
@@ -40,6 +41,7 @@ function AuthProvider({ children }) {
       logged: true,
       email: usuarioActual.correo,
       legajo: usuarioActual.idUsuario,
+      idSector: usuarioActual.idSector,
     };
     cambiarUsuario(newUser);
     localStorage.setItem("usuario", JSON.stringify(newUser));
@@ -53,7 +55,7 @@ function AuthProvider({ children }) {
     };
     cambiarUsuario(loggedOutUser);
     localStorage.removeItem("usuario");
-    router.push("/auth/iniciar-sesion")
+    router.push("/auth/iniciar-sesion");
   };
 
   return (

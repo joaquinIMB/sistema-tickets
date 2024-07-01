@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
+// import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetStateIdQuery } from "@/services/apiTicket";
-import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
+// import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 import { Error } from "./Error";
 
 export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
+  const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
   const [usuarioActual, setUsuarioActual] = useState();
-  const { usuario } = useAuth();
 
-  const { data, error, isLoading, refetch } = useGetStateIdQuery(idEstado);
+  const { data, error, refetch } = useGetStateIdQuery(idEstado);
 
   useEffect(() => {
     if (dataUsuario) {

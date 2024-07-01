@@ -1,35 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
+import { useEffect, useMemo, useState } from "react";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
-import { useGetTicketsQuery } from "@/services/apiTicket";
-import { SkeletonHeaderListaTicket } from "@/elementos/skeletons/SkeletonHeaderTicket";
 import { Error } from "./Error";
+import { useGetTicketIdUsuarioQuery } from "@/services/apiTicket";
 
 export const TraerTicketPorAsignado = ({ dataUsuario }) => {
-  const [ticket, setTicket] = useState();
-  const [usuarioActual, setUsuarioActual] = useState();
   const { usuario } = useAuth();
-  const { data, error, isLoading, refetch } = useGetTicketsQuery();
+  const [ticket, setTicket] = useState();
+  
+  const { data, error, refetch } = useGetTicketIdUsuarioQuery(
+    usuario.legajo
+  );
 
-  useEffect(() => {
-    if (dataUsuario && data) {
+  const [usuarioActual, setUsuarioActual] = useState();
+
+  useMemo(() => {
+    if (dataUsuario) {
       const [usuarioActual] = dataUsuario.filter(
         (user) => user.correo.trim() === usuario.email
       );
       setUsuarioActual(usuarioActual);
-      if (usuarioActual && data) {
-        const ticketsDeUsuario = data.filter((ticket) => {
-          if (ticket.legajoAsignado.trim() === usuarioActual.idUsuario.trim()) {
-            return ticket;
-          }
-        });
-        return setTicket(ticketsDeUsuario);
-      }
     }
-  }, [dataUsuario, usuario.email, data]);
+  }, [dataUsuario, usuario.email]);
+
+  useEffect(() => {
+    if (data) {
+      setTicket(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,12 +39,11 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
     return () => clearInterval(interval);
   });
 
-  // if (isLoading) return <SkeletonHeaderListaTicket />;
-  if (error) return <Error error={error} refetch={refetch}/>;
+  if (error) return <Error error={error} refetch={refetch} />;
   return (
     <>
       {ticket &&
-        ticket.map((ticket) => (
+        ticket.map((ticket, index) => (
           <Ticket
             key={ticket.idTicket}
             ticket={ticket}
