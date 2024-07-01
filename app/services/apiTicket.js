@@ -4,34 +4,40 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: `${API_URL_SERVICES}` }),
-  tagTypes: ["tickets", "newTicket", "movTicket", "getTicketID"],
+  tagTypes: [
+    "tickets",
+    "newTicket",
+    "movTicket",
+    "getTicketID",
+    "getStateID",
+    "getSectorID",
+    "getTicketUsuarioAsignado",
+    "getTicketUsuarioEmisor",
+  ],
   endpoints: (builder) => ({
     getTickets: builder.query({
       query: () => "ticket",
       providesTags: ["tickets"],
-      keepUnusedDataFor: 10, // Cache por 1 minuto
-    }),
-    getNewTickets: builder.query({
-      query: () => "ticket/tickets-de-sector",
-      providesTags: ["newTicket"],
-      keepUnusedDataFor: 10, // Cache por 1 minuto
     }),
     getTicketId: builder.query({
       query: (idTicket) => `ticket/${idTicket}`,
       providesTags: ["getTicketID"],
-      keepUnusedDataFor: 10, // Cache por 1 minuto
     }),
     getStateId: builder.query({
       query: (idEstado) => `ticket/estado/${idEstado}`,
-      keepUnusedDataFor: 60, // Cache por 1 minuto
+      providesTags: ["getStateID"],
     }),
     getTicketIdSector: builder.query({
       query: (idSector) => `ticket/ticket-sector/${idSector}`,
-      keepUnusedDataFor: 60, // Cache por 1 minuto
+      providesTags: ["getSectorID"],
     }),
-    getTicketIdUsuario: builder.query({
+    getTicketIdUsuarioAsignado: builder.query({
       query: (idUsuario) => `ticket/ticketPorAsignado/${idUsuario}`,
-      keepUnusedDataFor: 60, // Cache por 1 minuto
+      providesTags: ["getTicketUsuarioAsignado"],
+    }),
+    getTicketIdUsuarioEmisor: builder.query({
+      query: (idUsuario) => `ticket/ticketPorEmisor/${idUsuario}`,
+      providesTags: ["getTicketUsuarioEmisor"],
     }),
     createTicket: builder.mutation({
       query: (campos) => ({
@@ -52,12 +58,18 @@ export const api = createApi({
           legajoEmisor: campos.legajoEmisor,
         }),
       }),
-      invalidatesTags: ["newTicket", "tickets", "getTicketID"],
+      invalidatesTags: [
+        "newTicket",
+        "tickets",
+        "getStateID",
+        "getSectorID",
+        "getTicketUsuarioAsignado",
+        "getTicketUsuarioEmisor",
+      ],
     }),
     getMovimientoTicket: builder.query({
       query: (idTicket) => `ticket/movimientos/${idTicket}`,
       providesTags: ["movTicket"],
-      keepUnusedDataFor: 10, // Cache por 1 minuto
     }),
     createMovimientoTicket: builder.mutation({
       query: (campos) => ({
@@ -107,7 +119,6 @@ export const api = createApi({
 export const {
   useGetTicketsQuery,
   useGetStateIdQuery,
-  useGetNewTicketsQuery,
   useGetTicketIdQuery,
   useCreateTicketMutation,
   useGetMovimientoTicketQuery,
@@ -115,5 +126,6 @@ export const {
   useUpdateTicketMutation,
   useUpdateDataUsuarioMutation,
   useGetTicketIdSectorQuery,
-  useGetTicketIdUsuarioQuery,
+  useGetTicketIdUsuarioAsignadoQuery,
+  useGetTicketIdUsuarioEmisorQuery,
 } = api;

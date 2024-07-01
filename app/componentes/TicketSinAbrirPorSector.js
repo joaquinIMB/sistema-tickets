@@ -10,7 +10,7 @@ import { Error } from "./Error";
 export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   const { usuario } = useAuth();
   const [tickets, setTicket] = useState([]);
-  const { data, error, isLoading, refetch } = useGetTicketIdSectorQuery(
+  const { data, error, refetch } = useGetTicketIdSectorQuery(
     usuario.idSector
   );
   const [usuarioActual, setUsuarioActual] = useState();
@@ -33,7 +33,7 @@ export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 10000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [refetch]);
 

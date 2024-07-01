@@ -111,11 +111,6 @@ export const Ticket = ({ ticket, usuarioActual }) => {
           >
             <li className={`w-[25%] ${styles.usuario}`}>
               <h1 className="font-semibold text-lg"> {ticket.nombreEmisor}</h1>
-              {/* {ticket.nombreEmisor.length < 25 && (
-                <span className={`text-gray-600 ${styles.correo}`}>
-                  {ticket.correoUsuarioEmisor}
-                </span>
-              )} */}
             </li>
             <li
               className={`w-[30%] text-center font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}

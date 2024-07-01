@@ -4,13 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { Error } from "./Error";
-import { useGetTicketIdUsuarioQuery } from "@/services/apiTicket";
+import { useGetTicketIdUsuarioAsignadoQuery } from "@/services/apiTicket";
 
 export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
-  
-  const { data, error, refetch } = useGetTicketIdUsuarioQuery(
+
+  const { data, error, refetch } = useGetTicketIdUsuarioAsignadoQuery(
     usuario.legajo
   );
 
@@ -34,7 +34,7 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
   });
