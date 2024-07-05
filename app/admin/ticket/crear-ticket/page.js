@@ -20,7 +20,9 @@ export default async function CrearTicket() {
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 
-  const dataSector = await fetch(`${API_URL}/sectores`)
+  const dataSector = await fetch(`${API_URL}/sectores`, {
+    cache: "no-store",
+  })
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
 

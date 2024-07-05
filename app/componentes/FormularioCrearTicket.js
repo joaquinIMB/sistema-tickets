@@ -2,13 +2,14 @@
 
 import { useAuth } from "../contexts/authContext";
 import { useEffect, useState, useMemo } from "react";
-import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
+// import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
 import { SeleccionarSector } from "./SeleccionarSector";
 import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
 import {
   useCreateMovimientoTicketMutation,
   useGetTicketsQuery,
   useCreateTicketMutation,
+  useGetNextIdTicketQuery,
 } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import Alerta from "./Alerta";
@@ -18,7 +19,8 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   const { usuario } = useAuth();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
-  const { data, error, isLoading, refetch } = useGetTicketsQuery();
+  const { data, error, isLoading, refetch } = useGetNextIdTicketQuery(1);
+  // const { data, error, isLoading, refetch } = useGetTicketsQuery();
   const [crearTicket] = useCreateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,16 +99,17 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     }
     setIsSubmitting(true);
     try {
-      await refetch();
-      const idTicket = data.length + 1;
+      const [ticket] = data
+      const idTicket = ticket.idTicket
+      // const idTicket = data.length + 1;
       await crearTicket({
         ...campos,
-        idTicket,
+        idTicket:idTicket,
         fechaHoraRegistro: fechaHora,
       });
       await crearMovimientoTicket({
         idMovimientoTicket: 1,
-        idTicket,
+        idTicket: idTicket,
         idSector: campos.idSector,
         idEstado: campos.idEstado,
         prioridad: campos.prioridad,
@@ -115,11 +118,13 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
         fechaHoraRegistro: fechaHora,
         descripcionMovimiento: `Creación de ticket ${idTicket}`,
       });
+      await refetch();
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "aceptado",
         mensaje: `¡El ticket se creó correctamente!`,
       });
+      console.log(idTicket)
       cambiarCampos({
         tituloTicket: "",
         descripcionTicket: "",

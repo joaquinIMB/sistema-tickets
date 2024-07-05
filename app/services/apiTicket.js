@@ -13,10 +13,13 @@ export const api = createApi({
     "getSectorID",
     "getTicketUsuarioAsignado",
     "getTicketUsuarioEmisor",
+    "getNextTicket"
   ],
   endpoints: (builder) => ({
     getTickets: builder.query({
       query: () => "ticket",
+      keepUnusedDataFor: 1,
+      refetchOnMountOrArgChange: 1,
       providesTags: ["tickets"],
     }),
     getTicketId: builder.query({
@@ -39,6 +42,10 @@ export const api = createApi({
       query: (idUsuario) => `ticket/ticketPorEmisor/${idUsuario}`,
       providesTags: ["getTicketUsuarioEmisor"],
     }),
+    getNextIdTicket: builder.query({
+      query: (nroSiguiente) => `ticket/traerIdTicket/${nroSiguiente}`,
+      providesTags: ["getNextTicket"],
+    }),
     createTicket: builder.mutation({
       query: (campos) => ({
         url: "/ticket/insertTicket",
@@ -60,11 +67,11 @@ export const api = createApi({
       }),
       invalidatesTags: [
         "newTicket",
-        "tickets",
         "getStateID",
         "getSectorID",
         "getTicketUsuarioAsignado",
         "getTicketUsuarioEmisor",
+        "getNextTicket"
       ],
     }),
     getMovimientoTicket: builder.query({
@@ -128,4 +135,5 @@ export const {
   useGetTicketIdSectorQuery,
   useGetTicketIdUsuarioAsignadoQuery,
   useGetTicketIdUsuarioEmisorQuery,
+  useGetNextIdTicketQuery
 } = api;
