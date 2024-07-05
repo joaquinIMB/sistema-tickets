@@ -109,6 +109,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       });
       return;
     }
+    setIsSubmitting(true)
     if (campos) {
       try {
         const fechaHora = traerFechaHora();
@@ -139,6 +140,8 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
         }));
       } catch (error) {
         console.log(error);
+      }finally {
+        setIsSubmitting(false);
       }
     }
   };
