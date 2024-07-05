@@ -1,7 +1,5 @@
 import { MovimientoTicketProvider } from "@/contexts/movimientosContext";
-import { SeccionMovimientoTicket } from "@/componentes/SeccionMovimientosTicket";
-import styles from "@/componentes/admin.module.css";
-import { AsideDetalles } from "@/componentes/AsideDetalles";
+import { ContenedorSeccionMovimientoTicket } from "@/componentes/ContenedorSeccionMovimientoTicket";
 
 export function generateMetadata({ params, searchParams }, parent) {
   const { idTicket } = params;
@@ -20,12 +18,6 @@ export default async function MovimientosTicket({ params }) {
       ? process.env.NEXT_PUBLIC_API_URL
       : process.env.URL_DEV;
 
-  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
-    cache: "no-store",
-  })
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
-
   const dataSector = await fetch(`${API_URL}/sectores`)
     .then((respuesta) => respuesta.json())
     .catch((error) => console.log(error));
@@ -33,17 +25,10 @@ export default async function MovimientosTicket({ params }) {
   return (
     <>
       <MovimientoTicketProvider>
-        <div className={`${styles.contenedorMovTickets}`}>
-          <SeccionMovimientoTicket
-            idTicket={idTicket}
-            dataUsuario={dataUsuario}
-          />
-          <AsideDetalles
-            idTicket={idTicket}
-            dataUsuario={dataUsuario}
-            dataSector={dataSector}
-          />
-        </div>
+        <ContenedorSeccionMovimientoTicket
+          idTicket={idTicket}
+          dataSector={dataSector}
+        />
       </MovimientoTicketProvider>
     </>
   );

@@ -8,7 +8,7 @@ import styles from "@/componentes/offcanvas.module.css";
 import Offcanvas from "./OffCanvas";
 import { BotonMenuMovimientos } from "./BotonMenuMovimientos";
 
-export const AsideDetalles = ({ idTicket, dataUsuario, dataSector }) => {
+export const AsideDetalles = ({ idTicket, dataSector, dataUsuario }) => {
   const { data, error } = useGetTicketIdQuery(idTicket);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [sectorEmisor, setSectorEmisor] = useState();

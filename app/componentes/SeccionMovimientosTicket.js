@@ -3,15 +3,16 @@
 import FormularioMovimientoTicket from "./FormularioMovimientoTicket";
 import { MovimientoTicket } from "./MovimientoTicket";
 import { TicketAbierto } from "@/elementos/TicketAbierto";
-import { useGetTicketIdQuery } from "@/services/apiTicket";
+import {
+  useGetSectorPorIdUsuarioQuery,
+  useGetTicketIdQuery,
+} from "@/services/apiTicket";
 import styles from "@/componentes/admin.module.css";
-import { Loader } from "@/elementos/Loader";
 import { useAuth } from "@/contexts/authContext";
 import { SkeletonSeccionMovimientos } from "@/elementos/skeletons/SkeletonSeccionMovimientos";
 
 export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
   const { data, error, isLoading } = useGetTicketIdQuery(idTicket);
-
   const { usuario } = useAuth();
 
   const usuarioEmisor = dataUsuario.find(

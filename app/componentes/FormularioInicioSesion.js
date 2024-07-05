@@ -30,7 +30,7 @@ const FormularioIniciarSesion = () => {
         (user) => user.idUsuario.trim() === usuarioExistente.legajo.trim()
       );
       establecerCampos({
-        idUsuario: usuarioActual.idUsuario,
+        idUsuario: usuarioActual.idUsuario.trim(),
       });
     }
   }, [usuarioExistente, data]);
