@@ -99,9 +99,8 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     }
     setIsSubmitting(true);
     try {
-      const [ticket] = data
-      const idTicket = ticket.idTicket
-      // const idTicket = data.length + 1;
+        const [ticket] = data
+        const idTicket = ticket.idTicket || 1
       await crearTicket({
         ...campos,
         idTicket:idTicket,
