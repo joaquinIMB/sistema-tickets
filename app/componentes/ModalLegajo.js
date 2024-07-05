@@ -1,18 +1,17 @@
 import Link from "next/link";
 
 const ModalLegajo = ({
-  dataUsuarios,
+  data,
   legajo,
   setLegajo,
   setDataUser,
   cambiarEstadoAlerta,
   cambiarAlerta,
 }) => {
-
   const onSubmit = async (e) => {
     e.preventDefault();
     if (legajo.length > 0) {
-      setDataUser(dataUsuarios.filter((user) => user.idUsuario.trim() == legajo));
+      setDataUser(data.filter((user) => user.idUsuario.trim() == legajo));
     } else {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
@@ -43,14 +42,14 @@ const ModalLegajo = ({
             </button>
           </div>
           <div className="flex w-full center gap-3 pt-3">
-          <h2 className="font-semibold">¿Ya tenés una cuenta?</h2>
-          <Link
-            href={"/auth/iniciar-sesion"}
-            className="text-blue-600 font-bold cursor-pointer"
-          >
-            Inicia sesión
-          </Link>
-        </div>
+            <h2 className="font-semibold">¿Ya tenés una cuenta?</h2>
+            <Link
+              href={"/auth/iniciar-sesion"}
+              className="text-blue-600 font-bold cursor-pointer"
+            >
+              Inicia sesión
+            </Link>
+          </div>
         </form>
       </div>
     </div>

@@ -7,14 +7,15 @@ import { SeleccionarSector } from "./SeleccionarSector";
 import ModalLegajo from "./ModalLegajo";
 import { useModal } from "@/contexts/modalContext";
 import { useAuth } from "@/contexts/authContext";
-import { useUpdateDataUsuarioMutation } from "@/services/apiTicket";
+import { useGetSectorPorIdUsuarioQuery, useUpdateDataUsuarioMutation } from "@/services/apiTicket";
 import { useRouter } from "next/navigation";
 
-const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
+const FormularioRegistroUsuario = ({ dataSector }) => {
   const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
   const { isModalOpen, handleOpenModal, handleCloseModal } = useModal();
   const { setUsuarioExistente } = useAuth();
   const [actualizarDatosUser] = useUpdateDataUsuarioMutation();
+  const {data} = useGetSectorPorIdUsuarioQuery("ST_usuarios");
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
   const [legajo, setLegajo] = useState("");
@@ -345,7 +346,7 @@ const FormularioRegistroUsuario = ({ dataSector, dataUsuarios }) => {
       />
       {isModalOpen && (
         <ModalLegajo
-          dataUsuarios={dataUsuarios}
+          data={data}
           legajo={legajo}
           setLegajo={setLegajo}
           setDataUser={setDataUser}

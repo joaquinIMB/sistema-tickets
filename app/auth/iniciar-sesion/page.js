@@ -6,16 +6,5 @@ export const metadata = {
 };
 
 export default async function IniciarSesion() {
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_API_URL
-      : process.env.URL_DEV;
-
-  const dataUsuarios = await fetch(`${API_URL}/usuarios`, {
-    cache: "no-store",
-  })
-    .then((res) => res.json())
-    .catch((err) => console.log(err));
-
-  return <FormularioIniciarSesion dataUsuarios={dataUsuarios} />;
+  return <FormularioIniciarSesion />;
 }

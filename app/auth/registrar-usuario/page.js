@@ -18,16 +18,5 @@ export default async function RegistrarUsuario() {
     .then((res) => res.json())
     .catch((err) => console.log(err));
 
-  const dataUsuarios = await fetch(`${API_URL}/usuarios`, {
-    cache: "no-store",
-  })
-    .then((res) => res.json())
-    .catch((err) => console.log(err));
-
-  return (
-    <FormularioRegistroUsuario
-      dataSector={dataSector}
-      dataUsuarios={dataUsuarios}
-    />
-  );
+  return <FormularioRegistroUsuario dataSector={dataSector} />;
 }

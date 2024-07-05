@@ -6,8 +6,9 @@ import { useAuth } from "../contexts/authContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/modalContext";
+import { useGetSectorPorIdUsuarioQuery } from "@/services/apiTicket";
 
-const FormularioIniciarSesion = ({ dataUsuarios }) => {
+const FormularioIniciarSesion = () => {
   const router = useRouter();
   const [campos, establecerCampos] = useState({
     idUsuario: "",
@@ -17,21 +18,22 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
   const [alerta, cambiarAlerta] = useState({});
   const { iniciarSesion, usuarioExistente } = useAuth();
   const { setIsModalOpen } = useModal();
+  const {data} = useGetSectorPorIdUsuarioQuery("ST_usuarios");
 
   useMemo(() => {
-    localStorage.removeItem("usuario")
-  },[])
+    localStorage.removeItem("usuario");
+  }, []);
 
   useMemo(() => {
     if (usuarioExistente) {
-      const [usuarioActual] = dataUsuarios.filter(
+      const [usuarioActual] = data.filter(
         (user) => user.idUsuario.trim() === usuarioExistente.legajo.trim()
       );
       establecerCampos({
         idUsuario: usuarioActual.idUsuario,
       });
     }
-  }, [usuarioExistente, dataUsuarios]);
+  }, [usuarioExistente, data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +47,7 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
-    const [usuarioActual] = dataUsuarios.filter(
+    const [usuarioActual] = data.filter(
       (user) => user.idUsuario.trim() === campos.idUsuario
     );
     if (campos.idUsuario === "" || campos.contraseña === "") {
@@ -64,12 +66,20 @@ const FormularioIniciarSesion = ({ dataUsuarios }) => {
       });
       return;
     }
+    if (!usuarioActual.idSector) {
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: "No existe el sector, comuniquese con sistemas",
+      });
+      return;
+    }
     try {
       iniciarSesion({
         ...usuarioActual,
         correo: usuarioActual.correo.trim(),
         legajo: usuarioActual.idUsuario.trim(),
-        idSector:usuarioActual.idSector
+        idSector: usuarioActual.idSector,
       });
       cambiarEstadoAlerta(true);
       cambiarAlerta({

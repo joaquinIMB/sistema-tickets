@@ -13,7 +13,8 @@ export const api = createApi({
     "getSectorID",
     "getTicketUsuarioAsignado",
     "getTicketUsuarioEmisor",
-    "getNextTicket"
+    "getNextTicket",
+    "getTablaUsuarios"
   ],
   endpoints: (builder) => ({
     getTickets: builder.query({
@@ -45,6 +46,10 @@ export const api = createApi({
     getNextIdTicket: builder.query({
       query: (nroSiguiente) => `ticket/traerIdTicket/${nroSiguiente}`,
       providesTags: ["getNextTicket"],
+    }),
+    getSectorPorIdUsuario: builder.query({
+      query: (nombreTabla) => `ticket/usuariosSinCache/${nombreTabla}`,
+      providesTags: ["getTablaUsuarios"],
     }),
     createTicket: builder.mutation({
       query: (campos) => ({
@@ -135,5 +140,6 @@ export const {
   useGetTicketIdSectorQuery,
   useGetTicketIdUsuarioAsignadoQuery,
   useGetTicketIdUsuarioEmisorQuery,
-  useGetNextIdTicketQuery
+  useGetNextIdTicketQuery,
+  useGetSectorPorIdUsuarioQuery
 } = api;
