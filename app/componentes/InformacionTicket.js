@@ -3,22 +3,22 @@
 import { useEffect, useState } from "react";
 import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
+import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 
-export const InformacionTicket = ({ ticket, dataMovimientos }) => {
+export const InformacionTicket = ({ ticket }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
-
+  const { data, error } = useGetMovimientoTicketQuery(
+    ticket.idTicket
+  );
   const [prioridad, cambiarPrioridad] = useState(false);
 
-  useEffect(() => {
-    if (ticket) {
-      cambiarCampos((prevData) => ({
-        ...prevData,
-        prioridad: ticket.prioridad,
-      }));
-    }
-  }, [ticket, cambiarCampos, ticket.prioridad]);
 
-  const ultimoMovimiento = dataMovimientos[dataMovimientos.length - 1];
+  useEffect(() => {
+    cambiarCampos((prevData) => ({
+      ...prevData,
+      prioridad: ticket.prioridad,
+    }));
+  }, [cambiarCampos, ticket.prioridad]);
 
   const handleResetPrioridad = () => {
     cambiarPrioridad(!prioridad);
@@ -28,8 +28,12 @@ export const InformacionTicket = ({ ticket, dataMovimientos }) => {
     }));
   };
 
+  if (error) return <div>Error: {error.message}</div>;
+
+  const ultimoMovimiento = data ? data[data.length - 1] : null;
+
   return (
-    <div className="p-4 pb-0 bg-white min-h-[250px] border-y border-opacity-5 shadow-sm rounded-sm  w-full">
+    <div className="p-4 pb-0 bg-white min-h-[100px] border-y border-opacity-5 shadow-sm rounded-sm  w-full">
       <h2 className="font-semibold text-lg">Información de Ticket</h2>
       <ul className="py-3 flex flex-col gap-3 text-gray-500">
         <li>
@@ -47,7 +51,7 @@ export const InformacionTicket = ({ ticket, dataMovimientos }) => {
         <li>
           Ult movimiento:
           <span className="text-neutral-600 pl-2 font-semibold">
-            {ultimoMovimiento.fechaHoraRegistro}
+            {ultimoMovimiento ? ultimoMovimiento.fechaHoraRegistro : "N/A"}
           </span>
         </li>
         <li>
@@ -68,7 +72,7 @@ export const InformacionTicket = ({ ticket, dataMovimientos }) => {
           )}
           <span
             onClick={handleResetPrioridad}
-            className={`font-semibold absolute bottom-4 right-0 ${
+            className={`font-semibold absolute top-0 right-0 ${
               prioridad ? "text-red-600" : "text-blue-600"
             }  cursor-pointer`}
           >

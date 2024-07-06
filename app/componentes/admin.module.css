@@ -10,142 +10,6 @@
   animation: entrada 0.3s ease forwards;
 }
 
-@keyframes entrada {
-  from {
-    left: -200px;
-  }
-  to {
-    left: 0;
-  }
-}
-
-/* Diseño Adaptable */
-
-.header {
-  transition: all 0.3s ease;
-  @media screen and (max-width: 1656px) {
-    padding:1rem 1.5rem;
-  }
-}
-.headerListaTicket {
-  transition: all 0.3s ease;
-  @media screen and (max-width: 1656px) {
-    font-size: 16px;
-    padding:0.85rem 1.5rem;
-  }
-  @media screen and (max-width: 764px) {
-    padding: 0.85rem 1rem;
-  }
-}
-.listaTicket {
-  transition: all 0.3s ease;
-  @media screen and (max-width: 1656px) {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  @media screen and (max-width: 764px) {
-    padding: 0 1rem;
-  }
-}
-.asideAdaptable { 
-  width: 300px;
-  @media screen and (max-width: 1350px) {
-    position: absolute;
-    left: 76px;
-    z-index: 99;
-    box-shadow: -2px 1px 135px #00000056;
-  }
-  @media screen and (max-width: 764px) {
-    width: 260px !important;
-  }
-}
-
-.sideBarAdaptable {
-  @media screen and (max-width: 1350px) {
-    position: absolute;
-    z-index: 998;
-    height: 100%;
-  }
-}
-.subNavAdaptable {
-  @media screen and (max-width: 1350px) {
-    box-shadow: 3px 0 18px #00000030;
-  }
-  @media screen and (max-width: 764px) {
-    width: 260px !important;
-  }
-}
-.headerSubNavMobile{
-  @media screen and (max-width: 764px) {
-    width: 260px !important;
-  }
-}
-
-.subMenuSideBar{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 92vh;
-}
-
-.botonDesplegarSideBar {
-  width: 36px;
-}
-.contraerSideBar {
-  @media screen and (max-width: 1175px) {
-    width: 0;
-  }
-}
-.usuario {
-  @media screen and (max-width: 930px) {
-    width: 35%;
-  }
-}
-.motivo {
-  padding: 0 1rem;
-  @media screen and (max-width: 1012px) {
-    display: none;
-  }
-}
-.prioridad {
-  @media screen and (max-width: 930px) {
-    width: 15% !important;
-  }
-  @media screen and (max-width: 764px) {
-    width: 35% !important;
-  }
-}
-.estado {
-  @media screen and (max-width: 1012px) {
-    width: 25% !important;
-  }
-}
-.fecha {
-  @media screen and (max-width: 1012px) {
-    width: 25%;
-  }
-  @media screen and (max-width: 764px) {
-    display: none;
-  }
-}
-.correo {
-  @media screen and (max-width: 680px) {
-    display: none;
-  }
-}
-.subNavDespliege {
-  width: 0;
-  animation: abrir 0.4s ease;
-}
-@keyframes abrir {
-  from {
-    width: 0;
-  }
-  to {
-    width: 300px;
-  }
-}
-
 .contenedorMovTickets {
   display: flex;
   justify-content: space-between;
@@ -178,18 +42,137 @@
   justify-content: center;
   max-height: 600px;
 }
+
+.subMenuSideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 92vh;
+}
+
+.modalAperturaTicket{
+  display: flex;
+  inset: 0px;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  background: #00000050;
+  animation: showModal .3s ease;
+}
+
+/* Diseño Adaptable */
+@media screen and (max-width: 1656px) {
+  .header {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  .headerListaTicket {
+    font-size: 16px;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  .listaTicket {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  .asideAdaptable {
+    position: fixed;
+    left: 0px;
+    z-index: 999;
+    width: 100vw;
+    background: #00000050;
+    animation: showModal .3s ease;
+  }
+  .subNavAdaptable {
+    box-shadow: 3px 0 18px #00000030;
+  }
+}
+
+@media screen and (max-width: 548px) {
+  .prioridad {
+    display: none;
+  }
+  .listaTicket {
+    padding: 0 0.75rem !important;
+  }
+  .correo {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 764px) {
+  .listaTicket {
+    padding: 0 1.5rem !important;
+  }
+  .usuario {
+    width: 65% !important;
+  }
+  .estado {
+    width: 20% !important;
+  }
+}
+
+@media screen and (max-width: 930px) {
+  .prioridad {
+    width: 15% !important;
+  }
+  .usuario {
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 1064px) {
+  .motivo {
+    display: none;
+  }
+  .usuario {
+    width: 35%;
+  }
+  .estado {
+    width: 15%;
+  }
+  .fecha {
+    width: 25% !important;
+  }
+  .contenedorSeccionMovimientos {
+    width: 100% !important;
+  }
+}
+
 @media screen and (max-height: 800px) {
   .seccionMovimientos {
     max-height: 400px;
   }
   .contenedorSeccionMovimientos {
     padding-bottom: 1rem;
-    height: 88vh;
+    height: 90vh;
   }
   .contenedorMovTickets {
     height: 88vh;
   }
-  .subMenuSideBar{
+  .subMenuSideBar {
     padding-bottom: 1.7rem;
+  }
+}
+
+@keyframes entrada {
+  from {
+    left: -200px;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes showModal {
+  from {
+    background: transparent;
+  }
+  to {
+    background: #00000050;
   }
 }

@@ -16,9 +16,7 @@ const DesplegableProvider = ({ children }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 1350) {
-        setDesplegar(true);
-      } else {
+      if (window.innerWidth > 1028) {
         setDesplegar(false);
       }
     };

@@ -1,16 +1,23 @@
+import { getConnection } from "@/database/sqlConfig";
 import { NextResponse } from "next/server";
-import { db } from "@/firebase/FirebaseConfig";
-import { collection, getDocs, query } from "firebase/firestore";
 
-export const GET = async (request) => {
+export async function GET(req) {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query("SELECT * FROM ST_tickets");
 
-  const referenciaTicket = collection(db, "tickets");
+    const response = NextResponse.json(result.recordset);
 
-  const tickets = query(referenciaTicket);
+    response.headers.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
+    response.headers.set("Surrogate-Control", "no-store");
 
-  const ticketSnapshot = await getDocs(tickets);
-
-  const documentos = ticketSnapshot.docs.map((ticket) => ticket.data());
-
-  return NextResponse.json(documentos);
-};
+    return response;
+  } catch (err) {
+    console.error("Error al obtener datos.", err);
+  }
+}

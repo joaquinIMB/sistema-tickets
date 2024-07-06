@@ -1,15 +1,13 @@
+import { getConnection } from "@/database/sqlConfig";
 import { NextResponse } from "next/server";
-import { db } from "@/firebase/FirebaseConfig";
-import { collection, getDocs, query } from "firebase/firestore";
 
-export const GET = async (request) => {
-  const referenciaSectores = collection(db, "sectores");
-
-  const sectores = query(referenciaSectores);
-
-  const sectoresSnapshot = await getDocs(sectores);
-
-  const documentos = sectoresSnapshot.docs.map((sectores) => sectores.data());
-
-  return NextResponse.json(documentos);
-};
+export async function GET(req) {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query("SELECT * FROM ST_sectores");
+    return NextResponse.json(result.recordset);
+  } catch (error) {
+    console.error("Error in GET request: ", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

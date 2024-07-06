@@ -8,11 +8,13 @@ export const SeleccionarPrioridad = ({ campos, cambiarCampos }) => {
     cambiarUsuario,
     cambiarSeleccion,
   } = useDesplegable();
+
   const handleClick = () => {
     cambiarSeleccionPrioridad(!seleccionPrioridad);
     cambiarUsuario(false);
     cambiarSeleccion(false);
   };
+
   const handleClickPrioridad = (e) => {
     cambiarCampos({
       ...campos,

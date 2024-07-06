@@ -2,39 +2,43 @@
 
 import FormularioMovimientoTicket from "./FormularioMovimientoTicket";
 import { MovimientoTicket } from "./MovimientoTicket";
-import { TicketAbierto } from "./TicketAbierto";
-import useTraerTicket from "@/hooks/useTraerTicket";
-import useTraerMovimientos from "@/hooks/useTraerMovimientos";
+import { TicketAbierto } from "@/elementos/TicketAbierto";
+import {
+  useGetSectorPorIdUsuarioQuery,
+  useGetTicketIdQuery,
+} from "@/services/apiTicket";
 import styles from "@/componentes/admin.module.css";
+import { useAuth } from "@/contexts/authContext";
+import { SkeletonSeccionMovimientos } from "@/elementos/skeletons/SkeletonSeccionMovimientos";
 
-const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
-  const [ticket] = useTraerTicket(idTicket);
-  const dataMovimientos = useTraerMovimientos(idTicket);
+export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
+  const { data, error, isLoading } = useGetTicketIdQuery(idTicket);
+  const { usuario } = useAuth();
+
+  const usuarioEmisor = dataUsuario.find(
+    (user) => user.correo.trim() === usuario.email.trim()
+  );
+
+  if (isLoading) return <SkeletonSeccionMovimientos />;
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
-      {ticket && (
-        <section className={`${styles.contenedorSeccionMovimientos}`}>
-          <main className={`${styles.seccionMovimientos}`}>
-            <TicketAbierto ticket={ticket} />
-            {/* <div className="flex flex-row w-[80%] p-2">
-              <span className="text-gray-500">{`${
-                ticket.nombreEmisor
-              } asignó el ticket ${ticket.idTicket} a ${
-                ticket.nombreUsuarioAsignado != "Todos"
-                  ? ticket.nombreUsuarioAsignado
-                  : ticket.idSector
-              }`}</span>
-            </div> */}
-            <MovimientoTicket
-              dataMovimientos={dataMovimientos}
-              dataUsuario={dataUsuario}
+      {data &&
+        data.map((ticket) => (
+          <section
+            key={ticket.idTicket}
+            className={`${styles.contenedorSeccionMovimientos}`}
+          >
+            <main className={`${styles.seccionMovimientos}`}>
+              <TicketAbierto ticket={ticket} />
+              <MovimientoTicket ticket={ticket} dataUsuario={dataUsuario} />
+            </main>
+            <FormularioMovimientoTicket
+              ticket={ticket}
+              usuarioEmisor={usuarioEmisor}
             />
-          </main>
-          <FormularioMovimientoTicket ticket={ticket} />
-        </section>
-      )}
+          </section>
+        ))}
     </>
   );
 };
-
-export default SeccionMovimientoTicket;

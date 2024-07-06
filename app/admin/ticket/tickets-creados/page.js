@@ -1,6 +1,5 @@
-import { Loader } from "@/componentes/Loader";
 import { TraerTicketPorEmisor } from "@/componentes/TraerTicketPorEmisor";
-import { Suspense } from "react";
+import { HeaderListaTickets } from "@/elementos/HeaderListaTickets";
 
 export const metadata = {
   title: "Tickets emitidos por mí - Helpdesk Unity - Sistema de tickets",
@@ -11,8 +10,8 @@ export const metadata = {
 export default async function TicketsCreados() {
   const API_URL =
     process.env.NODE_ENV === "production"
-      ? "https://helpdeskunity.netlify.app/api/ticket"
-      : "http://127.0.0.1:3000/api/ticket";
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.URL_DEV;
 
   const dataUsuario = await fetch(`${API_URL}/usuarios`, {
     cache: "no-cache",
@@ -21,9 +20,8 @@ export default async function TicketsCreados() {
     .catch((error) => console.log(error));
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <TraerTicketPorEmisor dataUsuario={dataUsuario} />
-      </Suspense>
+      <HeaderListaTickets />
+      <TraerTicketPorEmisor dataUsuario={dataUsuario} />
     </>
   );
 }

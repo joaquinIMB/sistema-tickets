@@ -1,43 +1,56 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { Loader } from "@/componentes/Loader";
-import { HeaderListaTickets } from "@/componentes/HeaderListaTickets";
+import { useEffect, useMemo, useState } from "react";
 import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
-import { useTraerDataTicket } from "@/hooks/useTraerDataTickets";
+import { Error } from "./Error";
+import { useGetTicketIdUsuarioEmisorQuery } from "@/services/apiTicket";
 
 export const TraerTicketPorEmisor = ({ dataUsuario }) => {
-  const [ticket, setTicket] = useState();
-  const [usuarioActual, setUsuarioActual] = useState();
   const { usuario } = useAuth();
-  const data = useTraerDataTicket();
-  useEffect(() => {
-    const usuarioActual = dataUsuario.find(
-      (user) => user.correo === usuario.email
-    );
-    setUsuarioActual(usuarioActual);
-    if (usuarioActual && data) {
-      const ticketsDeUsuario = data.map(
-        (ticket) => ticket.legajoEmisor === usuarioActual.idUsuario && ticket
-      );
-      return setTicket(ticketsDeUsuario);
-    }
-  }, [dataUsuario, usuario.email, data]);
+  const [ticket, setTicket] = useState();
 
+  const { data, error, refetch } = useGetTicketIdUsuarioEmisorQuery(
+    usuario.legajo
+  );
+
+  const [usuarioActual, setUsuarioActual] = useState();
+
+  useMemo(() => {
+    if (dataUsuario) {
+      const [usuarioActual] = dataUsuario.filter(
+        (user) => user.correo.trim() === usuario.email
+      );
+      setUsuarioActual(usuarioActual);
+    }
+  }, [dataUsuario, usuario.email]);
+
+  useEffect(() => {
+    if (data) {
+      setTicket(data);
+    }
+  }, [data]);
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  });
+
+  if (error) return <Error error={error} refetch={refetch} />;
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <HeaderListaTickets />
-        {ticket &&
-          ticket.map((ticket) => (
-            <Ticket
-              key={ticket.idTicket}
-              ticket={ticket}
-              usuarioActual={usuarioActual}
-            />
-          ))}
-      </Suspense>
+      {ticket &&
+        ticket.map((ticket) => (
+          <Ticket
+            key={ticket.idTicket}
+            ticket={ticket}
+            usuarioActual={usuarioActual}
+          />
+        ))}
     </>
   );
 };

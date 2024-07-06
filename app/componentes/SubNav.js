@@ -1,17 +1,19 @@
 "use client";
 
-import { listaCategorias, listaEstados } from "./listaEnlaces";
+import { listaCategorias, listaEstados } from "@/elementos/listaEnlaces";
 import Link from "next/link";
-import { poppins } from "./fuentes";
+import { poppins } from "@/elementos/fuentes";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import BotonCrearTicket from "./BotonCrearTicket";
-import Image from "next/image";
 import styles from "@/componentes/admin.module.css";
+import BotonCerrarMenu from "@/elementos/BotonCerrarMenu";
+import BotonCerrarSesion from "./BotonCerrarSesion";
 
 export const SubNav = ({ desplegar, setDesplegar }) => {
   const pathname = usePathname();
   const [ruta, cambiarRuta] = useState();
+
   useEffect(() => {
     const path = pathname.slice(0, 6);
     if (path === "/admin") {
@@ -25,58 +27,69 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
     <>
       <section
         className={`${
-          !desplegar
-            ? `${styles.asideAdaptable}`
-            : "w-0 left-[76px] absolute z-[99]"
-        } transition flex flex-col overflow-hidden`}
+          desplegar
+            ? `w-[260px] absolute z-[999] ${styles.asideAdaptable}`
+            : "relative z-[99]"
+        } transition-all flex flex-col overflow-hidden`}
+        onClick={() => setDesplegar(false)}
       >
         <main
           className={`${
-            !desplegar ? "overflow-hidden" : "overflow-visible"
-          } left-[76px] h-screen bg-gradient-to-r w-[inherit] from-[#f1f1f1] to-[#f0f0f0] border-r ${
+            desplegar ? "overflow-hidden" : "overflow-visible"
+          } left-[76px] h-screen bg-gradient-to-r w-[260px] from-[#f7f7f7] to-[#ffffff] border-r ${
             styles.subNavAdaptable
           } border-black border-opacity-5 overflow-Y-auto`}
         >
           <header
-            className={`flex flex-row justify-between py-4 px-6 items-center ${styles.headerSubNavMobile}`}
+            className={`flex flex-row relative ${
+              desplegar
+                ? "justify-start items-center px-4"
+                : "justify-between  px-4 "
+            } pb-1 pt-[10px] items-center w-[260px]`}
           >
+            {desplegar && <BotonCerrarMenu />}
             <h1 className="capitalize text-[28px] text-gray-800 font-semibold">{`${ruta}`}</h1>
-            {window.innerWidth > 764 && <BotonCrearTicket />}
+            {!desplegar && <BotonCrearTicket />}
           </header>
-          <nav className={`${poppins.className} w-[300px]`}>
-            <ul className={`py-2 px-6 flex flex-col text-zinc-900 gap-2 `}>
+          <nav className={`${poppins.className} w-[260px]`}>
+            <ul className={`py-2 px-3 flex flex-col text-zinc-900 gap-2 `}>
               {listaCategorias.map((enlace) => (
                 <li
                   key={enlace.label}
-                  className={` tracking-wide relative h-8 ${
+                  className={` tracking-wide relative h-8 pt-2 ${
                     enlace.href === pathname
-                      ? "text-blue-600"
-                      : "hover:text-blue-600"
+                      ? " text-blue-600 rounded-md"
+                      : "hover:text-blue-600 "
                   }`}
+                  onClick={() => setDesplegar(false)}
                 >
                   <Link
-                    className="absolute left-0 w-full py-1 pb-2 px-0"
+                    className="relative left-0 w-full py-1 pb-2 px-2"
                     href={enlace.href}
                     
                   >
                     {enlace.label}
+                    {/* <span class="absolute top-[0px] right-[-25px] rounded-full w-8 h-4 bg-red-600 text-xs text-white content-center text-center">
+                      99+
+                    </span> */}
                   </Link>
                 </li>
               ))}
-              <span className="py-4 tracking-wide text-[#707070b2]">
+              <span className="py-4 px-2 pb-3 tracking-wide text-[#707070b2]">
                 Mis tickets por estado
               </span>
               {listaEstados.map((enlace, index) => (
                 <li
                   key={index}
-                  className={`tracking-wide relative h-9  ${
+                  className={`tracking-wide relative h-8  ${
                     enlace.href === pathname
-                      ? "text-blue-600"
-                      : "hover:text-blue-600"
+                      ? " text-blue-600 rounded-md"
+                      : "hover:text-blue-600 "
                   }`}
+                  onClick={() => setDesplegar(false)}
                 >
                   <Link
-                    className="absolute left-0 w-full py-1 pb-2 px-0"
+                    className="absolute left-0 w-full py-1 pb-2 px-2"
                     href={enlace.href}
                     
                   >
@@ -84,16 +97,9 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   </Link>
                 </li>
               ))}
+              <BotonCerrarSesion />
             </ul>
           </nav>
-          <Image
-            src={"/flecha.png"}
-            alt="Logo flecha para desplegar menu de opciones"
-            width={100}
-            height={100}
-            className="w-5 bottom-5 right-5 absolute cursor-pointer rotate-180 z-50"
-            
-          />
         </main>
       </section>
     </>

@@ -1,49 +1,53 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { Loader } from "./Loader";
-import { HeaderListaTickets } from ".//HeaderListaTickets";
+import React, { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/authContext";
 import { Ticket } from "./Ticket";
-import { useTraerTicketsNuevos } from "@/hooks/useTraerTicketsNuevos";
+import { useGetTicketIdSectorQuery } from "@/services/apiTicket";
+import { Error } from "./Error";
 
-export const TicketSinAbrirPorSector = ({ dataSector, dataUsuario }) => {
+export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   const { usuario } = useAuth();
-  const [ticket, setTicket] = useState();
+  const [tickets, setTicket] = useState([]);
+  const { data, error, refetch } = useGetTicketIdSectorQuery(
+    usuario.idSector
+  );
   const [usuarioActual, setUsuarioActual] = useState();
-  const data = useTraerTicketsNuevos();
+
+  useMemo(() => {
+    if (dataUsuario) {
+      const [usuarioActual] = dataUsuario.filter(
+        (user) => user.correo.trim() === usuario.email
+      );
+      setUsuarioActual(usuarioActual);
+    }
+  }, [dataUsuario, usuario.email]);
 
   useEffect(() => {
-    const usuarioActual = dataUsuario.find(
-      (user) => user.correo === usuario.email
-    );
-    const sectorActual = dataSector.find(
-      (sector) => sector.nombreSector === usuarioActual.idSector
-    );
-    setUsuarioActual(usuarioActual);
-    if (sectorActual && data) {
-      const ticketsDeSector = data.map(
-        (ticket) =>
-          ticket.idSector === sectorActual.nombreSector &&
-          ticket.legajoAsignado === "Todos" &&
-          ticket
-      );
-      return setTicket(ticketsDeSector);
+    if (data) {
+      setTicket(data);
     }
-  }, [dataSector, data, dataUsuario, usuario.email]);
+  }, [data]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  if (error) return <Error error={error} refetch={refetch} />;
+
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <HeaderListaTickets />
-        {ticket &&
-          ticket.map((ticket) => (
-            <Ticket
-              key={ticket.idTicket}
-              ticket={ticket}
-              usuarioActual={usuarioActual}
-            />
-          ))}
-      </Suspense>
+      {tickets.map((ticket) => (
+        <Ticket
+          key={ticket.idTicket}
+          ticket={ticket}
+          usuarioActual={usuarioActual}
+        />
+      ))}
     </>
   );
 };
