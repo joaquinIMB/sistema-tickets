@@ -4,7 +4,6 @@ import FormularioMovimientoTicket from "./FormularioMovimientoTicket";
 import { MovimientoTicket } from "./MovimientoTicket";
 import { TicketAbierto } from "@/elementos/TicketAbierto";
 import {
-  useGetSectorPorIdUsuarioQuery,
   useGetTicketIdQuery,
 } from "@/services/apiTicket";
 import styles from "@/componentes/admin.module.css";

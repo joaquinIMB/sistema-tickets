@@ -1,10 +1,10 @@
+"use client";
 
+import { useEffect } from "react";
 import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 
 export const MovimientoTicket = ({ ticket, dataUsuario }) => {
-  const { data, error } = useGetMovimientoTicketQuery(
-    ticket.idTicket
-  );
+  const { data, error, refetch } = useGetMovimientoTicketQuery(ticket.idTicket);
   let ultimoMovimiento = null;
   let emisorMovimiento = null;
   let usuarioEmisor = null;
@@ -19,6 +19,14 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
       );
     }
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 3000);
+    return () => clearInterval(interval);
+  });
+
   if (error) return <div>Error: {error.message}</div>;
   return (
     <>
@@ -34,7 +42,11 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
                   <div className="flex flex-col w-[40%]">
                     <h1 className=" text-base text-[#fcfcfc] capitalize">
                       {usuarioEmisor
-                        ? `${usuarioEmisor.idUsuario + " " + usuarioEmisor.nombreUsuario}`
+                        ? `${
+                            usuarioEmisor.idUsuario +
+                            " " +
+                            usuarioEmisor.nombreUsuario
+                          }`
                         : ""}
                     </h1>
                   </div>

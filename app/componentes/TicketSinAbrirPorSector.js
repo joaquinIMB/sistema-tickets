@@ -30,7 +30,7 @@ export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   });
 
