@@ -9,8 +9,25 @@ import BotonCrearTicket from "./BotonCrearTicket";
 import styles from "@/componentes/admin.module.css";
 import BotonCerrarMenu from "@/elementos/BotonCerrarMenu";
 import BotonCerrarSesion from "./BotonCerrarSesion";
+import { TotalTickets } from "./TotalTicketsPorSeccion";
+import { useAuth } from "@/contexts/authContext";
+import {
+  useGetTicketIdSectorQuery,
+  useGetTicketIdUsuarioAsignadoQuery,
+  useGetTicketIdUsuarioEmisorQuery,
+} from "@/services/apiTicket";
 
 export const SubNav = ({ desplegar, setDesplegar }) => {
+  const { usuario } = useAuth();
+
+  const { data: ticketsSector } = useGetTicketIdSectorQuery(usuario.idSector);
+  const { data: ticketsAsignado } = useGetTicketIdUsuarioAsignadoQuery(
+    usuario.legajo
+  );
+  const { data: ticketsEmisor } = useGetTicketIdUsuarioEmisorQuery(
+    usuario.legajo
+  );
+
   const pathname = usePathname();
   const [ruta, cambiarRuta] = useState();
 
@@ -18,8 +35,6 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
     const path = pathname.slice(0, 6);
     if (path === "/admin") {
       cambiarRuta("Tickets");
-    } else if (path === "/ajustes") {
-      cambiarRuta("Ajustes");
     }
   }, [pathname]);
 
@@ -66,13 +81,21 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   <Link
                     className="relative left-0 w-full py-1 pb-2 px-2"
                     href={enlace.href}
-                    
                   >
                     {enlace.label}
-                    {/* <span class="absolute top-[0px] right-[-25px] rounded-full w-8 h-4 bg-red-600 text-xs text-white content-center text-center">
-                      99+
-                    </span> */}
                   </Link>
+                  {ticketsSector && ticketsAsignado && ticketsEmisor && (
+                    <TotalTickets
+                    background={"bg-neutral-800"}
+                      cantidad={
+                        enlace.seccion === "ticketsSector"
+                          ? ticketsSector.length
+                          : enlace.seccion === "ticketsAsignado"
+                          ? ticketsAsignado.length
+                          : ticketsEmisor.length
+                      }
+                    />
+                  )}
                 </li>
               ))}
               <span className="py-4 px-2 pb-3 tracking-wide text-[#707070b2]">
@@ -91,7 +114,6 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   <Link
                     className="absolute left-0 w-full py-1 pb-2 px-2"
                     href={enlace.href}
-                    
                   >
                     {enlace.label}
                   </Link>

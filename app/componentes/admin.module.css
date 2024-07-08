@@ -102,6 +102,10 @@
   .correo {
     display: none;
   }
+  .header {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
 }
 
 @media screen and (max-width: 764px) {
@@ -112,7 +116,7 @@
     width: 65% !important;
   }
   .estado {
-    width: 20% !important;
+    width: 30% !important;
   }
 }
 
@@ -145,7 +149,7 @@
 
 @media screen and (max-height: 800px) {
   .seccionMovimientos {
-    max-height: 400px;
+    max-height: 65vh;
   }
   .contenedorSeccionMovimientos {
     padding-bottom: 1rem;

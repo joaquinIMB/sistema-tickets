@@ -12,14 +12,17 @@ const listaCategorias = [
   {
     label: "Sin asignar",
     href: urlBase("tickets-de-sector"),
+    seccion: "ticketsSector",
   },
   {
     label: "Mis tickets",
     href: urlBase("mis-tickets"),
+    seccion: "ticketsAsignado",
   },
   {
     label: "Tickets Solicitados",
     href: urlBase("tickets-creados"),
+    seccion: "ticketsEmisor",
   },
 ];
 

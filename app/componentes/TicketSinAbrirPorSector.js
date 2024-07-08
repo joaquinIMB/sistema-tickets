@@ -1,18 +1,15 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/authContext";
-import { Ticket } from "./Ticket";
-import { useGetTicketIdSectorQuery } from "@/services/apiTicket";
+import { useEffect, useMemo, useState } from "react";
+import { Ticket } from "@/componentes/Ticket";
+import { useAuth } from "@/contexts/authContext";
 import { Error } from "./Error";
+import { useGetTicketIdSectorQuery } from "@/services/apiTicket";
 
 export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   const { usuario } = useAuth();
-  const [tickets, setTicket] = useState([]);
-  const { data, error, refetch } = useGetTicketIdSectorQuery(
-    usuario.idSector
-  );
+  const [tickets, setTickets] = useState([]);
+  const { data, error, refetch } = useGetTicketIdSectorQuery(usuario.idSector);
   const [usuarioActual, setUsuarioActual] = useState();
 
   useMemo(() => {
@@ -26,7 +23,7 @@ export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
 
   useEffect(() => {
     if (data) {
-      setTicket(data);
+      setTickets(data);
     }
   }, [data]);
 
@@ -35,7 +32,7 @@ export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
       refetch();
     }, 5000);
     return () => clearInterval(interval);
-  }, [refetch]);
+  });
 
   if (error) return <Error error={error} refetch={refetch} />;
 

@@ -150,7 +150,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="h-[148px] w-[90%] flex items-center justify-center"
+        className="h-[148px] w-[95%] flex items-center justify-center"
       >
         <div className="relative w-full h-full bg-white">
           <textarea
@@ -159,14 +159,14 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
             value={campos.descripcionMovimiento}
             onChange={handleChange}
             placeholder="Escriba un mensaje..."
-            className="w-full bg-white h-[80%] py-2 px-4 m-auto outline-none resize-none border rounded-md rounded-b-none border-opacity-5 "
+            className="w-full bg-white h-[72%] py-2 px-4 m-auto outline-none resize-none border rounded-md rounded-b-none border-opacity-5 "
           />
           <label
             htmlFor="mensajeMovimientoTicket"
-            className="absolute flex justify-end items-center rounded-b-md bg-neutral-800 bottom-0 right-0 p-2 w-[100%] min-h-11 h-[20%]"
+            className="absolute flex justify-end items-center rounded-b-md bg-neutral-800 bottom-0 right-0 p-2 w-[100%] min-h-11 h-[20%]  z-[99]"
           >
             {/* <BotonOpciones /> */}
-            <div className="flex flex-row items-center gap-4">
+            <div className="flex flex-row items-center gap-4 ">
               <span className="text-white font-semibold text-base">
                 Estado:
               </span>

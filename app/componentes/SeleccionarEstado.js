@@ -16,7 +16,7 @@ export const SeleccionarEstado = ({
   };
   return (
     <>
-      <div className="relative self-center">
+      <div className="relative self-center z-[999]">
         <div
           onClick={() => setDesplegar(!desplegar)}
           className={`flex px-4 py-1 cursor-pointer capitalize items-center gap-2 ${

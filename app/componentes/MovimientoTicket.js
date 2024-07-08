@@ -28,17 +28,17 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
             return (
               <section
                 key={movimiento.idMovimientoTicket}
-                className="w-[90%] h-auto rounded-md overflow-hidden relative"
+                className="w-[95%] h-auto rounded-md overflow-hidden relative"
               >
                 <header className="flex flex-row justify-between bg-neutral-800 min-h-[22%] py-1 px-4">
-                  <div className="flex flex-col w-[25%]">
+                  <div className="flex flex-col w-[40%]">
                     <h1 className=" text-base text-[#fcfcfc] capitalize">
                       {usuarioEmisor
-                        ? `${usuarioEmisor.idUsuario}`
+                        ? `${usuarioEmisor.idUsuario + " " + usuarioEmisor.nombreUsuario}`
                         : ""}
                     </h1>
                   </div>
-                  <div className="flex flex-col text-end text-base w-[45%]">
+                  <div className="flex flex-col text-end text-base w-[50%]">
                     <span className="text-[#fcfcfc]">
                       {movimiento.fechaHoraRegistro}
                     </span>
@@ -46,7 +46,7 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
                 </header>
 
                 <main className="bg-white min-h-18">
-                  <p className="p-4 break-words">
+                  <p className="p-4 py-2 break-words">
                     {movimiento.descripcionMovimiento !== ""
                       ? movimiento.descripcionMovimiento
                       : `Cambió el estado a ${movimiento.idEstado}`}

@@ -31,7 +31,6 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
     }
   }, [data]);
 
-
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
