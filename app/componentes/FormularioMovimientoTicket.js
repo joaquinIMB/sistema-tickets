@@ -9,7 +9,7 @@ import {
 } from "@/services/apiTicket";
 import { useMovimientoTicket } from "@/contexts/movimientosContext";
 import Alerta from "./Alerta";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 
 const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
@@ -66,19 +66,35 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       (movimiento) =>
         movimiento.idMovimientoTicket === data.length && movimiento
     );
-    if (ultimoMov.idSector != usuarioEmisor.idSector) {
+    // if (ultimoMov.idSector != usuarioEmisor.idSector) {
+    //   cambiarEstadoAlerta(true);
+    //   cambiarAlerta({
+    //     tipo: "error",
+    //     mensaje: `No podes interactuar con el ticket`,
+    //   });
+    //   return;
+    // }
+    if (
+      ticket.legajoEmisor === usuarioEmisor.idUsuario &&
+      ticket.idEstado != campos.idEstado ||
+      ticket.prioridad != campos.prioridad ||
+      ticket.legajoAsignado != campos.legajoAsignado
+    ) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `No podes interactuar con el ticket`,
+        mensaje: `No puede cambiar el estado, prioridad o responsable del ticket`,
       });
       return;
     }
-    if (Number(usuarioEmisor.idUsuario) === ultimoMov.legajoEmisor && ticket.idEstado === "nuevo") {
+    if (
+      Number(usuarioEmisor.idUsuario) === ultimoMov.legajoEmisor &&
+      ticket.idEstado === "nuevo"
+    ) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `No puede realizar cambios en ticket ya que usted lo creó`,
+        mensaje: `No puede realizar cambios en un ticket que aún no está abierto`,
       });
       return;
     }
@@ -109,7 +125,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       });
       return;
     }
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     if (campos) {
       try {
         const fechaHora = traerFechaHora();
@@ -140,7 +156,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
         }));
       } catch (error) {
         console.log(error);
-      }finally {
+      } finally {
         setIsSubmitting(false);
       }
     }
