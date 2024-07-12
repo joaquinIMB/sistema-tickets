@@ -14,7 +14,9 @@ export const api = createApi({
     "getTicketUsuarioAsignado",
     "getTicketUsuarioEmisor",
     "getNextTicket",
-    "getTablaUsuarios"
+    "getTablaUsuarios",
+    "notificacionesPorSector",
+    "notificacionesPorUsuario",
   ],
   endpoints: (builder) => ({
     getTickets: builder.query({
@@ -51,6 +53,18 @@ export const api = createApi({
       query: (nombreTabla) => `ticket/usuariosSinCache/${nombreTabla}`,
       providesTags: ["getTablaUsuarios"],
     }),
+    getMovimientoTicket: builder.query({
+      query: (idTicket) => `ticket/movimientos/${idTicket}`,
+      providesTags: ["movTicket"],
+    }),
+    getNotificacionPorSector: builder.query({
+      query: (idSector) => `ticket/traerNotificacionPorSector/${idSector}`,
+      providesTags: ["notificacionesPorSector"],
+    }),
+    getNotificacionPorUsuario: builder.query({
+      query: (idUsuario) => `ticket/traerNotificacionPorUsuario/${idUsuario}`,
+      providesTags: ["notificacionesPorUsuario"],
+    }),
     createTicket: builder.mutation({
       query: (campos) => ({
         url: "/ticket/insertTicket",
@@ -76,12 +90,8 @@ export const api = createApi({
         "getSectorID",
         "getTicketUsuarioAsignado",
         "getTicketUsuarioEmisor",
-        "getNextTicket"
+        "getNextTicket",
       ],
-    }),
-    getMovimientoTicket: builder.query({
-      query: (idTicket) => `ticket/movimientos/${idTicket}`,
-      providesTags: ["movTicket"],
     }),
     createMovimientoTicket: builder.mutation({
       query: (campos) => ({
@@ -99,7 +109,22 @@ export const api = createApi({
           prioridad: campos.prioridad,
         }),
       }),
-      invalidatesTags: ["tickets", "movTicket", "getTicketID"],
+      invalidatesTags: ["tickets", "movTicket", "getTicketID", "getTicketUsuarioAsignado", "getTicketUsuarioEmisor", "getSectorID"],
+    }),
+    createNotificacionTicket: builder.mutation({
+      query: (campos) => ({
+        url: `/ticket/insertNotificaciones/${campos.idUsuario}`,
+        method: "POST",
+        body: JSON.stringify({
+          idSector: campos.idSector,
+          mensaje: campos.mensaje,
+          leido: 0,
+          fechaHora: campos.fechaHoraRegistro,
+          idTicket: campos.idTicket,
+          idMovimientoTicket: campos.idMovimientoTicket || 1,
+          idUsuarioEmisor: campos.legajoEmisor,
+        }),
+      }),
     }),
     updateTicket: builder.mutation({
       query: (campos) => ({
@@ -125,6 +150,16 @@ export const api = createApi({
       }),
       invalidatesTags: ["tickets", "newTicket", "getTicketID"],
     }),
+    updateNotificacionLeida: builder.mutation({
+      query: (id) => ({
+        url: `/ticket/updateNotificacionLeida/${id}`,
+        method: "POST",
+        body: JSON.stringify({
+          id: id,
+        }),
+      }),
+      invalidatesTags: ["notificacionesPorSector", "notificacionesPorUsuario"],
+    }),
   }),
 });
 
@@ -132,14 +167,18 @@ export const {
   useGetTicketsQuery,
   useGetStateIdQuery,
   useGetTicketIdQuery,
-  useCreateTicketMutation,
-  useGetMovimientoTicketQuery,
-  useCreateMovimientoTicketMutation,
-  useUpdateTicketMutation,
-  useUpdateDataUsuarioMutation,
   useGetTicketIdSectorQuery,
   useGetTicketIdUsuarioAsignadoQuery,
   useGetTicketIdUsuarioEmisorQuery,
+  useGetMovimientoTicketQuery,
   useGetNextIdTicketQuery,
-  useGetSectorPorIdUsuarioQuery
+  useGetSectorPorIdUsuarioQuery,
+  useGetNotificacionPorSectorQuery,
+  useGetNotificacionPorUsuarioQuery,
+  useCreateTicketMutation,
+  useCreateMovimientoTicketMutation,
+  useCreateNotificacionTicketMutation,
+  useUpdateTicketMutation,
+  useUpdateDataUsuarioMutation,
+  useUpdateNotificacionLeidaMutation,
 } = api;

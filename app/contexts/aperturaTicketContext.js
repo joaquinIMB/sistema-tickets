@@ -4,6 +4,7 @@ import { useContext, createContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   useCreateMovimientoTicketMutation,
+  useCreateNotificacionTicketMutation,
   useUpdateTicketMutation,
 } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
@@ -21,6 +22,7 @@ function AperturaTicketProvider({ children }) {
   const router = useRouter();
   const [actualizarTicket] = useUpdateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
+  const [crearNotificacion] = useCreateNotificacionTicketMutation();
 
   const fechaHora = traerFechaHora();
 
@@ -49,6 +51,15 @@ function AperturaTicketProvider({ children }) {
             actualizarTicket({
               ...updatedCampos,
             });
+            crearNotificacion({
+              ...updatedCampos,
+              idUsuario: dataTicket.legajoEmisor,
+              idSector: dataTicket.idSector,
+              mensaje: `${usuario.nombreUsuario} abrió el ticket ${dataTicket.idTicket}`,
+              fechaHoraRegistro: fechaHora,
+              idTicket: dataTicket.idTicket,
+              idMovimientoTicket: dataMovimiento.idMovimientoTicket,
+            });
             obtenerUsuario("");
             setDataTicket("");
             router.push(
@@ -70,11 +81,18 @@ function AperturaTicketProvider({ children }) {
     dataMovimiento,
     crearMovimientoTicket,
     actualizarTicket,
+    crearNotificacion,
   ]);
 
   return (
     <AperturaTicketContext.Provider
-      value={{ setDataTicket, obtenerUsuario, setDataMovimiento, crearMovimientoTicket, actualizarTicket }}
+      value={{
+        setDataTicket,
+        obtenerUsuario,
+        setDataMovimiento,
+        crearMovimientoTicket,
+        actualizarTicket,
+      }}
     >
       {children}
     </AperturaTicketContext.Provider>

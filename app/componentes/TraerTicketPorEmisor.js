@@ -27,7 +27,8 @@ export const TraerTicketPorEmisor = ({ dataUsuario }) => {
 
   useEffect(() => {
     if (data) {
-      setTicket(data);
+      const sortedTickets = [...data].sort((a, b) => b.idTicket - a.idTicket);
+      setTicket(sortedTickets);
     }
   }, [data]);
 

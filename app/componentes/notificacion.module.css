@@ -1,0 +1,28 @@
+/* Estilos básicos de notificación */
+.notificaciones {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.notificacion {
+  animation: fadeIn 0.4s ease-in forwards;
+}
+
+.notificacion button {
+  border: none;
+  cursor: pointer;
+}
+
+/* Animaciones de entrada y salida */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

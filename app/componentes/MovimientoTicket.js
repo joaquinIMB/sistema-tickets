@@ -23,7 +23,7 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 3000);
+    }, 5000);
     return () => clearInterval(interval);
   });
 

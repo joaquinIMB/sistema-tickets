@@ -10,6 +10,7 @@ import {
   useGetTicketsQuery,
   useCreateTicketMutation,
   useGetNextIdTicketQuery,
+  useCreateNotificacionTicketMutation,
 } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import Alerta from "./Alerta";
@@ -23,6 +24,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   // const { data, error, isLoading, refetch } = useGetTicketsQuery();
   const [crearTicket] = useCreateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
+  const [crearNotificacion] = useCreateNotificacionTicketMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const usuarioEmisor = useMemo(() => {
@@ -97,13 +99,21 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     if (validarCampos()) {
       return;
     }
+    if(campos.descripcionTicket.length > 255){
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: `La descripción supera la cantidad de caracteres permitidos`,
+      });
+      return;
+    }
     setIsSubmitting(true);
     try {
-        const [ticket] = data
-        const idTicket = ticket.idTicket || 1
+      const [ticket] = data;
+      const idTicket = ticket.idTicket || 1;
       await crearTicket({
         ...campos,
-        idTicket:idTicket,
+        idTicket: idTicket,
         fechaHoraRegistro: fechaHora,
       });
       await crearMovimientoTicket({
@@ -117,13 +127,20 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
         fechaHoraRegistro: fechaHora,
         descripcionMovimiento: `Creación de ticket ${idTicket}`,
       });
+      await crearNotificacion({
+        ...campos,
+        idUsuario: campos.legajoAsignado,
+        idSector: campos.idSector,
+        mensaje: `${campos.nombreEmisor} creó un ticket para tu sector`,
+        fechaHoraRegistro: fechaHora,
+        idTicket: idTicket,
+      });
       await refetch();
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "aceptado",
         mensaje: `¡El ticket se creó correctamente!`,
       });
-      console.log(idTicket)
       cambiarCampos({
         tituloTicket: "",
         descripcionTicket: "",

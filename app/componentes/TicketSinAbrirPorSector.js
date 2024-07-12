@@ -23,7 +23,9 @@ export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
 
   useEffect(() => {
     if (data) {
-      setTickets(data);
+      const sortedTickets = [...data].sort((a, b) => b.idTicket - a.idTicket);
+
+      setTickets(sortedTickets);
     }
   }, [data]);
 

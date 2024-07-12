@@ -99,6 +99,10 @@
   .listaTicket {
     padding: 0 0.75rem !important;
   }
+  .headerListaTicket {
+    padding-left: .75rem !important;
+    padding-right: .75rem !important;
+  }
   .correo {
     display: none;
   }
@@ -106,17 +110,24 @@
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
+  .id{
+    width: 10% !important;
+  }
 }
 
 @media screen and (max-width: 764px) {
   .listaTicket {
-    padding: 0 1.5rem !important;
+    padding: 0 .5rem !important;
+  }
+  .headerListaTicket {
+    padding-left: .5rem !important;
+    padding-right: .5rem !important;
   }
   .usuario {
     width: 65% !important;
   }
   .estado {
-    width: 30% !important;
+    width: 25% !important;
   }
 }
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { SeleccionarEstado } from "./SeleccionarEstado";
 import {
   useCreateMovimientoTicketMutation,
+  useCreateNotificacionTicketMutation,
   useGetMovimientoTicketQuery,
   useUpdateTicketMutation,
 } from "@/services/apiTicket";
@@ -19,6 +20,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
   const [desplegar, setDesplegar] = useState(false);
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
   const [actualizarTicket] = useUpdateTicketMutation();
+  const [crearNotificacion] = useCreateNotificacionTicketMutation();
   const { data, error } = useGetMovimientoTicketQuery(ticket.idTicket);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -44,7 +46,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       [name]: value,
     }));
   };
-
+  // SI DETECTA CAMPOS VACIOS NO PERMITE CREAR UN TICKET
   // const validarCampos = () => {
   //   const camposVacios = Object.values(campos).some(
   //     (valor) => valor.descripcionMovimiento === ""
@@ -66,6 +68,8 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       (movimiento) =>
         movimiento.idMovimientoTicket === data.length && movimiento
     );
+    // SI EL SECTOR DEL USUARIO DEL ULTIMO MOVIMIENTO ES DISTINTO AL SECTOR DEL USUARIO ACTUAL NO LO DEJA INTERACTUAR CON EL TICKET
+
     // if (ultimoMov.idSector != usuarioEmisor.idSector) {
     //   cambiarEstadoAlerta(true);
     //   cambiarAlerta({
@@ -75,10 +79,12 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
     //   return;
     // }
     if (
-      ticket.legajoEmisor === usuarioEmisor.idUsuario &&
-      ticket.idEstado != campos.idEstado ||
-      ticket.prioridad != campos.prioridad ||
-      ticket.legajoAsignado != campos.legajoAsignado
+      (ticket.legajoEmisor === usuarioEmisor.idUsuario &&
+        ticket.idEstado != campos.idEstado) ||
+      (ticket.legajoEmisor === usuarioEmisor.idUsuario &&
+        ticket.prioridad != campos.prioridad) ||
+      (ticket.legajoEmisor === usuarioEmisor.idUsuario &&
+        ticket.legajoAsignado != campos.legajoAsignado)
     ) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
@@ -141,6 +147,15 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
             campos.legajoAsignado === "Todos"
               ? "Todos"
               : campos.nombreUsuarioAsignado,
+        });
+        await crearNotificacion({
+          ...campos,
+          idUsuario: ticket.legajoEmisor,
+          idSector: campos.idSector,
+          mensaje: `${usuarioEmisor.nombreUsuario} realizó un cambio en el ticket ${campos.idTicket}`,
+          fechaHoraRegistro: fechaHora,
+          idTicket: campos.idTicket,
+          idMovimientoTicket: idMovimientoTicket,
         });
         cambiarEstadoAlerta(true);
         cambiarAlerta({

@@ -47,7 +47,7 @@ const FormularioIniciarSesion = () => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
-    const [usuarioActual] = data.filter(
+    const [usuarioActual] = data && data.filter(
       (user) => user.idUsuario.trim() === campos.idUsuario
     );
     if (campos.idUsuario === "" || campos.contraseña === "") {

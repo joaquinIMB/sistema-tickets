@@ -9,10 +9,13 @@ import Aside from "@/elementos/Aside";
 import { Header } from "@/elementos/Header";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { NotificacionesProvider } from "@/contexts/notificacionesContext";
+import NotificacionesContainer from "@/componentes/NotificacionesContainer";
 
 export default function RootLayout({ children }) {
   const { usuario } = useAuth();
   const router = useRouter();
+
   useMemo(() => {
     if (!usuario.logged) {
       router.push("/auth/iniciar-sesion");
@@ -23,8 +26,9 @@ export default function RootLayout({ children }) {
     <Provider store={store}>
       <DesplegableProvider>
         {usuario.logged === true && (
-            <div className="flex w-full relative overflow-hidden">
-              <Aside />
+          <div className="flex w-full relative overflow-hidden">
+            <Aside />
+            <NotificacionesProvider>
               <main className="flex flex-row min-h-screen bg-[#f9f9f9] justify-between w-full">
                 <div className="flex flex-col w-full h-screen bg-[#f9f9f9]">
                   <Header />
@@ -33,9 +37,11 @@ export default function RootLayout({ children }) {
                   >
                     <AperturaTicketProvider>{children}</AperturaTicketProvider>
                   </div>
+                  <NotificacionesContainer />
                 </div>
               </main>
-            </div>
+            </NotificacionesProvider>
+          </div>
         )}
       </DesplegableProvider>
     </Provider>
