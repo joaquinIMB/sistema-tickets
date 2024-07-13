@@ -18,7 +18,7 @@ const FormularioIniciarSesion = () => {
   const [alerta, cambiarAlerta] = useState({});
   const { iniciarSesion, usuarioExistente } = useAuth();
   const { setIsModalOpen } = useModal();
-  const {data} = useGetSectorPorIdUsuarioQuery("ST_usuarios");
+  const { data } = useGetSectorPorIdUsuarioQuery("ST_usuarios");
 
   useMemo(() => {
     localStorage.removeItem("usuario");
@@ -47,7 +47,7 @@ const FormularioIniciarSesion = () => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
-    const [usuarioActual] = data && data.filter(
+    const [usuarioActual] = await data.filter(
       (user) => user.idUsuario.trim() === campos.idUsuario
     );
     if (campos.idUsuario === "" || campos.contraseña === "") {

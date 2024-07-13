@@ -131,7 +131,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
         ...campos,
         idUsuario: campos.legajoAsignado,
         idSector: campos.idSector,
-        mensaje: `${campos.nombreEmisor} creó un ticket para tu sector`,
+        mensaje: `${campos.nombreEmisor} creó el ticket ${idTicket} para tu sector`,
         fechaHoraRegistro: fechaHora,
         idTicket: idTicket,
       });

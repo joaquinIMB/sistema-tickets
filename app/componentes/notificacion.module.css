@@ -1,8 +1,8 @@
 /* Estilos básicos de notificación */
 .notificaciones {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  bottom: 0rem;
+  right: .5rem;
   z-index: 1000;
 }
 
@@ -13,6 +13,17 @@
 .notificacion button {
   border: none;
   cursor: pointer;
+}
+
+@media screen and (max-width:548px){
+  .notificaciones{
+    bottom:0px !important;
+    right:0px !important;
+    padding: 0 .5rem !important;
+  }
+  .notificacion{
+    padding: 1rem .5rem;
+  }
 }
 
 /* Animaciones de entrada y salida */
