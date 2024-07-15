@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
 import Link from "next/link";
@@ -19,12 +19,10 @@ const FormularioIniciarSesion = () => {
   const { iniciarSesion, usuarioExistente } = useAuth();
   const { setIsModalOpen } = useModal();
   const { data } = useGetSectorPorIdUsuarioQuery("ST_usuarios");
+  const [usuarioActual, setUsuarioActual] = useState(null);
 
   useMemo(() => {
     localStorage.removeItem("usuario");
-  }, []);
-
-  useMemo(() => {
     if (usuarioExistente) {
       const [usuarioActual] = data.filter(
         (user) => user.idUsuario.trim() === usuarioExistente.legajo.trim()
@@ -34,6 +32,15 @@ const FormularioIniciarSesion = () => {
       });
     }
   }, [usuarioExistente, data]);
+
+  useEffect(() => {
+    if (data) {
+      const [usuarioActual] = data.filter(
+        (user) => user.idUsuario.trim() === campos.idUsuario.trim()
+      );
+      setUsuarioActual(usuarioActual);
+    }
+  }, [data, campos.idUsuario]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,14 +54,11 @@ const FormularioIniciarSesion = () => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
-    const [usuarioActual] = await data.filter(
-      (user) => user.idUsuario.trim() === campos.idUsuario
-    );
     if (campos.idUsuario === "" || campos.contraseña === "") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: "Por favor rellena todos los campos",
+        mensaje: "Por favor rellena todos los campos.",
       });
       return;
     }
@@ -62,7 +66,7 @@ const FormularioIniciarSesion = () => {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: "La contraseña ingresada es incorrecta",
+        mensaje: "La contraseña ingresada es incorrecta.",
       });
       return;
     }
@@ -70,7 +74,7 @@ const FormularioIniciarSesion = () => {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: "No existe el sector, comuniquese con sistemas",
+        mensaje: "No existe el sector, comuniquese con sistemas.",
       });
       return;
     }
