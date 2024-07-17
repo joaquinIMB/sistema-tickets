@@ -61,7 +61,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
             {sucursales.map((sucursal) => (
               <div
                 key={sucursal.idSucursal}
-                data-valor={`Sucursal ${sucursal.idSucursal}`}
+                data-valor={`${sucursal.idSucursal}`}
                 className={`p-2 cursor-pointer hover:bg-[#ececec] rounded-sm`}
                 onClick={handleSelect}
               >
