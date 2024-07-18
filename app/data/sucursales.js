@@ -8,6 +8,7 @@ export const sucursales = [
     { idSucursal: 30 },
     { idSucursal: 34 },
     { idSucursal: 39 },
+    { idSucursal: 42 },
     { idSucursal: 46 },
     { idSucursal: 47 },
     { idSucursal: 48 },
