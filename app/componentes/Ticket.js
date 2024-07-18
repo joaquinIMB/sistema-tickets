@@ -110,10 +110,10 @@ export const Ticket = ({ ticket, usuarioActual }) => {
             className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black transition-all ${styles.listaTicket}`}
           >
             <li className={`w-[5%] ${styles.id} text-center`}>
-              <h1 className="font-semibold text-lg"> {ticket.idTicket}</h1>
+              <h1 className="font-semibold text-md"> {ticket.idTicket}</h1>
             </li>
             <li className={`w-[25%] ${styles.usuario}`}>
-              <h1 className="font-semibold text-lg"> {ticket.nombreEmisor}</h1>
+              <h1 className="font-semibold text-md"> {ticket.nombreEmisor}</h1>
             </li>
             <li
               className={`w-[25%] text-center font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}

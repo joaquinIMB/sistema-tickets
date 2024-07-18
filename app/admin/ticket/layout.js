@@ -26,22 +26,24 @@ export default function RootLayout({ children }) {
     <Provider store={store}>
       <DesplegableProvider>
         {usuario.logged === true && (
-          <div className="flex w-full relative overflow-hidden">
-            <Aside />
-            <NotificacionesProvider>
-              <main className="flex flex-row min-h-screen bg-[#f9f9f9] justify-between w-full">
-                <div className="flex flex-col w-full h-screen bg-[#f9f9f9]">
-                  <Header />
-                  <div
-                    className={`w-full m-auto relative my-0 flex flex-row flex-wrap justify-center h-fit overflow-auto`}
-                  >
-                    <AperturaTicketProvider>{children}</AperturaTicketProvider>
+            <div className="flex w-full relative overflow-hidden">
+              <Aside />
+              <NotificacionesProvider>
+                <main className="flex flex-row min-h-screen bg-[#f9f9f9] justify-between w-full">
+                  <div className="flex flex-col w-full h-screen bg-[#f9f9f9]">
+                    <Header />
+                    <div
+                      className={`w-full m-auto relative my-0 flex flex-row flex-wrap justify-center h-fit overflow-auto`}
+                    >
+                      <AperturaTicketProvider>
+                        {children}
+                      </AperturaTicketProvider>
+                    </div>
+                    <NotificacionesContainer />
                   </div>
-                  <NotificacionesContainer />
-                </div>
-              </main>
-            </NotificacionesProvider>
-          </div>
+                </main>
+              </NotificacionesProvider>
+            </div>
         )}
       </DesplegableProvider>
     </Provider>

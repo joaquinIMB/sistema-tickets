@@ -2,7 +2,8 @@ import { getConnection } from "@/database/sqlConfig";
 import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
-  const { idEstado } = params;
+  const {idEstado}  = params;
+
   try {
     const pool = await getConnection();
     const result = await pool.request()

@@ -4,7 +4,7 @@ import { listaCategorias, listaEstados } from "@/elementos/listaEnlaces";
 import Link from "next/link";
 import { poppins } from "@/elementos/fuentes";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BotonCrearTicket from "./BotonCrearTicket";
 import styles from "@/componentes/admin.module.css";
 import BotonCerrarMenu from "@/elementos/BotonCerrarMenu";
@@ -86,7 +86,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   </Link>
                   {ticketsSector && ticketsAsignado && ticketsEmisor && (
                     <TotalTickets
-                    background={"bg-neutral-800"}
+                      background={"bg-neutral-800"}
                       cantidad={
                         enlace.seccion === "ticketsSector"
                           ? ticketsSector.length
@@ -101,24 +101,35 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
               <span className="py-4 px-2 pb-3 tracking-wide text-[#707070b2]">
                 Mis tickets por estado
               </span>
-              {listaEstados.map((enlace, index) => (
-                <li
-                  key={index}
-                  className={`tracking-wide relative h-8  ${
-                    enlace.href === pathname
-                      ? " text-blue-600 rounded-md"
-                      : "hover:text-blue-600 "
-                  }`}
-                  onClick={() => setDesplegar(false)}
-                >
-                  <Link
-                    className="absolute left-0 w-full py-1 pb-2 px-2"
-                    href={enlace.href}
+              {listaEstados.map((enlace, index) => {
+                const ticketsPorEstado = ticketsAsignado
+                  ? ticketsAsignado.filter(
+                      (ticket) => ticket.idEstado === enlace.estado
+                    ).length
+                  : 0;
+                return (
+                  <li
+                    key={index}
+                    className={`tracking-wide relative h-8  ${
+                      enlace.href === pathname
+                        ? " text-blue-600 rounded-md"
+                        : "hover:text-blue-600 "
+                    }`}
+                    onClick={() => setDesplegar(false)}
                   >
-                    {enlace.label}
-                  </Link>
-                </li>
-              ))}
+                    <Link
+                      className="absolute left-0 w-full pb-2 pt-[0.4rem] px-2"
+                      href={enlace.href}
+                    >
+                      {enlace.label}
+                    </Link>
+                    <TotalTickets
+                      background={"bg-neutral-800"}
+                      cantidad={ticketsPorEstado}
+                    />
+                  </li>
+                );
+              })}
               <BotonCerrarSesion />
             </ul>
           </nav>
