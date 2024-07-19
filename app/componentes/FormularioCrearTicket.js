@@ -99,11 +99,11 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     if (validarCampos()) {
       return;
     }
-    if (campos.descripcionTicket.length > 255) {
+    if (campos.descripcionTicket.length > 300) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
-        mensaje: `La descripción supera la cantidad de caracteres permitidos`,
+        mensaje: `La descripción supera la cantidad de caracteres permitidos (300)`,
       });
       return;
     }

@@ -131,6 +131,14 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       });
       return;
     }
+    if (campos.descripcionMovimiento.length > 300) {
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: `La descripción supera la cantidad de caracteres permitidos (300)`,
+      });
+      return;
+    }
     setIsSubmitting(true);
     if (campos) {
       try {

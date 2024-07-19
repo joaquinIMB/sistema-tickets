@@ -11,7 +11,7 @@ export async function POST(req) {
       .request()
       .input(
         "descripcionMovimiento",
-        sql.VarChar(80),
+        sql.VarChar(300),
         body.descripcionMovimiento
       )
       .input("fechaHoraRegistro", sql.VarChar(25), body.fechaHoraRegistro)
