@@ -1,6 +1,6 @@
 export const API_URL =
 process.env.NODE_ENV === "production"
-  ? "hhttp://localhost:3000/api/ticket"
+  ? "https://sistema-tickets-pink.vercel.app/api/ticket"
   : "http://localhost:3000/api/ticket";
 
 export const API_URL_SERVICES = 
