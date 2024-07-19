@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 
 export default function LayoutAuth({ children }) {
   return (
-    <ModalProvider>
       <DesplegableProvider>
         <div className="flex flex-col min-h-screen">
           <div className="flex justify-center items-center py-2 min-h-screen bg-slate-500 bg-opacity-5">
@@ -25,6 +24,5 @@ export default function LayoutAuth({ children }) {
           </div>
         </div>
       </DesplegableProvider>
-    </ModalProvider>
   );
 }

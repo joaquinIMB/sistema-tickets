@@ -50,7 +50,28 @@
   height: 92vh;
 }
 
-.modalAperturaTicket{
+.modalBackdrop{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #00000060;
+  z-index: 999;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  animation: showModal .2s ease;
+}
+
+.modalCrearTicket{
+  position: fixed;
+  background: #f9f9f9;
+  z-index: 1000;
+  border-radius: 10px;
+}
+
+.modal{
   display: flex;
   inset: 0px;
   position: fixed;
@@ -58,7 +79,11 @@
   align-items: center;
   z-index: 999;
   background: #00000050;
-  animation: showModal .3s ease;
+  animation: showModal .3s ease-in;
+}
+
+.totalTicket{
+  border-radius:99px 0 0 99px;
 }
 
 /* Diseño Adaptable */
@@ -92,6 +117,50 @@
   }
 }
 
+@media screen and (max-width: 1064px) {
+  .motivo {
+    display: none;
+  }
+  .usuario {
+    width: 35%;
+  }
+  .estado {
+    width: 15%;
+  }
+  .fecha {
+    width: 25% !important;
+  }
+  .contenedorSeccionMovimientos {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 930px) {
+  .prioridad {
+    width: 15% !important;
+  }
+  .usuario {
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 764px) {
+  .listaTicket {
+    padding: 0 .5rem !important;
+  }
+  .headerListaTicket {
+    padding-left: .5rem !important;
+    padding-right: .5rem !important;
+  }
+  .usuario {
+    width: 65% !important;
+  }
+  .estado {
+    width: 28% !important;
+  }
+}
+
+
 @media screen and (max-width: 548px) {
   .prioridad {
     display: none;
@@ -112,49 +181,6 @@
   }
   .id{
     width: 10% !important;
-  }
-}
-
-@media screen and (max-width: 764px) {
-  .listaTicket {
-    padding: 0 .5rem !important;
-  }
-  .headerListaTicket {
-    padding-left: .5rem !important;
-    padding-right: .5rem !important;
-  }
-  .usuario {
-    width: 65% !important;
-  }
-  .estado {
-    width: 25% !important;
-  }
-}
-
-@media screen and (max-width: 930px) {
-  .prioridad {
-    width: 15% !important;
-  }
-  .usuario {
-    width: 35%;
-  }
-}
-
-@media screen and (max-width: 1064px) {
-  .motivo {
-    display: none;
-  }
-  .usuario {
-    width: 35%;
-  }
-  .estado {
-    width: 15%;
-  }
-  .fecha {
-    width: 25% !important;
-  }
-  .contenedorSeccionMovimientos {
-    width: 100% !important;
   }
 }
 

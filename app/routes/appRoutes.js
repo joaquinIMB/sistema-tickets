@@ -1,5 +1,3 @@
-import { API_URL } from "./apiRoutes"
-
 export const urlBase = (parametro) => {
     return `/admin/ticket/${parametro}`
 }

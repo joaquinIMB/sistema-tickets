@@ -86,7 +86,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   </Link>
                   {ticketsSector && ticketsAsignado && ticketsEmisor && (
                     <TotalTickets
-                      background={"bg-neutral-800"}
+                      background={"bg-neutral-700"}
                       cantidad={
                         enlace.seccion === "ticketsSector"
                           ? ticketsSector.length
@@ -98,7 +98,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   )}
                 </li>
               ))}
-              <span className="py-4 px-2 pb-3 tracking-wide text-[#707070b2]">
+              <span className="py-4 px-2 pb-4 tracking-wide text-[#707070b2]">
                 Mis tickets por estado
               </span>
               {listaEstados.map((enlace, index) => {
@@ -124,7 +124,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                       {enlace.label}
                     </Link>
                     <TotalTickets
-                      background={"bg-neutral-800"}
+                      background={"bg-neutral-700"}
                       cantidad={ticketsPorEstado}
                     />
                   </li>

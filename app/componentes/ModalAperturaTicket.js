@@ -3,7 +3,7 @@ import styles from "@/componentes/admin.module.css"
 export const ModalAperturaTicket = ({ setPopUp, handleClick, ticket }) => {
   return (
     <div
-      className={` ${styles.modalAperturaTicket}`}
+      className={` ${styles.modal}`}
       onClick={() => setPopUp(false)}
     >
       <div className="flex p-4 flex-col justify-center gap-3 w-80 bg-[#efefef] absolute z-[999] overflow-hidden shadow-xl rounded-md">

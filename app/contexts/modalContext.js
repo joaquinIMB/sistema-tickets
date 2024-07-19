@@ -1,13 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ModalContext = createContext();
 
 export const useModal = () => useContext(ModalContext);
 
 export const ModalProvider = ({ children }) => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);

@@ -28,7 +28,7 @@ export const SeleccionarSector = ({ dataSector, campos, cambiarCampos }) => {
 
   return (
     <>
-      <div className={`flex flex-col relative z-50`}>
+      <div className={`flex flex-col relative z-[999]`}>
         <div
           id="sectorUsuario"
           className={`p-2 cursor-pointer border ${

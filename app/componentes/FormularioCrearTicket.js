@@ -99,7 +99,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     if (validarCampos()) {
       return;
     }
-    if(campos.descripcionTicket.length > 255){
+    if (campos.descripcionTicket.length > 255) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
@@ -171,7 +171,7 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   return (
     <>
       <form
-        className="w-full md:w-[80%] p-3 py-0 px-4 md:px-8 mt-4"
+        className="p-4 pb-2 pt-6 max-md:px-2 bg-[#f7f7f7] shadow-2xl w-[700px] rounded-lg max-md:w-full"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col gap-4">
@@ -223,17 +223,21 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
               name="descripcionTicket"
               value={campos.descripcionTicket}
               onChange={handleChange}
-              className="p-2 px-4 w-full border border-neutral-200 h-72 max-md:h-40 rounded-lg outline-none resize-none"
+              placeholder="Escribe un mensaje"
+              className="w-full bg-white h-44 py-2 px-4 m-auto outline-none resize-none border rounded-md rounded-b-none border-opacity-5 "
             />
-            <div className="mt-6 absolute bottom-0 right-0">
+            <label
+              htmlFor="descripcionTicket"
+              className="absolute flex justify-end items-center rounded-b-md bg-neutral-800 bottom-0 right-0 p-2 w-[100%] min-h-11 h-[20%]  z-[99]"
+            >
               <button
                 type="submit"
-                className="w-md px-4 py-2 m-2 bg-blue-700 rounded-md text-white font-semibold hover:shadow-4xl transition"
+                className="w-md px-4 py-1 bg-blue-700 rounded-md text-white font-semibold hover:shadow-4xl transition"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Enviando..." : "Enviar"}
               </button>
-            </div>
+            </label>
           </div>
         </div>
       </form>

@@ -5,7 +5,7 @@ const Aside = () => {
   const { desplegar, setDesplegar } = useDesplegable();
   return (
     <>
-      <aside className={`relative z-[999]  ${desplegar ? "flex max-lg:flex" : "max-lg:hidden"}`}>
+      <aside className={`relative z-[998]  ${desplegar ? "flex max-lg:flex" : "max-lg:hidden"}`}>
         <SubNav desplegar={desplegar} setDesplegar={setDesplegar}/>
       </aside>
     </>

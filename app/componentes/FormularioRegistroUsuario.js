@@ -37,6 +37,12 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
   },[])
 
   useEffect(() => {
+    if(!isModalOpen){
+      handleOpenModal()
+    }
+  },[handleOpenModal, isModalOpen])
+
+  useEffect(() => {
     if (dataUser) {
       if (dataUser.length > 0) {
         const user = dataUser[0];
