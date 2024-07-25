@@ -34,7 +34,10 @@ export default function RootLayout({ children }) {
             <NotificacionesProvider>
               <main className="flex flex-row min-h-screen bg-[#f9f9f9] justify-between w-full">
                 <div className="flex flex-col w-full h-screen bg-[#f9f9f9]">
-                  <Header />
+                  <Header
+                    idSector={usuario.idSector}
+                    idUsuario={usuario.legajo}
+                  />
                   <div
                     className={`w-full m-auto relative my-0 flex flex-row flex-wrap justify-center h-fit overflow-auto`}
                   >

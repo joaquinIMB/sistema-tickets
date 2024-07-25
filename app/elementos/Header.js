@@ -7,7 +7,7 @@ import BotonCrearTicket from "@/componentes/BotonCrearTicket";
 import { useState, useEffect } from "react";
 import { BarraBusqueda } from "@/componentes/BarraBusqueda";
 
-export const Header = () => {
+export const Header = ({ idSector, idUsuario }) => {
   const [habilitarBoton, setHabilitarBoton] = useState(false);
   const [habilitarBusqueda, setHabilitarBusqueda] = useState(false);
   useEffect(() => {
@@ -37,7 +37,7 @@ export const Header = () => {
         </div>
         {habilitarBoton && <BotonCrearTicket habilitarBoton={habilitarBoton} />}
         {habilitarBusqueda && (
-          <BarraBusqueda habilitarBusqueda={habilitarBusqueda} />
+          <BarraBusqueda idSector={idSector} idUsuario={idUsuario} />
         )}
       </div>
     </header>

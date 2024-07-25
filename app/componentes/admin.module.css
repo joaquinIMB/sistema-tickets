@@ -191,6 +191,9 @@
   .id {
     width: 10% !important;
   }
+  .modalBusqueda{
+    min-width: 95% !important;
+  }
 }
 
 @media screen and (max-height: 800px) {

@@ -17,7 +17,7 @@ export const ModalResultadoBusqueda = ({ data, setModalBusqueda }) => {
             data.map((ticket) => (
               <div
                 key={ticket.idticket}
-                className="flex flex-col border-b border-gray-200 p-2 cursor-pointer rounded-md hover:bg-[#f0f0f0]"
+                className="flex flex-col border-b border-gray-200 p-2 cursor-pointer rounded-md max-lg:text-black hover:bg-[#f0f0f0]"
                 onClick={() => {
                   router.replace(
                     `/admin/ticket/movimientos-ticket/${ticket.idticket}`
