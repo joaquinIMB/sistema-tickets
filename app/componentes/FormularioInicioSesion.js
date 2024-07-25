@@ -24,7 +24,7 @@ const FormularioIniciarSesion = () => {
   useMemo(() => {
     localStorage.removeItem("usuario");
     if (usuarioExistente) {
-      const [usuarioActual] = data.filter(
+      const [usuarioActual] = data && data.filter(
         (user) => user.idUsuario.trim() === usuarioExistente.legajo.trim()
       );
       establecerCampos({
@@ -92,7 +92,12 @@ const FormularioIniciarSesion = () => {
       });
       router.replace("/admin/ticket/tickets-de-sector");
     } catch (error) {
-      console.log(error);
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: "Ocurrió un error inesperado, vuelva a intentarlo.",
+      });
+      return;
     }
   };
 

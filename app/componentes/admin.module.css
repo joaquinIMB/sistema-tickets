@@ -50,7 +50,7 @@
   height: 92vh;
 }
 
-.modalBackdrop{
+.modalBackdrop {
   position: fixed;
   top: 0;
   right: 0;
@@ -58,20 +58,20 @@
   left: 0;
   background: #00000060;
   z-index: 999;
-  display: flex; 
+  display: flex;
   align-items: center;
   justify-content: center;
-  animation: showModal .2s ease;
+  animation: showModal 0.2s ease;
 }
 
-.modalCrearTicket{
+.modalCrearTicket {
   position: fixed;
   background: #f9f9f9;
   z-index: 1000;
   border-radius: 10px;
 }
 
-.modal{
+.modal {
   display: flex;
   inset: 0px;
   position: fixed;
@@ -79,11 +79,21 @@
   align-items: center;
   z-index: 999;
   background: #00000050;
-  animation: showModal .3s ease-in;
+  animation: showModal 0.3s ease-in;
 }
 
-.totalTicket{
-  border-radius:99px 0 0 99px;
+.modalBusqueda {
+  position: fixed;
+  background: #f9f9f9;
+  z-index: 1000;
+  border-radius: 10px;
+  min-width: 500px;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.totalTicket {
+  border-radius: 99px;
 }
 
 /* Diseño Adaptable */
@@ -110,7 +120,7 @@
     z-index: 999;
     width: 100vw;
     background: #00000050;
-    animation: showModal .3s ease;
+    animation: showModal 0.3s ease;
   }
   .subNavAdaptable {
     box-shadow: 3px 0 18px #00000030;
@@ -146,11 +156,11 @@
 
 @media screen and (max-width: 764px) {
   .listaTicket {
-    padding: 0 .5rem !important;
+    padding: 0 0.5rem !important;
   }
   .headerListaTicket {
-    padding-left: .5rem !important;
-    padding-right: .5rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
   .usuario {
     width: 65% !important;
@@ -160,7 +170,6 @@
   }
 }
 
-
 @media screen and (max-width: 548px) {
   .prioridad {
     display: none;
@@ -169,8 +178,8 @@
     padding: 0 0.75rem !important;
   }
   .headerListaTicket {
-    padding-left: .75rem !important;
-    padding-right: .75rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
   }
   .correo {
     display: none;
@@ -179,7 +188,7 @@
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
-  .id{
+  .id {
     width: 10% !important;
   }
 }
@@ -197,6 +206,11 @@
   }
   .subMenuSideBar {
     padding-bottom: 1.7rem;
+  }
+}
+@media screen and (min-height: 750px) {
+  .header {
+    max-height: 60px;
   }
 }
 

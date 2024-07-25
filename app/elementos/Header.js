@@ -1,19 +1,23 @@
-'use client'
+"use client";
 
 import { BuscaRuta } from "@/componentes/BuscaRuta";
 import styles from "@/componentes/admin.module.css";
 import BotonMenu from "./BotonMenu";
 import BotonCrearTicket from "@/componentes/BotonCrearTicket";
 import { useState, useEffect } from "react";
+import { BarraBusqueda } from "@/componentes/BarraBusqueda";
 
 export const Header = () => {
-  const [habilitarBoton, setHabilitarBoton] = useState(false)
+  const [habilitarBoton, setHabilitarBoton] = useState(false);
+  const [habilitarBusqueda, setHabilitarBusqueda] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
         setHabilitarBoton(true);
-      }else{
-        setHabilitarBoton(false)
+        setHabilitarBusqueda(true);
+      } else {
+        setHabilitarBoton(false);
+        setHabilitarBusqueda(false);
       }
     };
     window.addEventListener("resize", handleResize);
@@ -28,10 +32,13 @@ export const Header = () => {
     >
       <div className={`flex items-center justify-center w-full`}>
         <BotonMenu />
-        <div className={`flex items-end transition-all max-sm:hidden`}>
+        <div className={`flex items-end transition-all max-lg:hidden`}>
           <BuscaRuta />
         </div>
-        {habilitarBoton && <BotonCrearTicket habilitarBoton={habilitarBoton}/>}
+        {habilitarBoton && <BotonCrearTicket habilitarBoton={habilitarBoton} />}
+        {habilitarBusqueda && (
+          <BarraBusqueda habilitarBusqueda={habilitarBusqueda} />
+        )}
       </div>
     </header>
   );

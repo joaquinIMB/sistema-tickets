@@ -107,7 +107,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       {ticket && (
         <div onClick={handlePopUp} className="w-full relative cursor-pointer">
           <ul
-            className={`flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black transition-all ${styles.listaTicket}`}
+            className={`max-md:gap-2 flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black transition-all ${styles.listaTicket}`}
           >
             <li className={`w-[5%] ${styles.id} text-center`}>
               <h1 className="font-semibold text-md"> {ticket.idTicket}</h1>

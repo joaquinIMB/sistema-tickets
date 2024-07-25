@@ -21,7 +21,7 @@ const ModalLegajo = ({
     }
   };
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-[99]">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-[1000]">
       <div className="bg-white p-6 rounded shadow-lg">
         <h2 className="text-lg font-bold mb-4">Ingresar Número de Legajo</h2>
         <form onSubmit={onSubmit}>

@@ -1,7 +1,6 @@
 "use client";
 
 import { DesplegableProvider } from "@/contexts/desplegableContext";
-import { ModalProvider } from "@/contexts/modalContext";
 import { lobster } from "@/elementos/fuentes";
 import { store } from "@/store";
 import { Provider } from "react-redux";

@@ -109,7 +109,14 @@ export const api = createApi({
           prioridad: campos.prioridad,
         }),
       }),
-      invalidatesTags: ["tickets", "movTicket", "getTicketID", "getTicketUsuarioAsignado", "getTicketUsuarioEmisor", "getSectorID"],
+      invalidatesTags: [
+        "tickets",
+        "movTicket",
+        "getTicketID",
+        "getTicketUsuarioAsignado",
+        "getTicketUsuarioEmisor",
+        "getSectorID",
+      ],
     }),
     createNotificacionTicket: builder.mutation({
       query: (campos) => ({
@@ -148,7 +155,12 @@ export const api = createApi({
           idSector: campos.idSector,
         }),
       }),
-      invalidatesTags: ["tickets", "newTicket", "getTicketID"],
+      invalidatesTags: [
+        "tickets",
+        "newTicket",
+        "getTicketID",
+        "getTablaUsuarios",
+      ],
     }),
     updateNotificacionLeida: builder.mutation({
       query: (id) => ({
@@ -159,6 +171,9 @@ export const api = createApi({
         }),
       }),
       invalidatesTags: ["notificacionesPorSector", "notificacionesPorUsuario"],
+    }),
+    executeStoredProcedure: builder.query({
+      query: ({ idSector, cadena, idUsuario }) => `ticket/traerResultadoBusqueda/${idSector},${cadena},${idUsuario}`,
     }),
   }),
 });
@@ -181,4 +196,5 @@ export const {
   useUpdateTicketMutation,
   useUpdateDataUsuarioMutation,
   useUpdateNotificacionLeidaMutation,
+  useExecuteStoredProcedureQuery
 } = api;

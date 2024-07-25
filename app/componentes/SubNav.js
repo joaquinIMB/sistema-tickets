@@ -4,7 +4,7 @@ import { listaCategorias, listaEstados } from "@/elementos/listaEnlaces";
 import Link from "next/link";
 import { poppins } from "@/elementos/fuentes";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import BotonCrearTicket from "./BotonCrearTicket";
 import styles from "@/componentes/admin.module.css";
 import BotonCerrarMenu from "@/elementos/BotonCerrarMenu";
@@ -16,6 +16,7 @@ import {
   useGetTicketIdUsuarioAsignadoQuery,
   useGetTicketIdUsuarioEmisorQuery,
 } from "@/services/apiTicket";
+import { BarraBusqueda } from "./BarraBusqueda";
 
 export const SubNav = ({ desplegar, setDesplegar }) => {
   const { usuario } = useAuth();
@@ -59,15 +60,21 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
             className={`flex flex-row relative ${
               desplegar
                 ? "justify-start items-center px-4"
-                : "justify-between  px-4 "
-            } pb-1 pt-[10px] items-center w-[260px]`}
+                : "justify-between px-3"
+            } pt-[10px] pb-[8px] items-center w-[260px]`}
           >
             {desplegar && <BotonCerrarMenu />}
             <h1 className="capitalize text-[28px] text-gray-800 font-semibold">{`${ruta}`}</h1>
             {!desplegar && <BotonCrearTicket />}
           </header>
+          {!desplegar && (
+            <BarraBusqueda
+              idSector={usuario.idSector}
+              idUsuario={usuario.legajo}
+            />
+          )}
           <nav className={`${poppins.className} w-[260px]`}>
-            <ul className={`py-2 px-3 flex flex-col text-zinc-900 gap-2 `}>
+            <ul className={`py-2 px-3 pl-1 flex flex-col text-zinc-900 gap-2 `}>
               {listaCategorias.map((enlace) => (
                 <li
                   key={enlace.label}
@@ -86,7 +93,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   </Link>
                   {ticketsSector && ticketsAsignado && ticketsEmisor && (
                     <TotalTickets
-                      background={"bg-neutral-700"}
+                      background={"bg-gray-300"}
                       cantidad={
                         enlace.seccion === "ticketsSector"
                           ? ticketsSector.length
@@ -98,7 +105,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   )}
                 </li>
               ))}
-              <span className="py-4 px-2 pb-4 tracking-wide text-[#707070b2]">
+              <span className="p-2 tracking-wide text-[#707070b2]">
                 Mis tickets por estado
               </span>
               {listaEstados.map((enlace, index) => {
@@ -118,13 +125,13 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                     onClick={() => setDesplegar(false)}
                   >
                     <Link
-                      className="absolute left-0 w-full pb-2 pt-[0.4rem] px-2"
+                      className="absolute left-0 w-full pb-2 pt-[0.25rem] px-2"
                       href={enlace.href}
                     >
                       {enlace.label}
                     </Link>
                     <TotalTickets
-                      background={"bg-neutral-700"}
+                      background={"bg-gray-300"}
                       cantidad={ticketsPorEstado}
                     />
                   </li>
