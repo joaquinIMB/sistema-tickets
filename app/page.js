@@ -1,7 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { lobster, poppins } from "@/elementos/fuentes";
+import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 
-export default async function Inicio() {
+export default function Inicio() {
+  const router = useRouter();
+  useMemo(() => router.replace("/auth/iniciar-sesion"), [router]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex items-center justify-between max-md:justify-center px-12 py-3 pt-4 border-b-2 border-black border-opacity-5 text-white">
@@ -45,7 +52,9 @@ export default async function Inicio() {
           Tu plataforma centralizada para resolver problemas y recibir
           asistencia técnica.
         </p>
-        <div className={`max-md:flex hidden items-center justify-center w-full gap-6 text-white pt-10`}>
+        <div
+          className={`max-md:flex hidden items-center justify-center w-full gap-6 text-white pt-10`}
+        >
           <Link
             className="inline-flex h-8 items-center justify-center bg-blue-700 p-5 text-base font-medium shadow transition-colors border border-blue-600 hover:bg-blue-600 "
             href="/auth/iniciar-sesion"
