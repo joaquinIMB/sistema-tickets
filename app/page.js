@@ -1,14 +1,7 @@
-"use client";
-
 import Link from "next/link";
 import { lobster, poppins } from "@/elementos/fuentes";
-import { useMemo } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Inicio() {
-  const router = useRouter();
-  useMemo(() => router.replace("/auth/iniciar-sesion"), [router]);
-
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex items-center justify-between max-md:justify-center px-12 py-3 pt-4 border-b-2 border-black border-opacity-5 text-white">
