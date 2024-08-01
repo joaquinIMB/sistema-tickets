@@ -5,10 +5,12 @@ import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { Error } from "./Error";
 import { useGetTicketIdUsuarioAsignadoQuery } from "@/services/apiTicket";
+import useInactivityTimeout from "@/hooks/useInactivityTimeout";
 
 export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
+  const isRefetchActive = useInactivityTimeout(12000);
 
   const { data, error, refetch } = useGetTicketIdUsuarioAsignadoQuery(
     usuario.legajo
@@ -33,12 +35,14 @@ export const TraerTicketPorAsignado = ({ dataUsuario }) => {
   }, [data]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      refetch();
-    }, 3000);
+    if (isRefetchActive) {
+      const interval = setInterval(() => {
+        refetch();
+      }, 3000);
 
-    return () => clearInterval(interval);
-  });
+      return () => clearInterval(interval);
+    }
+  }, [refetch, isRefetchActive]);
 
   if (error) return <Error error={error} refetch={refetch} />;
   return (

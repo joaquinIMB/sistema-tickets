@@ -6,6 +6,7 @@ import {
   useGetNotificacionPorSectorQuery,
   useGetNotificacionPorUsuarioQuery,
 } from "@/services/apiTicket";
+import useInactivityTimeout from "@/hooks/useInactivityTimeout";
 
 const NotificacionContext = createContext();
 
@@ -16,6 +17,7 @@ const useNotificaciones = () => {
 function NotificacionesProvider({ children }) {
   const { usuario } = useAuth();
   const [notificaciones, setNotificaciones] = useState([]);
+  const isRefetchActive = useInactivityTimeout(12000);
 
   const {
     data: notificacionesPorSector,
@@ -47,12 +49,15 @@ function NotificacionesProvider({ children }) {
       });
     }
   }, [notificacionesPorSector, notificacionesPorUsuario, usuario.legajo]);
+  
   useEffect(() => {
-    const interval = setInterval(() => {
-      refetchNotificacionesPorSector();
-      refetchNotificacionesPorUsuario();
-    }, 10000);
-    return () => clearInterval(interval);
+    if (isRefetchActive) {
+      const interval = setInterval(() => {
+        refetchNotificacionesPorSector();
+        refetchNotificacionesPorUsuario();
+      }, 10000);
+      return () => clearInterval(interval);
+    }
   });
 
   return (

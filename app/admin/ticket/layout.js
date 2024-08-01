@@ -27,8 +27,8 @@ export default function RootLayout({ children }) {
 
   return (
     <Provider store={store}>
-      <DesplegableProvider>
-        {usuario.logged === true && (
+      {usuario.logged === true && (
+        <DesplegableProvider>
           <div className="flex w-full relative overflow-hidden">
             <Aside />
             <NotificacionesProvider>
@@ -49,8 +49,8 @@ export default function RootLayout({ children }) {
               </main>
             </NotificacionesProvider>
           </div>
-        )}
-      </DesplegableProvider>
+        </DesplegableProvider>
+      )}
     </Provider>
   );
 }

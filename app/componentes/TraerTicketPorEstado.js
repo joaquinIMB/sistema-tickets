@@ -5,11 +5,13 @@ import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { useGetStateIdQuery } from "@/services/apiTicket";
 import { Error } from "./Error";
+import useInactivityTimeout from "@/hooks/useInactivityTimeout";
 
 export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
   const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
   const [usuarioActual, setUsuarioActual] = useState();
+  const isRefetchActive = useInactivityTimeout(12000);
 
   const { data, error, refetch } = useGetStateIdQuery(idEstado);
 
@@ -30,13 +32,16 @@ export const TraerTicketPorEstado = ({ idEstado, dataUsuario }) => {
     }
   }, [dataUsuario, usuario.email, data]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refetch();
-    }, 3000);
 
-    return () => clearInterval(interval);
-  });
+  useEffect(() => {
+    if (isRefetchActive) {
+      const interval = setInterval(() => {
+        refetch();
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [refetch, isRefetchActive]);
 
   if (error) return <Error error={error} refetch={refetch} />;
   return (

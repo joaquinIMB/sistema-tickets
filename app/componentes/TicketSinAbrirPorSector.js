@@ -5,12 +5,14 @@ import { Ticket } from "@/componentes/Ticket";
 import { useAuth } from "@/contexts/authContext";
 import { Error } from "./Error";
 import { useGetTicketIdSectorQuery } from "@/services/apiTicket";
+import useInactivityTimeout from "@/hooks/useInactivityTimeout";
 
 export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   const { usuario } = useAuth();
   const [tickets, setTickets] = useState([]);
   const { data, error, refetch } = useGetTicketIdSectorQuery(usuario.idSector);
   const [usuarioActual, setUsuarioActual] = useState();
+  const isRefetchActive = useInactivityTimeout(12000);
 
   useMemo(() => {
     if (dataUsuario) {
@@ -30,12 +32,14 @@ export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   }, [data]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      refetch();
-    }, 3000);
-    return () => clearInterval(interval);
-  });
+    if (isRefetchActive) {
+      const interval = setInterval(() => {
+        refetch();
+      }, 3000);
 
+      return () => clearInterval(interval);
+    }
+  }, [refetch, isRefetchActive]);
   if (error) return <Error error={error} refetch={refetch} />;
 
   return (
