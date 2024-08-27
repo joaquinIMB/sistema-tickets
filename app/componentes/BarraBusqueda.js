@@ -25,7 +25,6 @@ export const BarraBusqueda = ({ idSector, idUsuario }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(parametros.idUsuario)
     if (parametros.cadena && parametros.idSector) {
       setShouldExecuteQuery(true);
       setModalBusqueda(true);

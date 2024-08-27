@@ -8,7 +8,6 @@ import Image from "next/image";
 
 export const ContenedorFormularioCrearTicket = () => {
   const { handleCloseModal } = useModal();
-  const [dataUsuario, setDataUsuario] = useState(null);
   const [dataSector, setDataSector] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,19 +20,11 @@ export const ContenedorFormularioCrearTicket = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [usuariosResponse, sectoresResponse] = await Promise.all([
-          fetch(`${API_URL}/usuarios`, {
-            cache: "no-store",
-          }),
-          fetch(`${API_URL}/sectores`, {
-            cache: "no-store",
-          }),
-        ]);
+        const sectoresResponse = await fetch(`${API_URL}/sectores`, {
+          cache: "no-store",
+        });
 
-        const dataUsuario = await usuariosResponse.json();
         const dataSector = await sectoresResponse.json();
-
-        setDataUsuario(dataUsuario);
         setDataSector(dataSector);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -61,7 +52,10 @@ export const ContenedorFormularioCrearTicket = () => {
             className={`${styles.modalCrearTicket} max-md:w-[95%]`}
             onClick={(e) => e.stopPropagation()}
           >
-            <button onClick={() => handleCloseModal()} className={`absolute top-[5px] right-[10px]`}>
+            <button
+              onClick={() => handleCloseModal()}
+              className={`absolute top-[5px] right-[10px]`}
+            >
               <Image
                 src={"/cerrar.png"}
                 alt="Botón para cerrar menú lateral"
@@ -69,10 +63,7 @@ export const ContenedorFormularioCrearTicket = () => {
                 height={30}
               />
             </button>
-            <FormularioCrearTicket
-              dataUsuario={dataUsuario}
-              dataSector={dataSector}
-            />
+            <FormularioCrearTicket dataSector={dataSector} />
           </div>
         </div>
       )}

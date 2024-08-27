@@ -8,20 +8,10 @@ export const metadata = {
 };
 
 export default async function TicketsCreados() {
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_API_URL
-      : process.env.URL_DEV;
-
-  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
-    cache: "no-cache",
-  })
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
   return (
     <>
       <HeaderListaTickets />
-      <TraerTicketPorEmisor dataUsuario={dataUsuario} />
+      <TraerTicketPorEmisor />
     </>
   );
 }

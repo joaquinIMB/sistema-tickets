@@ -1,3 +1,4 @@
+import { traerUsuario } from "@/funciones/traerUsuario";
 import Link from "next/link";
 
 const ModalLegajo = ({
@@ -11,7 +12,9 @@ const ModalLegajo = ({
   const onSubmit = async (e) => {
     e.preventDefault();
     if (legajo.length > 0) {
-      setDataUser(data.filter((user) => user.idUsuario.trim() == legajo));
+      const usuario = await traerUsuario(legajo);
+      setDataUser(usuario);
+      // setDataUser(data.filter((user) => user.idUsuario.trim() == legajo));
     } else {
       cambiarEstadoAlerta(true);
       cambiarAlerta({

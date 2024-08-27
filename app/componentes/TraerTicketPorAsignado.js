@@ -7,25 +7,22 @@ import { Error } from "./Error";
 import { useGetTicketIdUsuarioAsignadoQuery } from "@/services/apiTicket";
 import useInactivityTimeout from "@/hooks/useInactivityTimeout";
 
-export const TraerTicketPorAsignado = ({ dataUsuario }) => {
+export const TraerTicketPorAsignado = () => {
   const { usuario } = useAuth();
   const [ticket, setTicket] = useState();
   const isRefetchActive = useInactivityTimeout(12000);
+  const [usuarioActual, setUsuarioActual] = useState();
 
   const { data, error, refetch } = useGetTicketIdUsuarioAsignadoQuery(
     usuario.legajo
   );
 
-  const [usuarioActual, setUsuarioActual] = useState();
 
-  useMemo(() => {
-    if (dataUsuario) {
-      const [usuarioActual] = dataUsuario.filter(
-        (user) => user.correo.trim() === usuario.email
-      );
-      setUsuarioActual(usuarioActual);
+  useEffect(() => {
+    if (usuario) {
+      setUsuarioActual(usuario);
     }
-  }, [dataUsuario, usuario.email]);
+  }, [usuario]);
 
   useEffect(() => {
     if (data) {

@@ -20,22 +20,10 @@ export function generateMetadata({ params, searchParams }, parent) {
 export default async function TicketsPorEstados({ params }) {
   const { idEstado } = params;
 
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_API_URL
-      : process.env.URL_DEV;
-
-  const dataUsuario = await fetch(`${API_URL}/usuarios`, {
-    cache: "no-store",
-  })
-    .then((respuesta) => respuesta.json())
-    .catch((error) => console.log(error));
   return (
     <>
       <HeaderListaTickets />
-      {dataUsuario && (
-        <TraerTicketPorEstado idEstado={idEstado} dataUsuario={dataUsuario} />
-      )}
+      <TraerTicketPorEstado idEstado={idEstado} />
     </>
   );
 }

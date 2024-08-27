@@ -58,18 +58,20 @@ export const ModalResultadoBusqueda = ({ data, setModalBusqueda }) => {
 
 const getColorByEstado = (estado) => {
   switch (estado) {
+    case "nuevo":
+      return "bg-blue-600 text-white";
     case "abierto":
-      return "bg-red-500 text-white";
+      return "bg-green-600 text-white";
     case "pendiente":
-      return "bg-yellow-500 text-white";
+      return "bg-orange-5000 text-white";
     case "proceso":
-      return "bg-blue-500 text-white";
+      return "bg-black text-white";
     case "resuelto":
-      return "bg-green-500 text-white";
+      return "bg-[#f0f0f0] text-black";
     case "anulado":
-      return "bg-gray-500 text-white";
+      return "bg-red-600 text-white";
     case "revision":
-      return "bg-purple-500 text-white";
+      return "bg-neutral-700 text-white";
     default:
       return "bg-gray-300 text-black";
   }

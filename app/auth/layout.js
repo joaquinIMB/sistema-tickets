@@ -13,11 +13,11 @@ export default function LayoutAuth({ children }) {
             <main
               className={`flex flex-col items-center pt-4 bg-white border border-black border-opacity-5 shadow-lg`}
             >
-              <span
+              {/* <span
                 className={`text-3xl font-semibold text-gray-800 ${lobster.className} tracking-wider`}
               >
                 HelpdeskUnity
-              </span>
+              </span> */}
               <Provider store={store}>{children}</Provider>
             </main>
           </div>

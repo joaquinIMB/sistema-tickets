@@ -14,10 +14,6 @@ export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
   const { data, error, isLoading } = useGetTicketIdQuery(idTicket);
   const { usuario } = useAuth();
 
-  const usuarioEmisor = dataUsuario.find(
-    (user) => user.correo.trim() === usuario.email.trim()
-  );
-
   if (isLoading) return <SkeletonSeccionMovimientos />;
   if (error) return <div>Error: {error.message}</div>;
   return (
@@ -34,7 +30,7 @@ export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
             </main>
             <FormularioMovimientoTicket
               ticket={ticket}
-              usuarioEmisor={usuarioEmisor}
+              usuario={usuario}
             />
           </section>
         ))}

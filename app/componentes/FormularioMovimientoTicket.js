@@ -13,7 +13,7 @@ import Alerta from "./Alerta";
 // import { useRouter } from "next/navigation";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 
-const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
+const FormularioMovimientoTicket = ({ ticket, usuario }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
@@ -31,13 +31,13 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
         idSector: ticket.idSector,
         idEstado: ticket.idEstado,
         prioridad: ticket.prioridad,
-        legajoEmisor: usuarioEmisor.idUsuario,
+        legajoEmisor: usuario.legajo,
         legajoAsignado: ticket.legajoAsignado,
         nombreUsuarioAsignado: ticket.nombreUsuarioAsignado,
         descripcionMovimiento: "",
       });
     }
-  }, [ticket, cambiarCampos, usuarioEmisor.idUsuario]);
+  }, [ticket, cambiarCampos, usuario.legajo]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,7 +70,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
     );
     // SI EL SECTOR DEL USUARIO DEL ULTIMO MOVIMIENTO ES DISTINTO AL SECTOR DEL USUARIO ACTUAL NO LO DEJA INTERACTUAR CON EL TICKET
 
-    // if (ultimoMov.idSector != usuarioEmisor.idSector) {
+    // if (ultimoMov.idSector != usuario.idSector) {
     //   cambiarEstadoAlerta(true);
     //   cambiarAlerta({
     //     tipo: "error",
@@ -79,11 +79,11 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
     //   return;
     // }
     if (
-      (ticket.legajoEmisor === usuarioEmisor.idUsuario &&
+      (ticket.legajoEmisor === usuario.legajo &&
         ticket.idEstado != campos.idEstado) ||
-      (ticket.legajoEmisor === usuarioEmisor.idUsuario &&
+      (ticket.legajoEmisor === usuario.legajo &&
         ticket.prioridad != campos.prioridad) ||
-      (ticket.legajoEmisor === usuarioEmisor.idUsuario &&
+      (ticket.legajoEmisor === usuario.legajo &&
         ticket.legajoAsignado != campos.legajoAsignado)
     ) {
       cambiarEstadoAlerta(true);
@@ -94,7 +94,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
       return;
     }
     if (
-      Number(usuarioEmisor.idUsuario) === ultimoMov.legajoEmisor &&
+      Number(usuario.legajo) === ultimoMov.legajoEmisor &&
       ticket.idEstado === "nuevo"
     ) {
       cambiarEstadoAlerta(true);
@@ -160,7 +160,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
           ...campos,
           idUsuario: ticket.legajoEmisor,
           idSector: campos.idSector,
-          mensaje: `${usuarioEmisor.nombreUsuario} realizó un cambio en el ticket ${campos.idTicket}`,
+          mensaje: `${usuario.nombreUsuario} realizó un cambio en el ticket ${campos.idTicket}`,
           fechaHoraRegistro: fechaHora,
           idTicket: campos.idTicket,
           idMovimientoTicket: idMovimientoTicket,
@@ -174,7 +174,7 @@ const FormularioMovimientoTicket = ({ ticket, usuarioEmisor }) => {
           ...prevData,
           idTicket: ticket.idTicket,
           idEstado: ticket.idEstado,
-          legajoEmisor: campos.legajoEmisor,
+          legajoEmisor: usuario.legajo,
           descripcionMovimiento: "",
         }));
       } catch (error) {

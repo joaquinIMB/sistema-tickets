@@ -17,17 +17,35 @@ import {
   useGetTicketIdUsuarioEmisorQuery,
 } from "@/services/apiTicket";
 import { BarraBusqueda } from "./BarraBusqueda";
+import useInactivityTimeout from "@/hooks/useInactivityTimeout";
 
 export const SubNav = ({ desplegar, setDesplegar }) => {
   const { usuario } = useAuth();
 
-  const { data: ticketsSector } = useGetTicketIdSectorQuery(usuario.idSector);
-  const { data: ticketsAsignado } = useGetTicketIdUsuarioAsignadoQuery(
-    usuario.legajo
-  );
-  const { data: ticketsEmisor } = useGetTicketIdUsuarioEmisorQuery(
-    usuario.legajo
-  );
+  const { data: ticketsSector, isLoading:isLoadingTicketsSector, refetch: refetchTicketsSector } =
+    useGetTicketIdSectorQuery(usuario.idSector);
+  const { data: ticketsAsignado, isLoading:isLoadingTicketsAsignado, refetch: refetchTicketsAsignado } =
+    useGetTicketIdUsuarioAsignadoQuery(usuario.legajo);
+  const { data: ticketsEmisor, isLoading:isLoadingTicketsEmisor, refetch: refetchTicketsEmisor } =
+    useGetTicketIdUsuarioEmisorQuery(usuario.legajo);
+  const isRefetchActive = useInactivityTimeout(12000);
+
+  useEffect(() => {
+    if (isRefetchActive) {
+      const interval = setInterval(() => {
+        refetchTicketsSector();
+        refetchTicketsAsignado();
+        refetchTicketsEmisor();
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [
+    refetchTicketsSector,
+    refetchTicketsAsignado,
+    refetchTicketsEmisor,
+    isRefetchActive,
+  ]);
 
   const pathname = usePathname();
   const [ruta, cambiarRuta] = useState();
@@ -91,7 +109,7 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                   >
                     {enlace.label}
                   </Link>
-                  {ticketsSector && ticketsAsignado && ticketsEmisor && (
+                  {/* {ticketsSector && ticketsAsignado && ticketsEmisor && (
                     <TotalTickets
                       background={"bg-gray-300"}
                       cantidad={
@@ -102,7 +120,24 @@ export const SubNav = ({ desplegar, setDesplegar }) => {
                           : ticketsEmisor.length
                       }
                     />
-                  )}
+                  )} */}
+                  {isLoadingTicketsSector || isLoadingTicketsAsignado || isLoadingTicketsEmisor ? 
+                  <TotalTickets
+                  background={"bg-gray-300"}
+                  cantidad={0}
+                  />
+                  :
+                  <TotalTickets
+                  background={"bg-gray-300"}
+                  cantidad={
+                    enlace.seccion === "ticketsSector"
+                      ? ticketsSector.length
+                      : enlace.seccion === "ticketsAsignado"
+                      ? ticketsAsignado.length
+                      : ticketsEmisor.length
+                  }
+                /> 
+                }
                 </li>
               ))}
               <span className="p-2 tracking-wide text-[#707070b2]">

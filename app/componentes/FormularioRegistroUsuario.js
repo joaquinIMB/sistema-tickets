@@ -7,7 +7,7 @@ import { SeleccionarSector } from "./SeleccionarSector";
 import ModalLegajo from "./ModalLegajo";
 import { useModal } from "@/contexts/modalContext";
 import { useAuth } from "@/contexts/authContext";
-import { useGetSectorPorIdUsuarioQuery, useUpdateDataUsuarioMutation } from "@/services/apiTicket";
+import { useUpdateDataUsuarioMutation } from "@/services/apiTicket";
 import { useRouter } from "next/navigation";
 
 const FormularioRegistroUsuario = ({ dataSector }) => {
@@ -15,7 +15,6 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
   const { isModalOpen, handleOpenModal, handleCloseModal } = useModal();
   const { setUsuarioExistente } = useAuth();
   const [actualizarDatosUser] = useUpdateDataUsuarioMutation();
-  const {data} = useGetSectorPorIdUsuarioQuery("ST_usuarios");
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
   const [legajo, setLegajo] = useState("");
@@ -46,7 +45,6 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
     if (dataUser) {
       if (dataUser.length > 0) {
         const user = dataUser[0];
-
         const allFieldsFilled = Object.values(user).every(
           (value) => value !== "" && value !== null && value !== undefined
         );
@@ -81,7 +79,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
         cambiarEstadoAlerta(true);
         cambiarAlerta({
           tipo: "error",
-          mensaje: "El legajo no existe, o es incorrecto",
+          mensaje: "El legajo no existe",
         });
       }
     }
@@ -159,7 +157,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
 
   return (
     <div className="container p-0 pb-2">
-      <h1 className="text-base font-bold mb- w-full px-4 pt-4 pb-2 text-gray-600">
+      <h1 className="text-lg font-bold mb- w-full px-4 pt-4 pb-2 text-gray-600">
         Registrate para comenzar.
       </h1>
       <form
@@ -344,22 +342,21 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           </Link>
         </div>
       </form>
+      {isModalOpen && (
+        <ModalLegajo
+        legajo={legajo}
+        setLegajo={setLegajo}
+        setDataUser={setDataUser}
+        cambiarEstadoAlerta={cambiarEstadoAlerta}
+        cambiarAlerta={cambiarAlerta}
+        />
+      )}
       <Alerta
         tipo={alerta.tipo}
         mensaje={alerta.mensaje}
         estadoAlerta={estadoAlerta}
         cambiarEstadoAlerta={cambiarEstadoAlerta}
       />
-      {isModalOpen && (
-        <ModalLegajo
-          data={data}
-          legajo={legajo}
-          setLegajo={setLegajo}
-          setDataUser={setDataUser}
-          cambiarEstadoAlerta={cambiarEstadoAlerta}
-          cambiarAlerta={cambiarAlerta}
-        />
-      )}
     </div>
   );
 };

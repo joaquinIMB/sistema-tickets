@@ -13,8 +13,8 @@ import { ModalAperturaTicket } from "./ModalAperturaTicket";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
   const {
-    setDataTicket,
     obtenerUsuario,
+    setDataTicket,
     setDataMovimiento,
     crearMovimientoTicket,
     actualizarTicket,
@@ -38,7 +38,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         ticket.legajoAsignado === "Todos" &&
         ticket.nombreUsuarioAsignado === "Todos"
       ) {
-        obtenerUsuario(usuarioActual);
+        obtenerUsuario(usuarioActual)
         setDataTicket({
           ...ticket,
         });
@@ -52,8 +52,8 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         const updatedCampos = {
           ...ticket,
           idEstado: "abierto",
-          legajoEmisor: usuarioActual.idUsuario,
-          legajoAsignado: usuarioActual.idUsuario,
+          legajoEmisor: usuarioActual.legajo,
+          legajoAsignado: usuarioActual.legajo,
           fechaHoraRegistro: fechaHora,
           descripcionMovimiento: `Apertura de ticket ${ticket.idTicket}`,
           idMovimientoTicket: data.length + 1,
@@ -68,9 +68,9 @@ export const Ticket = ({ ticket, usuarioActual }) => {
       ) {
         const updatedCampos = {
           ...ticket,
-          legajoAsignado: usuarioActual.idUsuario,
+          legajoAsignado: usuarioActual.legajo,
           fechaHoraRegistro: fechaHora,
-          descripcionMovimiento: `${usuarioActual.idUsuario} tomó el ticket ${ticket.idTicket}`,
+          descripcionMovimiento: `${usuarioActual.legajo} tomó el ticket ${ticket.idTicket}`,
           idMovimientoTicket: data.length + 1,
           nombreUsuarioAsignado:
             usuarioActual.nombreUsuario + " " + usuarioActual.apellidoUsuario,
@@ -90,7 +90,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
     if (
       pathname !== "/admin/ticket/tickets-creados" &&
       pathname !== "/admin/ticket/ticket/mis-tickets" &&
-      Number(usuarioActual.idUsuario) !== movimiento.legajoEmisor &&
+      Number(usuarioActual.legajo) !== movimiento.legajoEmisor &&
       ticket.legajoAsignado === "Todos"
     ) {
       refetch();

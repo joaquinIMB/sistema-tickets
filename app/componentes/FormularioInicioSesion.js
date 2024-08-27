@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Alerta from "./Alerta";
 import { useAuth } from "../contexts/authContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/modalContext";
-import { useGetSectorPorIdUsuarioQuery } from "@/services/apiTicket";
+import { traerUsuario } from "@/funciones/traerUsuario";
 
 const FormularioIniciarSesion = () => {
   const router = useRouter();
@@ -18,29 +18,15 @@ const FormularioIniciarSesion = () => {
   const [alerta, cambiarAlerta] = useState({});
   const { iniciarSesion, usuarioExistente } = useAuth();
   const { setIsModalOpen } = useModal();
-  const { data } = useGetSectorPorIdUsuarioQuery("ST_usuarios");
-  const [usuarioActual, setUsuarioActual] = useState(null);
 
   useMemo(() => {
     localStorage.removeItem("usuario");
     if (usuarioExistente) {
-      const [usuarioActual] = data && data.filter(
-        (user) => user.idUsuario.trim() === usuarioExistente.legajo.trim()
-      );
       establecerCampos({
-        idUsuario: usuarioActual.idUsuario.trim(),
+        idUsuario: usuarioExistente.legajo,
       });
     }
-  }, [usuarioExistente, data]);
-
-  useEffect(() => {
-    if (data) {
-      const [usuarioActual] = data.filter(
-        (user) => user.idUsuario.trim() === campos.idUsuario.trim()
-      );
-      setUsuarioActual(usuarioActual);
-    }
-  }, [data, campos.idUsuario]);
+  }, [usuarioExistente]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +40,7 @@ const FormularioIniciarSesion = () => {
     e.preventDefault();
     cambiarEstadoAlerta(false);
     cambiarAlerta({});
+    const usuario = await traerUsuario(campos.idUsuario);
     if (campos.idUsuario === "" || campos.contraseña === "") {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
@@ -62,7 +49,15 @@ const FormularioIniciarSesion = () => {
       });
       return;
     }
-    if (usuarioActual.contraseña !== campos.contraseña) {
+    if (!usuario.length > 0) {
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: "error",
+        mensaje: "El legajo ingresado es incorrecto.",
+      });
+      return;
+    }
+    if (usuario[0]?.contraseña !== campos.contraseña) {
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "error",
@@ -70,21 +65,8 @@ const FormularioIniciarSesion = () => {
       });
       return;
     }
-    if (!usuarioActual.idSector) {
-      cambiarEstadoAlerta(true);
-      cambiarAlerta({
-        tipo: "error",
-        mensaje: "No existe el sector, comuniquese con sistemas.",
-      });
-      return;
-    }
     try {
-      iniciarSesion({
-        ...usuarioActual,
-        correo: usuarioActual.correo.trim(),
-        legajo: usuarioActual.idUsuario.trim(),
-        idSector: usuarioActual.idSector,
-      });
+      iniciarSesion(usuario[0]);
       cambiarEstadoAlerta(true);
       cambiarAlerta({
         tipo: "aceptado",
@@ -98,13 +80,16 @@ const FormularioIniciarSesion = () => {
         mensaje: "Ocurrió un error inesperado, vuelva a intentarlo.",
       });
       return;
+    } finally {
+      cambiarEstadoAlerta(false);
+      cambiarAlerta({});
     }
   };
 
   return (
     <div className="container p-4 pb-2 pt-0">
-      <h1 className="text-base font-bold w-full pt-4 pb-2 text-gray-600">
-        Inicia sesión en tu cuenta de Helpdesk Unity
+      <h1 className="text-lg text-left font-bold w-full pt-2 pb-2 text-gray-600">
+        Accede a tu cuenta
       </h1>
       <form
         onSubmit={handleSubmit}
@@ -156,7 +141,7 @@ const FormularioIniciarSesion = () => {
             Iniciar Sesión
           </button>
         </div>
-        <div className="flex w-full justify-around py-6 pb-4">
+        <div className="flex w-full justify-around py-6 pb-4 gap-2">
           <h2 className="font-semibold">¿Todavía no te registraste?</h2>
           <Link
             href={"/auth/registrar-usuario"}

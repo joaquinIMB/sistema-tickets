@@ -39,9 +39,13 @@ function AuthProvider({ children }) {
   const iniciarSesion = (usuarioActual) => {
     const newUser = {
       logged: true,
-      email: usuarioActual.correo,
-      legajo: usuarioActual.idUsuario,
+      email: usuarioActual.correo.trim(),
+      legajo: usuarioActual.idUsuario.trim(),
       idSector: usuarioActual.idSector,
+      nombreUsuario:
+        usuarioActual.nombreUsuario.trim() +
+        " " +
+        usuarioActual.apellidoUsuario.trim(),
     };
     cambiarUsuario(newUser);
     localStorage.setItem("usuario", JSON.stringify(newUser));

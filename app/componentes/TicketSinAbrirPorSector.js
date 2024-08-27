@@ -14,14 +14,11 @@ export const TicketSinAbrirPorSector = ({ dataUsuario }) => {
   const [usuarioActual, setUsuarioActual] = useState();
   const isRefetchActive = useInactivityTimeout(12000);
 
-  useMemo(() => {
-    if (dataUsuario) {
-      const [usuarioActual] = dataUsuario.filter(
-        (user) => user.correo.trim() === usuario.email
-      );
-      setUsuarioActual(usuarioActual);
+  useEffect(() => {
+    if (usuario) {
+      setUsuarioActual(usuario);
     }
-  }, [dataUsuario, usuario.email]);
+  }, [usuario]);
 
   useEffect(() => {
     if (data) {

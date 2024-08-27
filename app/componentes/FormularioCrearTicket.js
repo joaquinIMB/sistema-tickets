@@ -1,13 +1,11 @@
 "use client";
 
 import { useAuth } from "../contexts/authContext";
-import { useEffect, useState, useMemo } from "react";
-// import { SeleccionarUsuarioReceptor } from "./SeleccionarUsuarioReceptor";
+import { useEffect, useState } from "react";
 import { SeleccionarSector } from "./SeleccionarSector";
 import { SeleccionarPrioridad } from "./SeleccionarPrioridad";
 import {
   useCreateMovimientoTicketMutation,
-  useGetTicketsQuery,
   useCreateTicketMutation,
   useGetNextIdTicketQuery,
   useCreateNotificacionTicketMutation,
@@ -16,20 +14,17 @@ import { traerFechaHora } from "@/funciones/traerFechaHora";
 import Alerta from "./Alerta";
 import { SkeletonFormularioCrearTicket } from "@/elementos/skeletons/SkeletonFormCrearTicket";
 
-const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
+const FormularioCrearTicket = ({ dataSector }) => {
   const { usuario } = useAuth();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
   const { data, error, isLoading, refetch } = useGetNextIdTicketQuery(1);
-  // const { data, error, isLoading, refetch } = useGetTicketsQuery();
   const [crearTicket] = useCreateTicketMutation();
   const [crearMovimientoTicket] = useCreateMovimientoTicketMutation();
   const [crearNotificacion] = useCreateNotificacionTicketMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const usuarioEmisor = useMemo(() => {
-    return dataUsuario.find((user) => user.correo.trim() === usuario.email);
-  }, [dataUsuario, usuario.email]);
+  const usuarioEmisor = usuario;
 
   const [campos, cambiarCampos] = useState({
     tituloTicket: "",
@@ -37,20 +32,12 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
     prioridad: "",
     idEstado: "nuevo",
     idSector: "",
-    nombreUsuarioAsignado: "",
-    legajoAsignado: "",
-    nombreEmisor: usuarioEmisor
-      ? `${usuarioEmisor.nombreUsuario} ${usuarioEmisor.apellidoUsuario}`
-      : "",
-    legajoEmisor: usuarioEmisor ? usuarioEmisor.idUsuario : "",
-    correoUsuarioEmisor: usuarioEmisor ? usuarioEmisor.correo.trim() : "",
+    nombreUsuarioAsignado: "Todos",
+    legajoAsignado: "Todos",
+    nombreEmisor: usuarioEmisor ? usuarioEmisor.nombreUsuario : "",
+    legajoEmisor: usuarioEmisor ? usuarioEmisor.legajo : "",
+    correoUsuarioEmisor: usuarioEmisor ? usuarioEmisor.email.trim() : "",
   });
-
-  const usuarioAsignado = useMemo(() => {
-    return dataUsuario.find(
-      (usuario) => usuario.idUsuario === campos.legajoAsignado
-    );
-  }, [dataUsuario, campos.legajoAsignado]);
 
   const validarCampos = () => {
     const camposVacios = Object.values(campos).some(
@@ -77,20 +64,12 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
   };
 
   useEffect(() => {
-    if (campos.legajoAsignado !== "Todos" && usuarioAsignado) {
-      cambiarCampos((prevcampos) => ({
-        ...prevcampos,
-        idSector: usuarioAsignado.idSector,
-        nombreUsuarioAsignado: `${usuarioAsignado.nombreUsuario} ${usuarioAsignado.apellidoUsuario}`,
-      }));
-    } else {
-      cambiarCampos((prevcampos) => ({
-        ...prevcampos,
-        nombreUsuarioAsignado: "Todos",
-        idSector: campos.idSector,
-      }));
-    }
-  }, [usuarioAsignado, campos.idSector, campos.legajoAsignado]);
+    cambiarCampos((prevcampos) => ({
+      ...prevcampos,
+      nombreUsuarioAsignado: "Todos",
+      idSector: campos.idSector,
+    }));
+  }, [campos.idSector]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,11 +126,11 @@ const FormularioCrearTicket = ({ dataUsuario, dataSector }) => {
         prioridad: "",
         idEstado: "nuevo",
         idSector: "",
-        nombreUsuarioAsignado: "",
-        legajoAsignado: "",
-        nombreEmisor: `${usuarioEmisor.nombreUsuario} ${usuarioEmisor.apellidoUsuario}`,
-        legajoEmisor: usuarioEmisor.idUsuario,
-        correoUsuarioEmisor: usuarioEmisor.correo.trim(),
+        nombreUsuarioAsignado: "Todos",
+        legajoAsignado: "Todos",
+        nombreEmisor: usuarioEmisor ? usuarioEmisor.nombreUsuario : "",
+        legajoEmisor: usuarioEmisor ? usuarioEmisor.legajo : "",
+        correoUsuarioEmisor: usuarioEmisor ? usuarioEmisor.email.trim() : "",
       });
     } catch (error) {
       console.error("Error creating ticket:", error);

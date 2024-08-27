@@ -5,25 +5,25 @@ import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 
 export const MovimientoTicket = ({ ticket, dataUsuario }) => {
   const { data, error, refetch } = useGetMovimientoTicketQuery(ticket.idTicket);
-  let ultimoMovimiento = null;
-  let emisorMovimiento = null;
-  let usuarioEmisor = null;
+  // let ultimoMovimiento = null;
+  // let emisorMovimiento = null;
+  // let usuarioEmisor = null;
 
-  if (data && data.length > 0) {
-    ultimoMovimiento = data[data.length - 1];
-    emisorMovimiento = ultimoMovimiento.legajoEmisor;
-    // Buscar el usuario emisor en la lista de usuarios
-    if (dataUsuario) {
-      usuarioEmisor = dataUsuario.find(
-        (user) => Number(user.idUsuario) === emisorMovimiento
-      );
-    }
-  }
+  // if (data && data.length > 0) {
+  //   ultimoMovimiento = data[data.length - 1];
+  //   emisorMovimiento = ultimoMovimiento.legajoEmisor;
+  //   // Buscar el usuario emisor en la lista de usuarios
+  //   if (dataUsuario) {
+  //     usuarioEmisor = dataUsuario.find(
+  //       (user) => Number(user.idUsuario) === emisorMovimiento
+  //     );
+  //   }
+  // }
 
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   });
 
@@ -41,13 +41,7 @@ export const MovimientoTicket = ({ ticket, dataUsuario }) => {
                 <header className="flex flex-row justify-between bg-neutral-800 min-h-[22%] py-1 px-4">
                   <div className="flex flex-col w-[40%]">
                     <h1 className=" text-base text-[#fcfcfc] capitalize">
-                      {usuarioEmisor
-                        ? `${
-                            usuarioEmisor.idUsuario +
-                            " " +
-                            usuarioEmisor.nombreUsuario
-                          }`
-                        : ""}
+                      {movimiento.legajoEmisor}
                     </h1>
                   </div>
                   <div className="flex flex-col text-end text-base w-[50%]">

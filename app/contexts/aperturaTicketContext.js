@@ -37,16 +37,16 @@ function AperturaTicketProvider({ children }) {
             const updatedCampos = {
               ...dataTicket,
               idEstado: "abierto",
-              nombreUsuarioAsignado: `${usuario.nombreUsuario} ${usuario.apellidoUsuario}`,
+              nombreUsuarioAsignado: `${usuario.nombreUsuario}`,
               fechaHoraRegistro: fechaHora,
               descripcionMovimiento: `Apertura de ticket ${dataTicket.idTicket}`,
-              legajoAsignado: usuario.idUsuario,
-              legajoEmisor: usuario.idUsuario,
+              legajoAsignado: usuario.legajo,
+              legajoEmisor: usuario.legajo,
             };
             crearMovimientoTicket({
               ...updatedCampos,
               idMovimientoTicket: dataMovimiento.idMovimientoTicket,
-              legajoAsignado: usuario.idUsuario,
+              legajoAsignado: usuario.legajo,
             });
             actualizarTicket({
               ...updatedCampos,
