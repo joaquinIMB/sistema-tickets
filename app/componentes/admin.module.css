@@ -167,6 +167,7 @@
   }
   .estado {
     width: 31% !important;
+    text-align: end !important;
   }
 }
 

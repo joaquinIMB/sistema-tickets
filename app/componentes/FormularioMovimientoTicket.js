@@ -13,7 +13,7 @@ import Alerta from "./Alerta";
 // import { useRouter } from "next/navigation";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 
-const FormularioMovimientoTicket = ({ ticket, usuario }) => {
+const FormularioMovimientoTicket = ({ ticket, usuario,refetch }) => {
   const { campos, cambiarCampos } = useMovimientoTicket();
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
@@ -170,6 +170,7 @@ const FormularioMovimientoTicket = ({ ticket, usuario }) => {
           tipo: "aceptado",
           mensaje: `¡El movimiento de ticket se creó correctamente!`,
         });
+        refetch()
         cambiarCampos((prevData) => ({
           ...prevData,
           idTicket: ticket.idTicket,
