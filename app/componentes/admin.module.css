@@ -166,7 +166,7 @@
     width: 65% !important;
   }
   .estado {
-    width: 31% !important;
+    min-width: 25% !important;
     text-align: end !important;
   }
 }

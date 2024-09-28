@@ -1,7 +1,6 @@
 "use client";
 
 import { colorEstado } from "@/elementos/colores";
-import styles from "@/componentes/admin.module.css";
 import { useAperturaTicket } from "../contexts/aperturaTicketContext";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -12,6 +11,7 @@ import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 import { ModalAperturaTicket } from "./ModalAperturaTicket";
 
 export const Ticket = ({ ticket, usuarioActual }) => {
+  const [showPopover, setShowPopover] = useState(false);
   const {
     obtenerUsuario,
     setDataTicket,
@@ -38,7 +38,7 @@ export const Ticket = ({ ticket, usuarioActual }) => {
         ticket.legajoAsignado === "Todos" &&
         ticket.nombreUsuarioAsignado === "Todos"
       ) {
-        obtenerUsuario(usuarioActual)
+        obtenerUsuario(usuarioActual);
         setDataTicket({
           ...ticket,
         });
@@ -105,42 +105,46 @@ export const Ticket = ({ ticket, usuarioActual }) => {
   return (
     <>
       {ticket && (
-        <div onClick={handlePopUp} className="w-full relative cursor-pointer">
-          <ul
-            className={`max-md:gap-2 flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center  border-black transition-all ${styles.listaTicket}`}
-          >
-            <li className={`w-[5%] ${styles.id} text-center`}>
+        <div
+          className="relative w-full cursor-pointer"
+          onMouseEnter={() => setShowPopover(true)}
+          onMouseLeave={() => setShowPopover(false)}
+          onClick={handlePopUp} // Si tienes una función de popup
+        >
+          <ul className="max-md:gap-2 flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[60px] hover:bg-[#f0f0f0] items-center border-black transition-all">
+            <li className="w-[5%] text-left">
               <h1 className="font-semibold text-md"> {ticket.idTicket}</h1>
             </li>
-            <li className={`w-[25%] ${styles.usuario}`}>
+            <li className="w-[25%] truncate">
               <h1 className="font-semibold text-md"> {ticket.nombreEmisor}</h1>
             </li>
-            <li
-              className={`w-[25%] text-center font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}
-            >
+            <li className="w-[25%] text-left font-semibold overflow-hidden py-0 px-4">
               {ticket.tituloTicket}
             </li>
-            <li
-              className={`w-[10%] text-center font-semibold ${styles.prioridad}`}
-            >
+            <li className="w-[10%] text-center font-semibold">
               {ticket.prioridad}
             </li>
-            <li className={`w-[12%] capitalize text-center ${styles.estado}`}>
+            <li className="w-[12%] capitalize text-center">
               <span
                 className={`${colorActual.bg}
             ${
               ticket.idEstado === "resuelto" ? "text-black" : "text-white"
             } py-1 px-2 rounded-full align-middle`}
               >
-                {ticket.idEstado === "proceso" ? "En proceso" : ticket.idEstado}
+                {ticket.idEstado === "proceso" ? "Proceso" : ticket.idEstado}
               </span>
             </li>
-            <li
-              className={`w-[18%] text-end font-semibold text-gray-600 max-sm:hidden ${styles.fecha}`}
-            >
+            <li className="w-[18%] text-end font-semibold text-gray-600 max-sm:hidden">
               {ticket.fechaHoraRegistro}
             </li>
           </ul>
+
+          {/* Popover */}
+          {showPopover && (
+            <div className="absolute top-[-10px] left-[50%] bg-gray-100 border border-gray-300 text-sm text-gray-700 p-2 rounded-md shadow-lg transform -translate-x-1/2 z-10">
+              Usuario Responsable: {ticket.nombreUsuarioAsignado || "Ninguno"}
+            </div>
+          )}
         </div>
       )}
       {popUp && (

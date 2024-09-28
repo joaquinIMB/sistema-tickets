@@ -11,7 +11,7 @@ export const SkeletonHeaderListaTicket = () => {
           className={`h-6 bg-gray-300 w-20 rounded-md ${styles.animatePulse}`}
         ></div>
       </li>
-      <li className={`w-[30%] text-center py-0 px-4 ${style.motivo}`}>
+      <li className={`w-[30%] text-left py-0 px-4 ${style.motivo}`}>
         <div
           className={`h-6 bg-gray-300 w-20 rounded-md ${styles.animatePulse} mx-auto`}
         ></div>
