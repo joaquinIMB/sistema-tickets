@@ -9,6 +9,7 @@ import { useGetMovimientoTicketQuery } from "@/services/apiTicket";
 import { traerFechaHora } from "@/funciones/traerFechaHora";
 import { SkeletonTicket } from "@/elementos/skeletons/SkeletonTicket";
 import { ModalAperturaTicket } from "./ModalAperturaTicket";
+import styles from "@/componentes/admin.module.css"
 
 export const Ticket = ({ ticket, usuarioActual }) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -111,20 +112,26 @@ export const Ticket = ({ ticket, usuarioActual }) => {
           onMouseLeave={() => setShowPopover(false)}
           onClick={handlePopUp} // Si tienes una función de popup
         >
-          <ul className="max-md:gap-2 flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[60px] hover:bg-[#f0f0f0] items-center border-black transition-all">
-            <li className="w-[5%] text-left">
+          <ul
+            className={`max-md:gap-2 flex flex-row px-12 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[60px] hover:bg-[#f0f0f0] items-center  border-black transition-all ${styles.listaTicket}`}
+          >
+            <li className={`w-[5%] ${styles.id} text-left`}>
               <h1 className="font-semibold text-md"> {ticket.idTicket}</h1>
             </li>
-            <li className="w-[25%] truncate">
+            <li className={`w-[25%] ${styles.usuario} truncate`}>
               <h1 className="font-semibold text-md"> {ticket.nombreEmisor}</h1>
             </li>
-            <li className="w-[25%] text-left font-semibold overflow-hidden py-0 px-4">
+            <li
+              className={`w-[25%] text-left font-semibold overflow-hidden py-0 px-4 ${styles.motivo}`}
+            >
               {ticket.tituloTicket}
             </li>
-            <li className="w-[10%] text-center font-semibold">
+            <li
+              className={`w-[10%] text-center font-semibold ${styles.prioridad}`}
+            >
               {ticket.prioridad}
             </li>
-            <li className="w-[12%] capitalize text-center">
+            <li className={`w-[12%] capitalize text-center ${styles.estado}`}>
               <span
                 className={`${colorActual.bg}
             ${
@@ -134,7 +141,9 @@ export const Ticket = ({ ticket, usuarioActual }) => {
                 {ticket.idEstado === "proceso" ? "Proceso" : ticket.idEstado}
               </span>
             </li>
-            <li className="w-[18%] text-end font-semibold text-gray-600 max-sm:hidden">
+            <li
+              className={`w-[18%] text-end font-semibold text-gray-600 max-sm:hidden ${styles.fecha}`}
+            >
               {ticket.fechaHoraRegistro}
             </li>
           </ul>
