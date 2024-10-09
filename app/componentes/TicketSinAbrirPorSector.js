@@ -27,7 +27,6 @@ export const TicketSinAbrirPorSector = () => {
       const sortedTickets = [...data].sort((a, b) => b.idTicket - a.idTicket);
 
       setTickets(sortedTickets);
-      console.log(data);
     }
   }, [data]);
 

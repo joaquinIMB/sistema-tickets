@@ -14,16 +14,12 @@ export const TraerTicketsDeSector = ({ idSector }) => {
   const isRefetchActive = useInactivityTimeout(12000);
 
   const { data, error, refetch } = useGetTodosTicketsIdSectorQuery(idSector);
-  
+
   useEffect(() => {
     if (usuario) {
       setUsuarioActual(usuario);
-      if (usuarioActual && data) {
-        const ticketsDeUsuario = data.filter((ticket) => {
-          if (ticket.legajoAsignado.trim() == usuarioActual.legajo) {
-            return ticket;
-          }
-        });
+      if (data) {
+        const ticketsDeUsuario = data;
         return setTicket(ticketsDeUsuario);
       }
     }
