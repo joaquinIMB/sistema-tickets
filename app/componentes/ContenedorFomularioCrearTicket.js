@@ -15,7 +15,8 @@ export const ContenedorFormularioCrearTicket = () => {
   const API_URL =
     process.env.NODE_ENV === "production"
       ? process.env.NEXT_PUBLIC_API_URL
-      : process.env.URL_DEV;
+      : "http://localhost:3000/api/ticket";
+      // : process.env.URL_DEV;
 
   useEffect(() => {
     const fetchData = async () => {

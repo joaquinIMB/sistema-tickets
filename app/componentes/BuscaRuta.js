@@ -25,12 +25,15 @@ export const BuscaRuta = () => {
     if (pathname.slice(0, 32) === "/admin/ticket/movimientos-ticket") {
       establecerEnlace("Movimientos");
     }
+    if (pathname.slice(0, 19) === "/admin/ticket/todos") {
+      establecerEnlace("Todos");
+    }
   }, [pathname]);
 
   return (
     <div className="flex gap-2 items-center">
       <h1
-        className={`capitalize text-[22px] text-gray-800 font-semibold${
+        className={`capitalize text-[22px] text-slate-800 font-semibold${
           enlace != "Tickets" && "text-xl"
         }`}
       >{`${enlace != undefined ? enlace : "Crear ticket"}`}</h1>

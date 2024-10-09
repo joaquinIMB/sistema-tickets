@@ -5,9 +5,9 @@ export const SkeletonTicket = () => {
   return (
     <div className="w-full relative cursor-pointer">
       <ul
-        className={`flex flex-row px-6 max-[764px]:px-3 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[74px] hover:bg-[#f0f0f0] items-center border-black transition-all ${styles.listaTicket}`}
+        className={`flex flex-row px-6 max-[764px]:px-3 justify-between text-[#161616] list-none bg-white border-b-2 border-opacity-5 h-[60px] hover:bg-[#f0f0f0] items-center border-black transition-all ${styles.listaTicket}`}
       >
-        <li className={`w-[5%] ${style.id}`}>
+        <li className={`w-[5%] text-left ${style.id}`}>
           <div
             className={`h-6 bg-gray-300 rounded-md w-3/4 ${styles.animatePulse}`}
           ></div>
@@ -18,7 +18,7 @@ export const SkeletonTicket = () => {
           ></div>
         </li>
         <li
-          className={`w-[25%] text-center font-semibold overflow-hidden py-0 px-4 ${style.motivo}`}
+          className={`w-[25%] text-left font-semibold overflow-hidden py-0 px-4 ${style.motivo}`}
         >
           <div
             className={`h-6 bg-gray-300 rounded-md w-3/4 ${styles.animatePulse} mx-auto`}

@@ -7,7 +7,7 @@ export async function GET(req, { params }) {
   try {
     const pool = await getConnection();
     const result = await pool.request()
-      .query`select * from ST_tickets where idEstado = ${idEstado}`;
+      .query`select * from ST_tickets where idEstado = ${idEstado} order by idTicket desc`;
 
     const response = NextResponse.json(result.recordset);
 

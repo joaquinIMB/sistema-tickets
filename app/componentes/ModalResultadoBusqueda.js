@@ -48,7 +48,7 @@ export const ModalResultadoBusqueda = ({ data, setModalBusqueda }) => {
               </div>
             ))
           ) : (
-            <span>No se encontraron resultados</span>
+            <span className="text-black text-center">No se encontraron resultados</span>
           )}
         </div>
       </div>

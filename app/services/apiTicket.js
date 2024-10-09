@@ -5,7 +5,6 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: `${API_URL_SERVICES}` }),
   tagTypes: [
-    "tickets",
     "newTicket",
     "movTicket",
     "getTicketID",
@@ -13,18 +12,20 @@ export const api = createApi({
     "getSectorID",
     "getTicketUsuarioAsignado",
     "getTicketUsuarioEmisor",
+    "getTodosAsignado",
+    "getTicketsMenorQue",
+    "getTicketsMayorQue",
     "getNextTicket",
     "getTablaUsuarios",
+    "getTodosTicketSector",
+    "getTotalTicketsNuevos",
+    "getTotalTicketsEmisor",
+    "getTotalTicketsAsignado",
+    "getTotalTicketsSector",
     "notificacionesPorSector",
     "notificacionesPorUsuario",
   ],
   endpoints: (builder) => ({
-    getTickets: builder.query({
-      query: () => "ticket",
-      keepUnusedDataFor: 1,
-      refetchOnMountOrArgChange: 1,
-      providesTags: ["tickets"],
-    }),
     getTicketId: builder.query({
       query: (idTicket) => `ticket/${idTicket}`,
       providesTags: ["getTicketID"],
@@ -33,18 +34,26 @@ export const api = createApi({
       query: (idEstado) => `ticket/estado/${idEstado}`,
       providesTags: ["getStateID"],
     }),
+    // END POINTS PARA TRAER TICKETS DE CADA SECCION
     getTicketIdSector: builder.query({
-      query: (idSector) => `ticket/ticket-sector/${idSector}`,
+      query: (idSector) => `ticket/ticketsPorPagina/ticketSector/${idSector}`,
       providesTags: ["getSectorID"],
     }),
+    getTodosTicketsIdSector: builder.query({
+      query: (idSector) => `ticket/ticketsPorPagina/todos/${idSector}`,
+      providesTags: ["getTodosTicketSector"],
+    }),
     getTicketIdUsuarioAsignado: builder.query({
-      query: (idUsuario) => `ticket/ticketPorAsignado/${idUsuario}`,
+      query: (idUsuario) =>
+        `ticket/ticketsPorPagina/ticketPorAsignado/${idUsuario}`,
       providesTags: ["getTicketUsuarioAsignado"],
     }),
     getTicketIdUsuarioEmisor: builder.query({
-      query: (idUsuario) => `ticket/ticketPorEmisor/${idUsuario}`,
+      query: (idUsuario) =>
+        `ticket/ticketsPorPagina/ticketPorEmisor/${idUsuario}`,
       providesTags: ["getTicketUsuarioEmisor"],
     }),
+    // END POINTS PARA TRAER TICKETS DE CADA SECCION
     getNextIdTicket: builder.query({
       query: (nroSiguiente) => `ticket/traerIdTicket/${nroSiguiente}`,
       providesTags: ["getNextTicket"],
@@ -65,6 +74,8 @@ export const api = createApi({
       query: (idUsuario) => `ticket/traerNotificacionPorUsuario/${idUsuario}`,
       providesTags: ["notificacionesPorUsuario"],
     }),
+
+    // END POINTS PARA CREAR TICKET, MOVIMIENTOS DE TICKET Y NOTIFICACIONES
     createTicket: builder.mutation({
       query: (campos) => ({
         url: "/ticket/insertTicket",
@@ -90,6 +101,7 @@ export const api = createApi({
         "getSectorID",
         "getTicketUsuarioAsignado",
         "getTicketUsuarioEmisor",
+        "getTodosTicketSector",
         "getNextTicket",
       ],
     }),
@@ -116,6 +128,7 @@ export const api = createApi({
         "getTicketUsuarioAsignado",
         "getTicketUsuarioEmisor",
         "getSectorID",
+        "getTodosTicketSector",
       ],
     }),
     createNotificacionTicket: builder.mutation({
@@ -133,6 +146,9 @@ export const api = createApi({
         }),
       }),
     }),
+    // END POINTS PARA CREAR TICKET, MOVIMIENTOS DE TICKET Y NOTIFICACIONES
+
+    // ACTUALIZA TABLAS
     updateTicket: builder.mutation({
       query: (campos) => ({
         url: `/ticket/updateTicket/${campos.idTicket}`,
@@ -172,14 +188,17 @@ export const api = createApi({
       }),
       invalidatesTags: ["notificacionesPorSector", "notificacionesPorUsuario"],
     }),
+    // ACTUALIZA TABLAS
+
+    // EJECUTA PROCEDIMIENTO ALMACENADO
     executeStoredProcedure: builder.query({
-      query: ({ idSector, cadena, idUsuario }) => `ticket/traerResultadoBusqueda/${idSector},${cadena},${idUsuario}`,
+      query: ({ idSector, cadena, idUsuario }) =>
+        `ticket/traerResultadoBusqueda/${idSector},${cadena},${idUsuario}`,
     }),
   }),
 });
 
 export const {
-  useGetTicketsQuery,
   useGetStateIdQuery,
   useGetTicketIdQuery,
   useGetTicketIdSectorQuery,
@@ -188,6 +207,7 @@ export const {
   useGetMovimientoTicketQuery,
   useGetNextIdTicketQuery,
   useGetSectorPorIdUsuarioQuery,
+  useGetTodosTicketsIdSectorQuery,
   useGetNotificacionPorSectorQuery,
   useGetNotificacionPorUsuarioQuery,
   useCreateTicketMutation,
@@ -196,5 +216,5 @@ export const {
   useUpdateTicketMutation,
   useUpdateDataUsuarioMutation,
   useUpdateNotificacionLeidaMutation,
-  useExecuteStoredProcedureQuery
+  useExecuteStoredProcedureQuery,
 } = api;

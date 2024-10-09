@@ -10,7 +10,7 @@ const listaSideBar = [
 
 const listaCategorias = [
   {
-    label: "Sin asignar",
+    label: "Nuevos",
     href: urlBase("tickets-de-sector"),
     seccion: "ticketsSector",
   },

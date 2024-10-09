@@ -13,6 +13,7 @@ import { NotificacionesProvider } from "@/contexts/notificacionesContext";
 import NotificacionesContainer from "@/componentes/NotificacionesContainer";
 import { ContenedorFormularioCrearTicket } from "@/componentes/ContenedorFomularioCrearTicket";
 import { useModal } from "@/contexts/modalContext";
+// import { ContenedorFiltros } from "@/elementos/ContenedorFiltros";
 
 export default function RootLayout({ children }) {
   const { usuario } = useAuth();
@@ -37,7 +38,8 @@ export default function RootLayout({ children }) {
                   <Header
                     idSector={usuario.idSector}
                     idUsuario={usuario.legajo}
-                  />
+                    />
+                  {/* <ContenedorFiltros/> */}
                   <div
                     className={`w-full m-auto relative my-0 flex flex-row flex-wrap justify-center h-fit overflow-auto`}
                   >

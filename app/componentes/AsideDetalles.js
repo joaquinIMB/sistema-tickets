@@ -20,7 +20,7 @@ export const AsideDetalles = ({ idTicket, dataSector, dataUsuario }) => {
     if (data) {
       const [ticket] = data;
       const [usuarioEmisor] = dataUsuario.filter(
-        (user) => user.idUsuario === ticket.legajoEmisor
+        (user) => user.idUsuario.trim() === ticket.legajoEmisor.trim()
       );
       setSectorEmisor(usuarioEmisor.idSector);
     }
