@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sistema de Tickets
 
-## Getting Started
+Este es el repositorio del proyecto final desarrollado para el curso de Next JS en CODERHOUSE. Se trata de un sistema de gestión de tickets diseñado para mejorar la comunicación y seguimiento de incidencias dentro de una organización.
 
-First, run the development server:
+## Descripción
 
-```bash
+El sistema permite a los usuarios crear, visualizar y gestionar tickets de soporte de manera eficiente. Incluye funcionalidades como:
+
+- **Creación de Tickets**: Los usuarios pueden reportar incidencias detallando el problema encontrado.
+- **Gestión de Estados**: Cada ticket puede tener estados como "Abierto", "En Proceso" o "Cerrado" para un seguimiento adecuado.
+- **Notificaciones en Tiempo Real**: Actualizaciones instantáneas sobre el estado de los tickets.
+- **Panel de Administración**: Interfaz dedicada para que los administradores gestionen y asignen tickets.
+
+## Tecnologías Utilizadas
+
+- **Next.js**: Framework de React para el desarrollo del frontend.
+- **Express.js**: Framework para el backend en Node.js.
+- **Tailwind CSS**: Framework de CSS para el diseño responsivo y estilizado.
+- **MSSQL**: Base de datos utilizada para almacenar la información de los tickets.
+- **RTK Query**: Herramienta para la gestión eficiente de datos en el frontend.
+- **Context API**: Mecanismo de React para manejar el estado global de la aplicación.
+
+## Estructura del Proyecto
+
+El proyecto está organizado de la siguiente manera:
+
+- `/app`: Contiene los componentes y páginas principales de la aplicación.
+- `/public`: Recursos estáticos como imágenes y archivos.
+- `package.json`: Archivo con las dependencias y scripts del proyecto.
+- `tailwind.config.js`: Configuración personalizada para Tailwind CSS.
+- `next.config.js`: Configuración específica para Next.js.
+
+## Instalación y Uso
+
+Para ejecutar el proyecto localmente:
+
+1. Clona este repositorio:
+
+   ```bash
+   git clone https://github.com/joaquinIMB/sistema-tickets.git
+Navega al directorio del proyecto:
+
+bash
+Copiar
+Editar
+cd sistema-tickets
+Instala las dependencias necesarias:
+
+bash
+Copiar
+Editar
+npm install
+Inicia el servidor de desarrollo:
+
+bash
+Copiar
+Editar
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Abre http://localhost:3000 en tu navegador para ver la aplicación en funcionamiento.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Demo
+Puedes ver una versión en vivo del sistema de tickets en el siguiente enlace:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+[Sistema de Tickets](https://sistema-tickets-punto.vercel.app/auth/iniciar-sesion)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Contribuciones
+Este proyecto fue desarrollado como parte del curso de CODERHOUSE. Actualmente, no se aceptan contribuciones externas, pero cualquier comentario o sugerencia es bienvenido.

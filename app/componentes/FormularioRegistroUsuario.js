@@ -32,14 +32,14 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
   });
 
   useMemo(() => {
-    localStorage.removeItem("usuario")
-  },[])
+    localStorage.removeItem("usuario");
+  }, []);
 
   useEffect(() => {
-    if(!isModalOpen){
-      handleOpenModal()
+    if (!isModalOpen) {
+      handleOpenModal();
     }
-  },[handleOpenModal, isModalOpen])
+  }, [handleOpenModal, isModalOpen]);
 
   useEffect(() => {
     if (dataUser) {
@@ -61,6 +61,7 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           setTimeout(() => {
             router.push("/auth/iniciar-sesion");
           }, 2000);
+          handleCloseModal();
           return;
         }
 
@@ -74,7 +75,6 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
           contraseña: user.contraseña || "",
           confirmarContraseña: user.contraseña || "",
         }));
-        handleCloseModal();
       } else {
         cambiarEstadoAlerta(true);
         cambiarAlerta({
@@ -344,11 +344,11 @@ const FormularioRegistroUsuario = ({ dataSector }) => {
       </form>
       {isModalOpen && (
         <ModalLegajo
-        legajo={legajo}
-        setLegajo={setLegajo}
-        setDataUser={setDataUser}
-        cambiarEstadoAlerta={cambiarEstadoAlerta}
-        cambiarAlerta={cambiarAlerta}
+          legajo={legajo}
+          setLegajo={setLegajo}
+          setDataUser={setDataUser}
+          cambiarEstadoAlerta={cambiarEstadoAlerta}
+          cambiarAlerta={cambiarAlerta}
         />
       )}
       <Alerta

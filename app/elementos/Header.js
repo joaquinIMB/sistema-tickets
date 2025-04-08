@@ -35,10 +35,10 @@ export const Header = ({ idSector, idUsuario }) => {
         <div className={`flex items-end transition-all max-lg:hidden`}>
           <BuscaRuta />
         </div>
-        {habilitarBoton && <BotonCrearTicket habilitarBoton={habilitarBoton} />}
         {habilitarBusqueda && (
           <BarraBusqueda idSector={idSector} idUsuario={idUsuario} />
         )}
+        {habilitarBoton && <BotonCrearTicket habilitarBoton={habilitarBoton} />}
       </div>
     </header>
   );

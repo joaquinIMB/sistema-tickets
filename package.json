@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.2.5",
     "@vercel/postgres": "^0.5.1",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "init": "^0.1.2",
-    "jwt": "^0.2.0",
     "mssql": "^10.0.2",
     "next": "14.1.4",
     "npx": "^10.2.2",

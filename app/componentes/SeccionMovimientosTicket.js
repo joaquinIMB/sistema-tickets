@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/authContext";
 import { SkeletonSeccionMovimientos } from "@/elementos/skeletons/SkeletonSeccionMovimientos";
 
 export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
-  const { data, error, isLoading } = useGetTicketIdQuery(idTicket);
+  const { data, error, isLoading, refetch } = useGetTicketIdQuery(idTicket);
   const { usuario } = useAuth();
 
   if (isLoading) return <SkeletonSeccionMovimientos />;
@@ -31,6 +31,7 @@ export const SeccionMovimientoTicket = ({ idTicket, dataUsuario }) => {
             <FormularioMovimientoTicket
               ticket={ticket}
               usuario={usuario}
+              refetch={refetch}
             />
           </section>
         ))}
